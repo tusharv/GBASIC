@@ -45,7 +45,7 @@ def test_batch_reads_cp437(tmp_path):
     path = tmp_path / "dos.bas"
     path.write_bytes(b'10 PRINT "\xda\xc4\xbf"\r\n\x1a')
     result = subprocess.run(
-        [sys.executable, "-m", "ghost_basic", str(path)],
+        [sys.executable, "-X", "utf8", "-m", "ghost_basic", str(path)],
         text=True,
         encoding="utf-8",
         capture_output=True,

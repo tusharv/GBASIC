@@ -47,7 +47,7 @@ class Page(HTMLParser):
 
 
 def test_site_local_assets_and_fragment_links():
-    page = Page((SITE / "index.html").read_text())
+    page = Page((SITE / "index.html").read_text(encoding="utf-8"))
     for link in page.links:
         url = urlsplit(link)
         if url.scheme or url.netloc:
@@ -68,7 +68,7 @@ def test_site_local_assets_and_fragment_links():
 
 
 def test_readme_and_site_include_real_splash_and_editor_captures():
-    readme = (ROOT / "README.md").read_text()
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
     for name in ("editor", "splash", "examples", "help", "magic"):
         image = SITE / "assets" / "screenshots" / f"{name}.png"
         data = image.read_bytes()
@@ -76,11 +76,11 @@ def test_readme_and_site_include_real_splash_and_editor_captures():
         width, height = struct.unpack(">II", data[16:24])
         assert width >= 1200 and height >= 700
         assert f"site/assets/screenshots/{name}.png" in readme
-        assert f"assets/screenshots/{name}.png" in (SITE / "index.html").read_text()
+        assert f"assets/screenshots/{name}.png" in (SITE / "index.html").read_text(encoding="utf-8")
 
 
 def test_site_installation_and_compatibility_are_honest():
-    html = (SITE / "index.html").read_text()
+    html = (SITE / "index.html").read_text(encoding="utf-8")
     assert "Python 3.12" in html
     assert "git clone https://github.com/tusharv/GBASIC.git" in html
     assert "pip install -e ." in html
@@ -88,11 +88,11 @@ def test_site_installation_and_compatibility_are_honest():
     assert "not yet" in html.lower() and "QBasic" in html
     assert "pip install ghost-basic" not in html
     assert "api_key" not in html.lower()
-    assert "prefers-reduced-motion" in (SITE / "styles.css").read_text()
+    assert "prefers-reduced-motion" in (SITE / "styles.css").read_text(encoding="utf-8")
 
 
 def test_pages_workflow_publishes_only_static_site():
-    text = (ROOT / ".github/workflows/pages.yml").read_text()
+    text = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
     assert "path: site" in text
     assert "pages: write" in text and "id-token: write" in text
     assert "actions/deploy-pages@" in text
@@ -104,7 +104,7 @@ def test_landing_triangle_example_runs():
 
     from ghost_basic import Program, Runtime
 
-    page = Page((SITE / "index.html").read_text())
+    page = Page((SITE / "index.html").read_text(encoding="utf-8"))
     output = StringIO()
     Runtime(output=output).run(Program.from_source(page.programs["BASIC triangle example"]))
     assert output.getvalue() == "*\n**\n***\n****\n*****\n"
@@ -115,7 +115,7 @@ def test_landing_interest_example_runs():
 
     from ghost_basic import Program, Runtime
 
-    page = Page((SITE / "index.html").read_text())
+    page = Page((SITE / "index.html").read_text(encoding="utf-8"))
     output = StringIO()
     Runtime(output=output, input_stream=StringIO("1000\n10\n2\n")).run(
         Program.from_source(page.programs["BASIC simple interest example"])

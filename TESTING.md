@@ -190,3 +190,7 @@ visible together. Website gallery was checked at 390px and 1280px without horizo
 
 Ruff lint/format and strict mypy pass (21 modules); Node validates the unchanged gallery JS.
 Version 0.4.0 source and wheel builds succeed. Credential/settings storage remains session-only.
+
+Windows CI fixture correction: website checks explicitly read UTF-8, and the CP437 batch
+reader test launches its subprocess in UTF-8 mode to match the parent output decoder.
+This isolates source decoding from the host console locale; it does not change runtime I/O.
