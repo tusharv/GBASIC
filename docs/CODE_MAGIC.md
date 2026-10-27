@@ -64,16 +64,20 @@ is editable. Available API names can be listed at `https://ollama.com/api/tags`.
 - **Suggest:** “What exercise should I try next to understand arrays?”
 
 Follow-up questions in the same panel retain up to three recent conversation turns.
-Closing the panel clears the conversation. Changing Context also clears it, so turning
+Closing the panel or switching to a differently named file clears the conversation. Changing Context also clears it, so turning
 context off does not silently send an earlier program through chat history.
 
 ## What is sent and what the agent can do
 
+Each time you open Magic, **Context: ON** is the default. The sidebar shows the open
+filename, with `*` for unsaved changes. Every Send uses the latest editor text, so edits
+and newly opened files are included automatically without pasting code.
+
 Code requests use explicit **Send** to contact `https://ollama.com/api/chat`. **Context: ON** includes
-this editor's source and the last 6,000 characters of output/error from a matching last
+this editor's filename (without its folder path), unsaved status, source and the last 6,000 characters of output/error from a matching last
 run, plus the request, recent panel history and Ghost BASIC's language constraints.
 It does not browse other files or read your environment. **Context: OFF** excludes the
-source and last-run output. The API key is an authentication header, not model context;
+filename, unsaved status, source and last-run output. The API key is an authentication header, not model context;
 its exact value is redacted from prompts and responses if accidentally included.
 Other secrets embedded in source are not automatically detected, so inspect what you share.
 

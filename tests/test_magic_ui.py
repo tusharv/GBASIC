@@ -400,3 +400,35 @@ async def test_get_key_links_and_replace_saved_key(tmp_path):
         await pilot.pause()
         assert app.ai_settings.api_key == "replacement-key"
         assert app.credential_store.load().api_key == "replacement-key"
+
+
+@pytest.mark.asyncio
+async def test_open_file_context_defaults_on_includes_unsaved_edits_and_tracks_file_switch(
+    tmp_path,
+):
+    from textual.widgets import Static
+
+    (tmp_path / "first.bas").write_text("10 PRINT 1\n")
+    (tmp_path / "second.bas").write_text("10 PRINT 2\n")
+    agent = FakeAgent()
+    app = GhostBasicApp(root=tmp_path, filename="first.bas", magic_agent=agent)
+    async with app.run_test(size=(80, 24)) as pilot:
+        await pilot.press("f8")
+        assert app.magic_panel.include_context
+        assert "first.bas" in str(app.magic_panel.query_one("#magic-privacy", Static).render())
+        app.query_one("#editor", TextArea).load_text("10 PRINT 3\n")
+        await send(pilot, app)
+        context = agent.calls[-1][1]
+        assert context.filename == "first.bas"
+        assert context.source == "10 PRINT 3\n"
+        assert context.modified is True
+        await pilot.click("#magic-context")
+        await pilot.press("f8", "f8")
+        assert app.magic_panel.include_context
+        app.replace_source("second.bas", "10 PRINT 2\n")
+        await pilot.pause(0.25)
+        assert "second.bas" in str(app.magic_panel.query_one("#magic-privacy", Static).render())
+        await send(pilot, app)
+        assert agent.calls[-1][1].filename == "second.bas"
+        assert agent.calls[-1][1].source == "10 PRINT 2\n"
+        assert agent.calls[-1][1].modified is False

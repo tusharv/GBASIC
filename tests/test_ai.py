@@ -33,7 +33,7 @@ async def test_cloud_contract_and_context_without_credentials():
     client = OllamaCloudClient(transport=httpx.MockTransport(handle))
     result = await MagicAgent(client).ask(
         AISettings(api_key="secret-test-key", model="gemma4:31b"),
-        AIContext("10 PRINT 10/0", "Division by zero in 10"),
+        AIContext("10 PRINT 10/0", "Division by zero in 10", "division.bas", True),
         "Debug",
         "Fix the error",
     )
@@ -41,6 +41,10 @@ async def test_cloud_contract_and_context_without_credentials():
     assert str(req.url) == "https://ollama.com/api/chat"
     assert req.headers["authorization"] == "Bearer secret-test-key"
     data = json.loads(req.content)
+    context = json.loads(data["messages"][-1]["content"])
+    assert context["current_file"] == "division.bas"
+    assert context["unsaved_changes"] is True
+    assert context["current_program"] == "10 PRINT 10/0"
     assert data["stream"] is False
     assert data["model"] == "gemma4:31b"
     assert "Division by zero" in req.content.decode()

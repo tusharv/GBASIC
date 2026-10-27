@@ -207,3 +207,10 @@ environment precedence, unavailable/corrupt vaults, rejection of plaintext backe
 80x24 settings, key-check requests without source/history, and valid/invalid/access-denied/
 unverified states. HTTP 401 alone marks a provider-rejected key invalid; quota, server and
 connection errors do not. Official key-guide and creation links are present in the UI.
+
+## Default open-file Magic context — 2026-10-27
+
+All 407 tests pass. Ruff lint/format and strict mypy also pass. Regression coverage
+checks the open filename, unsaved editor text, file switching, default context on
+reopening, and the outgoing request metadata. The updated Magic screenshot was
+visually checked. Cloud requests use mocked responses; no live inference was tested.

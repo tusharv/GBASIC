@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Give Magic the open filename and latest editor text, including unsaved changes, by default.
+- Show the current file in the sidebar and restore Context ON when reopening Magic.
+
 ## 0.4.1 — 2026-10-27
 
 - Remember Ollama key/model in the native OS credential vault; reuse them on later launches.

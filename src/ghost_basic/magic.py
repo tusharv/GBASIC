@@ -181,6 +181,7 @@ class MagicPanel(Vertical):
         super().__init__(id="magic-panel")
         self.credential_store = credential_store
         self.initial_check_done = False
+        self.context_filename = ""
         self.context = AIContext("")
         self.settings = settings
         self.agent = agent
@@ -245,6 +246,9 @@ class MagicPanel(Vertical):
 
     def open_panel(self, *, has_error: bool = False) -> None:
         self.display = True
+        self.include_context = True
+        self.query_one("#magic-context", Button).label = "Context: ON"
+        self.refresh_context_label()
         self.select_mode("Debug" if has_error else "Explain")
         self.query_one("#magic-prompt", Input).focus()
         self.refresh_key_status()
@@ -252,6 +256,25 @@ class MagicPanel(Vertical):
             self.initial_check_done = True
             if self.settings.key_status == "Not checked":
                 self.action_check_key()
+
+    def refresh_context_label(self) -> None:
+        context = self.get_context()
+        if self.context_filename != context.filename:
+            self.history.clear()
+            self.context_filename = context.filename
+        label = self.query_one("#magic-privacy", Static)
+        if self.include_context:
+            name = context.filename or "Untitled.bas"
+            marker = " *" if context.modified else ""
+            # Keep the filename readable even in the 80-column sidebar.
+            width = max(18, self.content_size.width or 30)
+            available = max(8, width - 6 - len(marker))
+            short = name if len(name) <= available else name[: available - 3] + "..."
+            label.update(f"Send shares file with Cloud.\nFile: {short}{marker}")
+            label.tooltip = f"{name}{marker} - latest editor text, including unsaved changes"
+        else:
+            label.update("Send shares request only.\nFile context is OFF.")
+            label.tooltip = "No program, filename or run diagnostics will be sent."
 
     def welcome_text(self) -> str:
         if self.settings.api_key:
@@ -361,6 +384,7 @@ class MagicPanel(Vertical):
         self.query_one("#magic-context", Button).label = (
             "Context: ON" if self.include_context else "Context: OFF"
         )
+        self.refresh_context_label()
         self.status("Context changed; conversation cleared. Next Send uses this setting.")
 
     @on(Button.Pressed)
@@ -415,6 +439,7 @@ class MagicPanel(Vertical):
             self.status("Check the API key/model in Settings.")
             self.query_one("#magic-answer", TextArea).load_text(str(error))
             return
+        self.refresh_context_label()
         self.context = self.get_context()
         self.applied = False
         prompt = self.query_one("#magic-prompt", Input).value.strip() or DEFAULT_REQUESTS[self.mode]

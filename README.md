@@ -110,7 +110,8 @@ offers **Replace key** when needed. The **Get an Ollama API key** link opens the
 [official setup guide](https://docs.ollama.com/cloud). If a native vault is unavailable,
 Magic explicitly reports session-only storage. `OLLAMA_API_KEY` and `OLLAMA_MODEL` can
 also configure it and override stored values. **Send** shares your request and included program/output
-with Ollama Cloud; **Context: OFF** leaves out the program and diagnostics. Ordinary BASIC
+with Ollama Cloud. Magic defaults to the open file, including unsaved edits, and shows its
+name in the sidebar. **Context: OFF** leaves out the file details, program and diagnostics. Ordinary BASIC
 work remains offline. See the [setup, examples and limits](docs/CODE_MAGIC.md).
 
 ## Install in another checkout

@@ -279,6 +279,8 @@ class GhostBasicApp(App[None]):
         name = self.filename or "Untitled.bas"
         marker = " *" if self.dirty else ""
         self.query_one("#editor", TextArea).border_title = Text(f" {name}{marker} ")
+        if self.magic_panel.is_mounted:
+            self.magic_panel.refresh_context_label()
 
     def status(self, message: str) -> None:
         self.status_text = message
@@ -507,7 +509,9 @@ class GhostBasicApp(App[None]):
     def magic_context(self) -> AIContext:
         source = self.query_one("#editor", TextArea).text
         diagnostics = self.output_text if self.last_run_source == source else ""
-        return AIContext(source, diagnostics)
+        return AIContext(
+            source, diagnostics, Path(self.filename or "Untitled.bas").name, self.dirty
+        )
 
     def action_magic(self) -> None:
         if self.magic_panel.display:
