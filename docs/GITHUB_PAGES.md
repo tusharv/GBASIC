@@ -1,5 +1,9 @@
 # GitHub Pages landing page
 
+Live: [Ghost BASIC](https://tusharv.github.io/GBASIC/). Deployment
+[40506709301](https://github.com/tusharv/GBASIC/actions/runs/40506709301) succeeded on
+2026-10-27. The page, CSS, JavaScript and splash PNG all returned HTTP 200.
+
 The static site is in `site/`. It includes real captures of Ghost BASIC's editor,
 examples picker, keyword help and startup splash, with tabbed screenshots, BASIC examples,
 platform-specific installation and copy controls. It uses no framework, build service,

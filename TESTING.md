@@ -169,3 +169,6 @@ Browser QA: desktop 1280px and mobile 390px layouts, no horizontal page overflow
 images, screenshot/Splash tabs, keyboard switching, installation platform tabs and successful
 clipboard copy. The browser reported no JavaScript errors. GitHub Pages enablement requires
 repository administration; publishing status is tracked separately from these local checks.
+
+Public deployment: Pages run 40506709301 succeeded; the landing page, CSS, JavaScript and
+splash screenshot returned HTTP 200 at https://tusharv.github.io/GBASIC/.

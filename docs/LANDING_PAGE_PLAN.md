@@ -20,7 +20,7 @@ keyboard navigation, visible focus, useful without JavaScript, reduced-motion su
 - [x] Build a dependency-free static site in site/ with relative links for /GBASIC/ hosting.
 - [x] Add the official GitHub Actions Pages deployment workflow, restricted to site artifacts.
 - [x] Check links/assets, JS interactions, mobile/desktop layout and accessibility basics.
-- [ ] Verify the whole project, inspect GitHub permissions, and publish if authorized access
+- [x] Verify the whole project, inspect GitHub permissions, and publish if authorized access
       permits; otherwise deliver reviewable files and state the exact external blocker.
 
 No claims of full legacy compatibility, unimplemented graphics, a browser interpreter,

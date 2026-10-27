@@ -26,6 +26,7 @@ below shows one frame of the startup animation.
 
 </details>
 
+Visit the [Ghost BASIC website](https://tusharv.github.io/GBASIC/).
 The [landing page source](site/index.html) and [GitHub Pages deployment guide](docs/GITHUB_PAGES.md)
 are included in this repository.
 
