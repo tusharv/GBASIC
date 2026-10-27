@@ -31,15 +31,14 @@ are included in this repository.
 
 ## Launch the terminal UI
 
-On this machine, launch from the project folder with:
+After installation and activating the environment, launch from the project folder with:
 
 ```sh
 GBASIC
 ```
 
-The package installs both `GBASIC` and `ghost-basic` commands. A launcher in the user
-command directory makes `GBASIC` available here without activating the environment.
-For a fresh checkout, activate its environment first, or use `.venv/bin/GBASIC`.
+The package installs both `GBASIC` and `ghost-basic` commands. You can also launch directly
+with `.venv/bin/GBASIC` (Windows: `.venv\Scripts\GBASIC.exe`).
 
 A startup splash displays **Ghost BASIC** with a flying ASCII ghost for about 5 seconds.
 Press any key or click to go straight to the editor. Use `GBASIC --no-splash` to skip the

@@ -15,11 +15,11 @@ example programs and their expected output; cross-platform installation with cop
 compatibility boundaries; documentation/GitHub links and MIT footer. Responsive to 360px,
 keyboard navigation, visible focus, useful without JavaScript, reduced-motion support.
 
-- [ ] Capture editor, examples and keyword-help screens from the running app; verify images.
-- [ ] Embed screenshots in README and add proper public installation instructions.
-- [ ] Build a dependency-free static site in site/ with relative links for /GBASIC/ hosting.
-- [ ] Add the official GitHub Actions Pages deployment workflow, restricted to site artifacts.
-- [ ] Check links/assets, JS interactions, mobile/desktop layout and accessibility basics.
+- [x] Capture editor, examples and keyword-help screens from the running app; verify images.
+- [x] Embed screenshots in README and add proper public installation instructions.
+- [x] Build a dependency-free static site in site/ with relative links for /GBASIC/ hosting.
+- [x] Add the official GitHub Actions Pages deployment workflow, restricted to site artifacts.
+- [x] Check links/assets, JS interactions, mobile/desktop layout and accessibility basics.
 - [ ] Verify the whole project, inspect GitHub permissions, and publish if authorized access
       permits; otherwise deliver reviewable files and state the exact external blocker.
 

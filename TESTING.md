@@ -156,3 +156,16 @@ lookup and UI help are smoke-tested outside the checkout. Remote Windows/Linux C
 unexecuted in this session. Neither keyword pages nor reference examples imply full legacy
 compatibility. A test initially used an unsupported Textual Ctrl+End binding; corrected it
 to the documented PageDown navigation and verified real scrolling.
+
+## README screenshots and landing page — 2026-10-27
+
+**344 tests pass.** New checks cover site links/fragments, image descriptions and dimensions,
+README screenshot references including Splash, honest installation/compatibility copy,
+static-only Pages upload configuration and runnable BASIC snippets. JavaScript syntax is
+checked with Node. Four actual Textual captures were visually inspected after rendering to
+PNG. Screenshot generation is optional and does not affect BASIC runtime dependencies.
+
+Browser QA: desktop 1280px and mobile 390px layouts, no horizontal page overflow or broken
+images, screenshot/Splash tabs, keyboard switching, installation platform tabs and successful
+clipboard copy. The browser reported no JavaScript errors. GitHub Pages enablement requires
+repository administration; publishing status is tracked separately from these local checks.

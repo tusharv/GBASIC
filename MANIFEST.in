@@ -10,3 +10,7 @@ recursive-include tests *.py
 include .github/workflows/ci.yml
 
 recursive-include tools *.py
+
+recursive-include site *.html *.css *.js *.svg *.png
+include site/.nojekyll
+include .github/workflows/pages.yml

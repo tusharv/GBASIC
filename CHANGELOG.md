@@ -66,3 +66,11 @@
 - Confined text LOAD/SAVE, source diagnostics and inspectable execution state.
 - Runnable example gallery, automated regression suite, strict typing/linting and CI configuration.
 - Compatibility gaps and complete eight-phase continuation roadmap documented.
+
+## Website and README updates — 2026-10-27
+
+- Add real editor, examples, keyword-help and splash screenshots to the README.
+- Add a responsive static GitHub Pages landing page with screenshot tabs, examples,
+  install instructions, copy controls and explicit compatibility limits.
+- Add a Pages deployment workflow, local preview/deployment guide and reproducible
+  screenshot capture tool with an optional CairoSVG extra.
