@@ -50,6 +50,6 @@ Name? Hello Ada
 - Open lists examples; choose a file, Enter to select, Enter again to open. Unsaved edits show *.
 - Startup animation lasts 5 seconds; a key/click or --no-splash skips it.
 - Syntax notation: [...] is optional, {...|...} means choose an alternative, and ... means repeat. Do not type notation brackets/braces unless a code example shows them literally.
-- Magic: Send shares the request and optional program/output with Ollama Cloud. Keys stay in the session; OLLAMA_API_KEY and OLLAMA_MODEL can configure it. Review Changes before Apply, Ctrl+Z to undo, F5 to test, F2 to save.
+- Magic: Send shares the request and optional program/output with Ollama Cloud. Keys are remembered in the OS credential vault; Settings > Save & check verifies access. OLLAMA_API_KEY and OLLAMA_MODEL can configure it. Review Changes before Apply, Ctrl+Z to undo, F5 to test, F2 to save.
 
 [Back to keyword index](INDEX.md)

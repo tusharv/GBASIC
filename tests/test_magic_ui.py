@@ -16,6 +16,10 @@ class FakeAgent:
         self.started = asyncio.Event()
         self.cancelled = asyncio.Event()
         self.wait = False
+        self.checks = 0
+
+    async def check_key(self, settings):
+        self.checks += 1
 
     async def ask(self, settings, context, mode, prompt, history=(), progress=None):
         self.calls.append((settings, context, mode, prompt, list(history)))
@@ -36,6 +40,10 @@ async def configure(pilot, app):
     rendered = "\n".join(strip.text for strip in app.screen._compositor.render_strips())
     assert "secret-test-key" not in rendered
     await pilot.click("#magic-settings-save")
+    for _ in range(100):
+        await pilot.pause(0.02)
+        if not app.magic_panel.busy:
+            break
 
 
 async def send(pilot, app):
@@ -229,7 +237,7 @@ async def test_real_agent_http_contract_through_ui(tmp_path):
         await pilot.click("#magic-write")
         app.magic_panel.query_one("#magic-prompt", Input).value = "Print five"
         await send(pilot, app)
-        assert len(requests) == 1
+        assert len(requests) == 2  # one key check, then the program request
         await pilot.click("#magic-diff")
         await pilot.click("#magic-apply")
         assert app.query_one("#editor", TextArea).text == "10 PRINT 5\n"
@@ -317,3 +325,78 @@ async def test_can_edit_while_magic_thinks_then_reject_stale_apply(tmp_path):
         await pilot.pause()
         assert agent.cancelled.is_set()
         assert not app.magic_panel.display
+
+
+@pytest.mark.asyncio
+async def test_saved_key_is_reused_across_app_restarts_without_prompt(tmp_path):
+    first = GhostBasicApp(root=tmp_path, magic_agent=FakeAgent())
+    async with first.run_test() as pilot:
+        await pilot.press("f8")
+        await configure(pilot, first)
+        assert first.ai_settings.key_status == "Valid"
+        assert first.ai_settings.storage == "Saved securely"
+    agent = FakeAgent()
+    second = GhostBasicApp(root=tmp_path, magic_agent=agent)
+    async with second.run_test(size=(80, 24)) as pilot:
+        await pilot.press("f8")
+        await pilot.pause()
+        assert second.ai_settings.api_key == "secret-test-key"
+        assert second.ai_settings.key_status == "Valid"
+        assert agent.checks == 1
+        assert (
+            "Use Settings for your Ollama key"
+            not in second.magic_panel.query_one("#magic-answer", TextArea).text
+        )
+        await pilot.press("f8", "f8")
+        assert agent.checks == 1
+        await pilot.click("#magic-settings")
+        assert not second.screen.query_one("#magic-key", Input).display
+        assert second.screen.query_one("#magic-key", Input).value == ""
+        assert second.screen.query_one("#magic-replace-key", Button).display
+        assert second.screen.query_one("#magic-settings-save").region.bottom <= 24
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "status,expected",
+    [(401, "Invalid"), (403, "Access denied"), (429, "Not checked"), (503, "Not checked")],
+)
+async def test_key_status_distinguishes_authentication_from_service_failures(
+    tmp_path, status, expected
+):
+    import httpx
+
+    from ghost_basic.ai import MagicAgent, OllamaCloudClient
+
+    app = GhostBasicApp(
+        root=tmp_path,
+        magic_agent=MagicAgent(
+            OllamaCloudClient(transport=httpx.MockTransport(lambda r: httpx.Response(status)))
+        ),
+    )
+    async with app.run_test() as pilot:
+        await pilot.press("f8")
+        await configure(pilot, app)
+        assert app.ai_settings.key_status == expected
+        assert app.magic_panel.query_one("#magic-close").region.bottom <= 24
+
+
+@pytest.mark.asyncio
+async def test_get_key_links_and_replace_saved_key(tmp_path):
+    from textual.widgets import Link
+
+    app = GhostBasicApp(root=tmp_path, magic_agent=FakeAgent())
+    async with app.run_test() as pilot:
+        await pilot.press("f8")
+        assert (
+            app.magic_panel.query_one("#magic-get-key", Link).url == "https://docs.ollama.com/cloud"
+        )
+        await configure(pilot, app)
+        await pilot.click("#magic-settings")
+        assert app.screen.query_one("#magic-key-guide", Link).url == "https://docs.ollama.com/cloud"
+        await pilot.click("#magic-replace-key")
+        app.screen.query_one("#magic-key", Input).value = "replacement-key"
+        await pilot.click("#magic-settings-save")
+        await pilot.pause()
+        assert app.ai_settings.api_key == "replacement-key"
+        assert app.credential_store.load().api_key == "replacement-key"

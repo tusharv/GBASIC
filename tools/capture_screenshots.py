@@ -21,6 +21,9 @@ async def capture(destination: Path, font: str) -> None:
     root = Path(__file__).resolve().parents[1]
     destination.mkdir(parents=True, exist_ok=True)
     os.environ.pop("NO_COLOR", None)
+    # Documentation capture must not read user credentials or trigger Cloud checks.
+    os.environ.pop("OLLAMA_API_KEY", None)
+    os.environ["PYTHON_KEYRING_BACKEND"] = "keyring.backends.null.Keyring"
 
     def save(app: GhostBasicApp, name: str) -> None:
         svg = app.export_screenshot(title="Ghost BASIC", simplify=True)

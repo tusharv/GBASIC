@@ -18,7 +18,7 @@ def main() -> int:
     parser.add_argument(
         "--help-keyword", metavar="KEYWORD", help="print the offline reference page for a keyword"
     )
-    parser.add_argument("--version", action="version", version="Ghost BASIC 0.4.0")
+    parser.add_argument("--version", action="version", version="Ghost BASIC 0.4.1")
     parser.add_argument("--no-splash", action="store_true", help="skip the startup ghost animation")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--ide", action="store_true", help="open the ASCII terminal editor")
@@ -60,7 +60,7 @@ def main() -> int:
             print("Break", file=sys.stderr)
             return 130
         return 0
-    print("Ghost BASIC 0.4.0\nType HELP for commands. SYSTEM exits.")
+    print("Ghost BASIC 0.4.1\nType HELP for commands. SYSTEM exits.")
     while True:
         try:
             if not shell.submit(input("Ok\n")):

@@ -261,3 +261,17 @@ def test_settings_from_environment(monkeypatch):
     settings = AISettings.from_env()
     assert settings.api_key == "test-key"
     assert settings.model == "gpt-oss:20b"
+
+
+@pytest.mark.asyncio
+async def test_explicit_key_check_sends_no_program_or_history():
+    calls = []
+
+    def handle(request):
+        calls.append(json.loads(request.content))
+        return response("OK")
+
+    agent = MagicAgent(OllamaCloudClient(transport=httpx.MockTransport(handle)))
+    await agent.check_key(AISettings(api_key="test-key"))
+    assert calls[0]["messages"] == [{"role": "user", "content": "Reply with OK."}]
+    assert "test-key" not in json.dumps(calls)

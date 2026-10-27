@@ -46,10 +46,20 @@ class AIError(Exception):
     """A user-readable error with no server body or credential attached."""
 
 
+class AIAuthenticationError(AIError):
+    """The provider explicitly rejected the credential (HTTP 401)."""
+
+
+class AIAccessError(AIError):
+    """The account is denied access; this does not prove an invalid key."""
+
+
 @dataclass
 class AISettings:
     api_key: str = field(default="", repr=False)
     model: str = DEFAULT_MODEL
+    key_status: str = "Not checked"
+    storage: str = "Session only"
 
     @classmethod
     def from_env(cls) -> "AISettings":
@@ -110,9 +120,11 @@ class OllamaCloudClient:
                     json={"model": settings.model, "messages": messages, "stream": False},
                 ) as response:
                     status = response.status_code
-                    if status in (401, 403):
-                        raise AIError(
-                            "API key rejected or Cloud access denied. Check your Ollama key and account access."
+                    if status == 401:
+                        raise AIAuthenticationError("Invalid API key. Replace it in Settings.")
+                    if status == 403:
+                        raise AIAccessError(
+                            "Cloud access denied. Check your Ollama account access."
                         )
                     if status == 404:
                         raise AIError(
@@ -221,6 +233,14 @@ class MagicAgent:
 
     def __init__(self, client: OllamaCloudClient | None = None) -> None:
         self.client = client or OllamaCloudClient()
+
+    async def check_key(self, settings: AISettings) -> None:
+        """Explicit small Cloud request; no editor source or chat history is sent."""
+        try:
+            async with asyncio.timeout(20):
+                await self.client.chat(settings, [{"role": "user", "content": "Reply with OK."}])
+        except TimeoutError:
+            raise AIError("Key check timed out. Try again when connected.") from None
 
     async def ask(
         self,

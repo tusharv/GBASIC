@@ -30,3 +30,11 @@ AI preference. Use direct HTTPS with HTTPX async cancellation; retain the indepe
 interpreter. Session-only key entry/environment configuration avoids a new credential store.
 No filesystem/shell tools: source context, compile checking and a single repair attempt are
 enough for the requested companion. Every edit requires a reviewed diff and explicit Apply.
+
+## Remembered credentials (0.4.1)
+
+The user requested that added keys be remembered and their validity shown in place. This
+supersedes session-only storage: keyring accesses only native OS credential vaults, never
+plaintext fallback backends. Environment overrides remain supported. Key checks use a tiny
+Cloud chat request because the public model list does not authenticate the supplied key.
+No program source or history accompanies a key check.

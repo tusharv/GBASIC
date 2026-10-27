@@ -40,6 +40,7 @@ instructions, not a claim of separately approved design.
 | help_topics | Packaged catalog loading, aliases, search and plain/Markdown rendering |
 | keyword_help | Searchable ASCII F1 topic list and read-only page viewer |
 | splash | Skippable startup screen, ASCII frame rendering and owned animation timer |
+| credentials | Native OS vault persistence for Ollama key/model, with environment overrides |
 | ai | Opt-in async Ollama Cloud client, bounded syntax-check/repair agent |
 | magic | Left-side assistant, compact session settings, context, chat, diff review and apply result |
 | cli | Interactive UI by default on a TTY; explicit shell and batch modes |
@@ -158,9 +159,10 @@ not copied manual content or evidence that those features are implemented.
 
 F8 toggles a right-side MagicPanel beside the current code/output. Send snapshots the latest
 editor source and includes last-run diagnostics only if source matches. MagicPanel owns a cancellable Textual async worker; HTTPX closes requests on cancellation.
-Only Send calls the fixed HTTPS Cloud endpoint. AISettings is session state (key excluded
-from repr), optionally initialized from named environment variables. Model input is editable.
-No disk settings, environment enumeration, automatic inference or browser-side keys.
+Send and explicit key checks use the fixed HTTPS Cloud endpoint. A restored key is checked once when F8 first opens. AISettings keeps current key-check state (key excluded from repr), initialized from named
+environment variables or the OS credential vault. Model input is editable.
+No plaintext settings, environment enumeration or browser-side keys. Only recommended native
+keyring backends are accepted; unavailable vaults explicitly fall back to session memory.
 
 MagicAgent supplies the supported dialect and bounded chat/context, parses a single complete
 BASIC block, and uses Runtime.prepare without executing instructions. Duplicate, unsorted,
@@ -170,4 +172,6 @@ empty or oversized numbered lines are rejected. One correction call is allowed; 
 MagicPanel displays plain text/code/diff and enables Apply only after Changes is viewed
 and syntax validation succeeds. GhostBasicApp checks the original snapshot again and applies
 one undoable TextArea edit, preserving filename and saved_source. Saving/running stays explicit.
+Key checks send a fixed small prompt without editor context. HTTP 401 invalidates the key;
+403 indicates denied access; connectivity/quota/model failures leave validity unverified.
 See docs/CODE_MAGIC.md for credentials, data flow, bounds and live-test limitations.

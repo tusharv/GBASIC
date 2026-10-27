@@ -11,7 +11,7 @@ own Ollama Cloud account and API key; no local Ollama installation or model down
 1. Create an API key at [Ollama settings](https://ollama.com/settings/keys).
 2. Launch `GBASIC`, press **F8**, open **Settings**, and enter the key in the masked **API key** field.
 3. Keep `gemma4:31b`, or enter another available name from
-   [Ollama Cloud models](https://ollama.com/search?c=cloud), then choose **Use settings**.
+   [Ollama Cloud models](https://ollama.com/search?c=cloud), then choose **Save & check**. The small Cloud check sends no program code.
 4. Choose **Debug**, **Explain**, **Write**, or **Suggest**. Type a request, then **Send**.
    A blank request uses the selected action's example instruction.
 5. Read **Answer**, inspect **Code**, and open **Changes** to review the full diff.
@@ -19,10 +19,28 @@ own Ollama Cloud account and API key; no local Ollama installation or model down
 6. Applying writes directly into the current editor on the left and keeps Magic open. The change is unsaved. **Ctrl+Z** undoes it, **F5** runs it,
    and **F2** saves it when you are ready.
 
-The key and model are retained only for the current app session after Use settings. Closing the
-app forgets values entered in Settings. You can also supply `OLLAMA_API_KEY` and optional
-`OLLAMA_MODEL` in the environment before launching; Ghost BASIC does not read `.env` files.
-Avoid putting actual credentials in source files, screenshots or shell history.
+The key and model are remembered in the operating system's credential vault: macOS
+Keychain, Windows Credential Locker, or a supported Linux Secret Service/KWallet backend.
+They are loaded automatically on future launches. Settings hides the existing key and
+provides **Replace key**; leaving a replacement blank keeps the current key. No plaintext
+credential file is created. If the vault is unavailable or locked, Magic reports **Session
+only (vault unavailable)** and keeps the key for the current session.
+
+The sidebar's **Key** line reports **Not added**, **Checking...**, **Valid**, **Invalid**,
+**Access denied**, or **Not checked**. Save & check and the sidebar **Check** button send a
+small request ("Reply with OK.") using your selected model, without source or conversation
+history. A restored key is checked once on the first F8 opening of each app session;
+reopening the panel does not keep checking it. A successful code request also marks the key
+valid. Only HTTP 401 marks it invalid; HTTP 403 is access denied, and connectivity, model,
+quota and service errors do not prove an invalid key. These small checks may count toward
+Ollama usage. Their result is not persisted as a guarantee that a key will remain valid.
+
+Use **Get an Ollama API key** in the sidebar or **How to get an Ollama API key** in Settings
+to open the [official guide](https://docs.ollama.com/cloud). Settings also links directly to
+[Create a key](https://ollama.com/settings/keys).
+
+`OLLAMA_API_KEY` and optional `OLLAMA_MODEL` override saved values. Ghost BASIC does not read
+`.env` files. Avoid putting actual credentials in source files, screenshots or shell history.
 
 For a hidden prompt in Bash/Zsh (activate your virtual environment first):
 
@@ -51,7 +69,7 @@ context off does not silently send an earlier program through chat history.
 
 ## What is sent and what the agent can do
 
-Only an explicit **Send** contacts `https://ollama.com/api/chat`. **Context: ON** includes
+Code requests use explicit **Send** to contact `https://ollama.com/api/chat`. **Context: ON** includes
 this editor's source and the last 6,000 characters of output/error from a matching last
 run, plus the request, recent panel history and Ghost BASIC's language constraints.
 It does not browse other files or read your environment. **Context: OFF** excludes the
@@ -68,8 +86,8 @@ are made for authentication, connectivity or quota errors.
 The assistant has no shell, filesystem, package installation or program execution tools.
 It cannot save or run suggested code. The review compares the full replacement against
 the editor snapshot, and refuses to overwrite a buffer changed since Send captured the source.
-Network calls use TLS and do not follow redirects. Keys and chat history are not written
-to disk by Ghost BASIC; process environment/session memory is not an OS credential vault.
+Network calls use TLS and do not follow redirects. Keys are stored only through a native OS credential vault; chat history stays in memory.
+Environment-supplied keys are not automatically copied to the vault unless you save Settings.
 
 ## Limits and troubleshooting
 

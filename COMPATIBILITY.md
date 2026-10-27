@@ -1,4 +1,4 @@
-# Compatibility report — 0.4.0
+# Compatibility report — 0.4.1
 
 Target: GW-BASIC-style numbered source and immediate mode; QBasic is a planned extension.
 No complete GW-BASIC, BASICA, PCjr, Tandy or QBasic compatibility is claimed. Tests assert
@@ -27,7 +27,7 @@ local behavior, not differential equivalence to an original interpreter.
 | Startup splash | Implemented | Animated ASCII ghost, automatic timeout, any-key/click skip, --no-splash; 80x24/120x40 and resize tests |
 | Offline keyword help | Implemented | 175 topics; contextual/searchable F1, HELP keyword, --help-keyword and Markdown pages; planned topics explicitly reference-only |
 | ASCII terminal UI | Implemented editor subset | Open with examples dropdown/save/new, unsaved and overwrite prompts, Run/Stop, INPUT and immediate commands; headless 80x24/120x40 plus manual TTY launch |
-| Code Magic | Optional Cloud assistant | F8; Ollama API key, model selection, context toggle, syntax-check/repair, diff review, undo; tested with simulated HTTP, live inference requires a user key |
+| Code Magic | Optional Cloud assistant | F8; remembered key/model, validity check, context toggle, syntax-check/repair, diff review, undo; tested with simulated HTTP, live inference requires a user key |
 | Step API | Implemented | prepare/step, pc, instruction source line, variables; no breakpoint UI |
 | CLS / BEEP | Terminal only | ANSI clear / ASCII bell; no virtual screen, backend tests or audio hardware claim |
 

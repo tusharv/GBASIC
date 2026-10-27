@@ -10,9 +10,20 @@ from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal, Vertical
 from textual.screen import ModalScreen
-from textual.widgets import Button, Input, Static, TextArea
+from textual.widgets import Button, Input, Link, Static, TextArea
 
-from .ai import AIContext, AIError, AIReply, AISettings, MagicAgent, redact, validate_proposal
+from .ai import (
+    AIAccessError,
+    AIAuthenticationError,
+    AIContext,
+    AIError,
+    AIReply,
+    AISettings,
+    MagicAgent,
+    redact,
+    validate_proposal,
+)
+from .credentials import CredentialStore
 
 DEFAULT_REQUESTS = {
     "Debug": "Find the cause of the error or bug. Explain it and propose a corrected program.",
@@ -43,6 +54,8 @@ class MagicSettingsScreen(ModalScreen[AISettings | None]):
         border: ascii #55ffff; padding: 1 2; background: #000080; }
     #magic-settings-dialog Input { border: ascii #aaaaaa; background: #000020; color: white; }
     #magic-settings-error { height: auto; color: #ffff55; }
+    #magic-replace-key { height: 1; border: none; }
+    #magic-settings-dialog Link { height: 1; }
     #magic-settings-buttons { height: 3; }
     #magic-settings-buttons Button { border: ascii #aaaaaa; width: 1fr; min-width: 10; }
     """
@@ -53,10 +66,23 @@ class MagicSettingsScreen(ModalScreen[AISettings | None]):
 
     def compose(self) -> ComposeResult:
         with Vertical(id="magic-settings-dialog"):
-            yield Static("Ollama Cloud / session settings", classes="dialog-title")
-            yield Static("Get a key: https://ollama.com/settings/keys", markup=False)
+            yield Static("Ollama Cloud / settings", classes="dialog-title")
+            yield Link(
+                "How to get an Ollama API key",
+                url="https://docs.ollama.com/cloud",
+                id="magic-key-guide",
+            )
+            yield Link(
+                "Create a key at ollama.com/settings/keys", url="https://ollama.com/settings/keys"
+            )
+            yield Static(
+                "Key: " + (self.settings.key_status if self.settings.api_key else "Not added"),
+                id="magic-settings-key-status",
+                markup=False,
+            )
+            yield Button("Replace key", id="magic-replace-key", compact=True)
             yield SecretInput(
-                self.settings.api_key,
+                "",
                 password=True,
                 placeholder="API key",
                 id="magic-key",
@@ -65,21 +91,33 @@ class MagicSettingsScreen(ModalScreen[AISettings | None]):
             yield Input(
                 self.settings.model, placeholder="Cloud model", id="magic-model", max_length=128
             )
-            yield Static("Kept in this app session only. No request is sent here.", markup=False)
+            yield Static(
+                "Save remembers the key in your OS credential store and checks Cloud access. The check sends no program code.",
+                markup=False,
+            )
             yield Static("", id="magic-settings-error", markup=False)
             with Horizontal(id="magic-settings-buttons"):
-                yield Button("Use settings", id="magic-settings-save")
+                yield Button("Save & check", id="magic-settings-save")
                 yield Button("Cancel", id="magic-settings-cancel")
 
     def on_mount(self) -> None:
         self.query_one("#magic-key", Input).border_title = " API key "
         self.query_one("#magic-model", Input).border_title = " Cloud model "
-        self.query_one("#magic-key", Input).focus()
+        self.query_one("#magic-key", Input).display = not bool(self.settings.api_key)
+        self.query_one("#magic-replace-key", Button).display = bool(self.settings.api_key)
+        self.query_one("#magic-model" if self.settings.api_key else "#magic-key", Input).focus()
+
+    @on(Button.Pressed, "#magic-replace-key")
+    def replace_key(self) -> None:
+        field = self.query_one("#magic-key", Input)
+        field.display = True
+        field.placeholder = "New API key (blank keeps existing)"
+        field.focus()
 
     @on(Button.Pressed, "#magic-settings-save")
     def save_settings(self) -> None:
         settings = AISettings(
-            self.query_one("#magic-key", Input).value.strip(),
+            self.query_one("#magic-key", Input).value.strip() or self.settings.api_key,
             self.query_one("#magic-model", Input).value.strip(),
         )
         try:
@@ -113,6 +151,9 @@ class MagicPanel(Vertical):
     MagicPanel { display: none; width: 42%; min-width: 34; max-width: 52;
         height: 1fr; border: ascii #55ffff; background: #000080; padding: 0 1; }
     #magic-title { height: 1; color: #ffff55; text-style: bold; }
+    #magic-key-row { height: 1; }
+    #magic-key-status { width: 1fr; height: 1; }
+    #magic-get-key { height: 1; color: #55ffff; }
     #magic-privacy { height: 2; color: #bbbbbb; }
     #magic-prompt { height: 3; border: ascii #aaaaaa; background: #000020; color: white; }
     .magic-bar { height: 1; }
@@ -132,11 +173,14 @@ class MagicPanel(Vertical):
         settings: AISettings,
         agent: MagicAgent,
         *,
+        credential_store: CredentialStore,
         get_context: Callable[[], AIContext],
         apply_edit: Callable[[MagicEdit], bool],
         close_panel: Callable[[], None],
     ) -> None:
         super().__init__(id="magic-panel")
+        self.credential_store = credential_store
+        self.initial_check_done = False
         self.context = AIContext("")
         self.settings = settings
         self.agent = agent
@@ -150,7 +194,9 @@ class MagicPanel(Vertical):
         self.reviewed = False
         self.applied = False
         self.history: list[dict[str, str]] = []
-        self.status_text = "Ready | Settings for API key."
+        self.status_text = (
+            "Ready | Choose an action." if settings.api_key else "Ready | Settings for API key."
+        )
         self.request_id = 0
 
     def compose(self) -> ComposeResult:
@@ -158,6 +204,10 @@ class MagicPanel(Vertical):
         yield Static(
             "Send shares request + context\nwith Ollama Cloud.", id="magic-privacy", markup=False
         )
+        with Horizontal(classes="magic-bar", id="magic-key-row"):
+            yield Static("", id="magic-key-status", markup=False)
+            yield Button("Check", id="magic-check-key", compact=True)
+        yield Link("Get an Ollama API key", url="https://docs.ollama.com/cloud", id="magic-get-key")
         with Horizontal(classes="magic-bar", id="magic-options"):
             yield Button("Settings", id="magic-settings", compact=True)
             yield Button("Context: ON", id="magic-context", compact=True)
@@ -175,7 +225,11 @@ class MagicPanel(Vertical):
             yield Button("Code", id="magic-code", compact=True, disabled=True)
             yield Button("Changes", id="magic-diff", compact=True, disabled=True)
         yield TextArea(
-            WELCOME, id="magic-answer", read_only=True, soft_wrap=True, highlight_cursor_line=False
+            self.welcome_text(),
+            id="magic-answer",
+            read_only=True,
+            soft_wrap=True,
+            highlight_cursor_line=False,
         )
         yield Static(self.status_text, id="magic-status", markup=False)
         with Horizontal(classes="magic-bar", id="magic-bottom"):
@@ -185,6 +239,7 @@ class MagicPanel(Vertical):
             yield Button("Close", id="magic-close", compact=True)
 
     def on_mount(self) -> None:
+        self.refresh_key_status()
         self.query_one("#magic-prompt", Input).border_title = " Request "
         self.query_one("#magic-answer", TextArea).border_title = " Answer | PgDn/PgUp "
 
@@ -192,6 +247,65 @@ class MagicPanel(Vertical):
         self.display = True
         self.select_mode("Debug" if has_error else "Explain")
         self.query_one("#magic-prompt", Input).focus()
+        self.refresh_key_status()
+        if self.settings.api_key and not self.initial_check_done:
+            self.initial_check_done = True
+            if self.settings.key_status == "Not checked":
+                self.action_check_key()
+
+    def welcome_text(self) -> str:
+        if self.settings.api_key:
+            return WELCOME.replace(
+                "Use Settings for your Ollama key and model. Then Send.",
+                "Your key is loaded. Choose an action and Send.",
+            )
+        return WELCOME
+
+    def refresh_key_status(self) -> None:
+        state = self.settings.key_status if self.settings.api_key else "Not added"
+        color = "#55ff55" if state == "Valid" else "#ff5555" if state == "Invalid" else "#ffff55"
+        self.query_one("#magic-key-status", Static).update(Text(f"Key: {state}", style=color))
+
+    @on(Button.Pressed, "#magic-check-key")
+    def action_check_key(self) -> None:
+        if self.busy:
+            return
+        if not self.settings.api_key:
+            self.status("No API key yet. Use Settings or Get key.")
+            return
+        self.settings.key_status = "Checking..."
+        self.status("Checking key with Ollama Cloud...")
+        self.refresh_key_status()
+        self.request_id += 1
+        self.set_busy(True)
+        self.check_key(self.request_id)
+
+    @work(group="magic", exclusive=True)
+    async def check_key(self, request_id: int) -> None:
+        try:
+            await self.agent.check_key(AISettings(self.settings.api_key, self.settings.model))
+            if request_id == self.request_id:
+                self.settings.key_status = "Valid"
+                self.status("Key valid | " + self.settings.storage)
+        except AIError as error:
+            self.key_check_failed(error)
+            self.status(str(error))
+            self.query_one("#magic-answer", TextArea).load_text(str(error))
+        finally:
+            if self.is_mounted and request_id == self.request_id:
+                if self.settings.key_status == "Checking...":
+                    self.settings.key_status = "Not checked"
+                self.refresh_key_status()
+                self.set_busy(False)
+
+    def key_check_failed(self, error: AIError) -> None:
+        if isinstance(error, AIAuthenticationError):
+            self.settings.key_status = "Invalid"
+        elif isinstance(error, AIAccessError):
+            self.settings.key_status = "Access denied"
+        elif self.settings.key_status != "Valid":
+            self.settings.key_status = "Not checked"
+        self.refresh_key_status()
 
     @on(Button.Pressed, "#magic-settings")
     def open_settings(self) -> None:
@@ -199,9 +313,14 @@ class MagicPanel(Vertical):
 
     def settings_closed(self, settings: AISettings | None) -> None:
         if settings is not None:
+            if self.settings.api_key != settings.api_key:
+                self.settings.key_status = "Not checked"
             self.settings.api_key, self.settings.model = settings.api_key, settings.model
+            self.credential_store.save(self.settings)
             self.history.clear()
-            self.status("Settings ready. Choose an action and Send.")
+            self.query_one("#magic-answer", TextArea).load_text(self.welcome_text())
+            self.initial_check_done = True
+            self.action_check_key()
         self.query_one("#magic-prompt", Input).focus()
 
     def select_mode(self, mode: str) -> None:
@@ -218,6 +337,7 @@ class MagicPanel(Vertical):
         self.busy = busy
         for selector in (
             "#magic-send",
+            "#magic-check-key",
             "#magic-options Button",
             "#magic-prompt",
             "#magic-modes Button",
@@ -292,7 +412,7 @@ class MagicPanel(Vertical):
         try:
             settings.validate()
         except AIError as error:
-            self.status("Open Settings to add an API key/model.")
+            self.status("Check the API key/model in Settings.")
             self.query_one("#magic-answer", TextArea).load_text(str(error))
             return
         self.context = self.get_context()
@@ -324,6 +444,8 @@ class MagicPanel(Vertical):
             reply = await self.agent.ask(settings, context, mode, prompt, self.history, self.status)
             if request_id != self.request_id:
                 return
+            self.settings.key_status = "Valid"
+            self.refresh_key_status()
             self.reply = reply
             history_reply = reply.explanation + (
                 "\n```basic\n" + reply.proposal + "```" if reply.proposal else ""
@@ -351,6 +473,7 @@ class MagicPanel(Vertical):
             else:
                 self.status("Answer ready. Ask a follow-up or choose another action.")
         except AIError as error:
+            self.key_check_failed(error)
             self.status(str(error))
             self.query_one("#magic-answer", TextArea).load_text(str(error))
         finally:
@@ -361,6 +484,9 @@ class MagicPanel(Vertical):
     def cancel_request(self) -> None:
         self.request_id += 1
         self.workers.cancel_group(self, "magic")
+        if self.settings.key_status == "Checking...":
+            self.settings.key_status = "Not checked"
+        self.refresh_key_status()
         self.set_busy(False)
         self.status("Cancelled. Your program is unchanged.")
 
@@ -388,6 +514,9 @@ class MagicPanel(Vertical):
     def action_close(self) -> None:
         self.request_id += 1
         self.workers.cancel_group(self, "magic")
+        if self.settings.key_status == "Checking...":
+            self.settings.key_status = "Not checked"
+        self.refresh_key_status()
         self.history.clear()
         self.reply = None
         self.reviewed = False
@@ -395,7 +524,7 @@ class MagicPanel(Vertical):
         self.set_busy(False)
         self.query_one("#magic-code", Button).disabled = True
         self.query_one("#magic-diff", Button).disabled = True
-        self.query_one("#magic-answer", TextArea).load_text(WELCOME)
+        self.query_one("#magic-answer", TextArea).load_text(self.welcome_text())
         self.query_one("#magic-prompt", Input).value = ""
         self.display = False
         self.close_panel()

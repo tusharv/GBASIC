@@ -194,3 +194,16 @@ Version 0.4.0 source and wheel builds succeed. Credential/settings storage remai
 Windows CI fixture correction: website checks explicitly read UTF-8, and the CP437 batch
 reader test launches its subprocess in UTF-8 mode to match the parent output decoder.
 This isolates source decoding from the host console locale; it does not change runtime I/O.
+
+## Remembered Ollama keys and inline status — 2026-10-27
+
+The full 405-test suite passes, plus the added native-vault backend rejection regression.
+Key persistence is tested with an isolated in-memory vault across app instances; tests never
+read or write real user credentials. Native macOS Keychain backend availability was checked
+without accessing a saved secret. Live authenticated inference still requires a user key.
+
+Coverage includes saved-key reuse, no repeated setup text, hidden saved-key input, replacement,
+environment precedence, unavailable/corrupt vaults, rejection of plaintext backends, compact
+80x24 settings, key-check requests without source/history, and valid/invalid/access-denied/
+unverified states. HTTP 401 alone marks a provider-rejected key invalid; quota, server and
+connection errors do not. Official key-guide and creation links are present in the UI.

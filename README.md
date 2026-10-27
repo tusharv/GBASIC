@@ -90,7 +90,7 @@ and SYSTEM. Run clears variables and arrays; immediate statements preserve them.
 ## Code Magic — your BASIC companion
 
 Press **F8** or click **Magic** to open the right panel beside your code. In **Settings**, add your [Ollama API key](https://ollama.com/settings/keys)
-in the masked field, choose a Cloud model, and select **Use settings**. Then ask for help:
+in the masked field, choose a Cloud model, and select **Save & check**. Then ask for help:
 
 - **Debug** a runtime error and understand the fix.
 - **Explain** loops, variables and control flow.
@@ -103,8 +103,13 @@ A syntax check is not a guarantee of correct behavior.
 
 ![Code Magic setup in the ASCII terminal](site/assets/screenshots/magic.png)
 
-The key stays in the current session. You can also set `OLLAMA_API_KEY` and optionally
-`OLLAMA_MODEL` before launching. **Send** shares your request and included program/output
+Magic remembers your key and model in the native OS credential store (macOS Keychain,
+Windows Credential Locker, or a supported Linux vault). Its **Key** line shows the check
+result; use **Check** to retry. Saved keys do not need to be entered again, and Settings
+offers **Replace key** when needed. The **Get an Ollama API key** link opens the
+[official setup guide](https://docs.ollama.com/cloud). If a native vault is unavailable,
+Magic explicitly reports session-only storage. `OLLAMA_API_KEY` and `OLLAMA_MODEL` can
+also configure it and override stored values. **Send** shares your request and included program/output
 with Ollama Cloud; **Context: OFF** leaves out the program and diagnostics. Ordinary BASIC
 work remains offline. See the [setup, examples and limits](docs/CODE_MAGIC.md).
 

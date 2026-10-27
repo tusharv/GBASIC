@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1 — 2026-10-27
+
+- Remember Ollama key/model in the native OS credential vault; reuse them on later launches.
+- Show key validity in the sidebar, with explicit recheck and a hidden saved-key field.
+- Distinguish invalid credentials from access, connectivity, quota and model errors.
+- Add clickable official key instructions and the key-creation page.
+- Keep session-only operation when the vault is unavailable, with clear storage feedback.
+
 ## 0.4.0 — 2026-10-27
 
 - Add a right-side F8 Code Magic panel beside the current editor, with Ollama Cloud: Debug, Explain, Write and Suggest, with follow-up chat.

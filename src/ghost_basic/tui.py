@@ -12,7 +12,8 @@ from textual.containers import Horizontal, Vertical
 from textual.screen import ModalScreen
 from textual.widgets import Button, Input, Select, Static, TextArea
 
-from .ai import AIContext, AISettings, MagicAgent, validate_proposal
+from .ai import AIContext, MagicAgent, validate_proposal
+from .credentials import CredentialStore
 from .devices import Disk
 from .errors import BasicError
 from .execution import ProgramRunner
@@ -181,7 +182,8 @@ class GhostBasicApp(App[None]):
         super().__init__()
         self.show_splash = show_splash
         self.magic_agent = magic_agent or MagicAgent()
-        self.ai_settings = AISettings.from_env()
+        self.credential_store = CredentialStore()
+        self.ai_settings = self.credential_store.load()
         self.last_run_source: str | None = None
         self.disk = Disk(root or Path.cwd())
         self.filename = filename
@@ -226,6 +228,7 @@ class GhostBasicApp(App[None]):
             yield MagicPanel(
                 self.ai_settings,
                 self.magic_agent,
+                credential_store=self.credential_store,
                 get_context=self.magic_context,
                 apply_edit=self.magic_applied,
                 close_panel=self.magic_closed,
