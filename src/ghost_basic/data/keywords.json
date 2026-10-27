@@ -1,0 +1,4797 @@
+[
+  {
+    "keyword": "KEYBOARD",
+    "slug": "keyboard",
+    "category": "Getting started",
+    "status": "guide",
+    "summary": "Navigate the editor, open a program, run it and enter answers without leaving the terminal.",
+    "syntax": "F1 Help | F2 Save | F3 Open | F4 Save as | F5 Run | F6 Stop | F7 Input | F10 Quit",
+    "parameters": [
+      "Function keys: use Fn if your keyboard reserves them.",
+      "Ctrl+S Save; Ctrl+O Open; Ctrl+N New; Ctrl+Q Quit; Ctrl+C Stop.",
+      "Tab/Shift+Tab: move focus; Tab in the editor inserts indentation."
+    ],
+    "use_cases": [
+      "Find an example with F3 and run it with F5.",
+      "Answer INPUT prompts in the bottom command field."
+    ],
+    "examples": [
+      {
+        "source": "10 INPUT \"Name\";N$\n20 PRINT \"Hello \";N$",
+        "inputs": "Ada\n",
+        "output": "Name? Hello Ada\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Escape or F1 closes this help. In the topic list use arrows; in the page use PageDown/PageUp.",
+      "Open lists examples; choose a file, Enter to select, Enter again to open. Unsaved edits show *.",
+      "Startup animation lasts 5 seconds; a key/click or --no-splash skips it.",
+      "Syntax notation: [...] is optional, {...|...} means choose an alternative, and ... means repeat. Do not type notation brackets/braces unless a code example shows them literally."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "PRINT",
+    "slug": "print",
+    "category": "Input/output",
+    "status": "supported",
+    "summary": "Display text and numbers; control whether the next item stays on the same line.",
+    "syntax": "PRINT [expression [{;|,} expression] ...] [;|,]",
+    "parameters": [
+      "expression: string or numeric value.",
+      "Semicolon (;): no extra separator and suppresses the final newline when last.",
+      "Comma (,): advance to the next 14-character print zone.",
+      "No expressions: print a newline."
+    ],
+    "use_cases": [
+      "Display answers in calculators.",
+      "Build a row of stars inside a loop."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT \"Hello \";\"BASIC\"\n20 PRINT 2+3",
+        "inputs": "",
+        "output": "Hello BASIC\n 5 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Positive numbers include a leading and trailing space. Formatting is approximate.",
+      "PRINT USING, TAB, SPC and PRINT# are not implemented. Colon-separated IF branches keep their own PRINT statements."
+    ],
+    "aliases": [
+      "?"
+    ]
+  },
+  {
+    "keyword": "INPUT",
+    "slug": "input",
+    "category": "Input/output",
+    "status": "supported",
+    "summary": "Read one line of user input into one or more numeric or string variables.",
+    "syntax": "INPUT [\"prompt\";] variable [, variable ...]",
+    "parameters": [
+      "prompt: optional quoted text followed by a semicolon; ? is appended.",
+      "variable: a scalar or array element; use a $ suffix for strings.",
+      "Multiple targets require comma-separated fields in one answer."
+    ],
+    "use_cases": [
+      "Ask for principal, rate and time.",
+      "Collect a name and an age."
+    ],
+    "examples": [
+      {
+        "source": "10 INPUT \"Name\";N$\n20 INPUT \"Age\";A%\n30 PRINT N$;A%",
+        "inputs": "Ada\n30\n",
+        "output": "Name? Age? Ada 30 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Malformed input raises Redo from start and ends the run; automatic retry is not implemented.",
+      "Numeric fields must be plain numbers, without percent/currency symbols. In the UI use the bottom INPUT field."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LET",
+    "slug": "let",
+    "category": "Variables",
+    "status": "supported",
+    "summary": "Assign an evaluated expression to a variable or array element. LET itself is optional.",
+    "syntax": "[LET] variable = expression",
+    "parameters": [
+      "variable: name, optionally ending in %, !, # or $.",
+      "expression: must have a compatible numeric/string type."
+    ],
+    "use_cases": [
+      "Store an interest calculation.",
+      "Update a loop accumulator."
+    ],
+    "examples": [
+      {
+        "source": "10 LET TOTAL=5\n20 TOTAL=TOTAL+2\n30 PRINT TOTAL",
+        "inputs": "",
+        "output": " 7 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "% is signed 16-bit, ! and unsuffixed variables are single precision, # is double, $ is a string.",
+      "Assignment coerces explicitly; mixing string and numeric types raises Type mismatch."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "IF",
+    "slug": "if",
+    "category": "Control flow",
+    "status": "supported",
+    "summary": "Choose a branch based on a numeric condition.",
+    "syntax": "IF condition THEN statements [ELSE statements]",
+    "parameters": [
+      "condition: zero is false, any nonzero number is true.",
+      "then/else body: statements or a target line; ELSE is optional."
+    ],
+    "use_cases": [
+      "Validate input before computing.",
+      "Choose pass/fail or profit/loss output."
+    ],
+    "examples": [
+      {
+        "source": "10 SCORE=75\n20 IF SCORE>=60 THEN PRINT \"Pass\" ELSE PRINT \"Try again\"",
+        "inputs": "",
+        "output": "Pass\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Only single-line IF is implemented; multiline IF/ELSEIF/END IF is not.",
+      "Colons after THEN belong to that branch; nested ELSE binds to the closest unfinished IF."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "THEN",
+    "slug": "then",
+    "category": "Control flow",
+    "status": "supported",
+    "summary": "Introduce the branch executed when IF is true.",
+    "syntax": "IF condition THEN statements [ELSE statements]",
+    "parameters": [
+      "condition before THEN: numeric expression.",
+      "body after THEN: statements separated by colons, or a line number."
+    ],
+    "use_cases": [
+      "Validate input before computing.",
+      "Choose pass/fail or profit/loss output."
+    ],
+    "examples": [
+      {
+        "source": "10 SCORE=75\n20 IF SCORE>=60 THEN PRINT \"Pass\" ELSE PRINT \"Try again\"",
+        "inputs": "",
+        "output": "Pass\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Only single-line IF is implemented; multiline IF/ELSEIF/END IF is not.",
+      "Colons after THEN belong to that branch; nested ELSE binds to the closest unfinished IF."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "ELSE",
+    "slug": "else",
+    "category": "Control flow",
+    "status": "supported",
+    "summary": "Introduce the alternative branch of an inline IF.",
+    "syntax": "IF condition THEN statements [ELSE statements]",
+    "parameters": [
+      "body: statements or a target line, executed only when the IF condition is false."
+    ],
+    "use_cases": [
+      "Validate input before computing.",
+      "Choose pass/fail or profit/loss output."
+    ],
+    "examples": [
+      {
+        "source": "10 SCORE=75\n20 IF SCORE>=60 THEN PRINT \"Pass\" ELSE PRINT \"Try again\"",
+        "inputs": "",
+        "output": "Pass\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Only single-line IF is implemented; multiline IF/ELSEIF/END IF is not.",
+      "Colons after THEN belong to that branch; nested ELSE binds to the closest unfinished IF."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "FOR",
+    "slug": "for",
+    "category": "Loops",
+    "status": "supported",
+    "summary": "Repeat statements while a numeric counter moves from a start value to an end value.",
+    "syntax": "FOR counter = start TO end [STEP step]\n    statements\nNEXT [counter [, counter ...]]",
+    "parameters": [
+      "counter: numeric scalar, not a string or array element.",
+      "start/end: inclusive bounds, evaluated when FOR is entered.",
+      "step: optional nonzero increment, default 1."
+    ],
+    "use_cases": [
+      "Draw triangles with nested row/column loops.",
+      "Add or multiply a known number of values."
+    ],
+    "examples": [
+      {
+        "source": "10 FOR I=1 TO 3\n20 PRINT I;\n30 NEXT I",
+        "inputs": "",
+        "output": " 1  2  3 ",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "A positive-step loop with start>end is skipped; a negative-step loop with start<end is skipped.",
+      "NEXT must exist. Execution is bounded by --max-steps; zero STEP raises Illegal function call."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "TO",
+    "slug": "to",
+    "category": "Loops",
+    "status": "supported",
+    "summary": "Separate the starting and ending values of a FOR loop.",
+    "syntax": "FOR counter = start TO end [STEP step]\n    statements\nNEXT [counter [, counter ...]]",
+    "parameters": [
+      "end: inclusive limit. Direction is determined by STEP."
+    ],
+    "use_cases": [
+      "Draw triangles with nested row/column loops.",
+      "Add or multiply a known number of values."
+    ],
+    "examples": [
+      {
+        "source": "10 FOR I=1 TO 3\n20 PRINT I;\n30 NEXT I",
+        "inputs": "",
+        "output": " 1  2  3 ",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "A positive-step loop with start>end is skipped; a negative-step loop with start<end is skipped.",
+      "NEXT must exist. Execution is bounded by --max-steps; zero STEP raises Illegal function call."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "STEP",
+    "slug": "step",
+    "category": "Loops",
+    "status": "supported",
+    "summary": "Set the increment or decrement of a FOR loop.",
+    "syntax": "FOR counter = start TO end [STEP step]\n    statements\nNEXT [counter [, counter ...]]",
+    "parameters": [
+      "step: numeric value; use -1 to count down. Zero is rejected."
+    ],
+    "use_cases": [
+      "Draw triangles with nested row/column loops.",
+      "Add or multiply a known number of values."
+    ],
+    "examples": [
+      {
+        "source": "10 FOR I=3 TO 1 STEP -1\n20 PRINT I;\n30 NEXT I",
+        "inputs": "",
+        "output": " 3  2  1 ",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "A positive-step loop with start>end is skipped; a negative-step loop with start<end is skipped.",
+      "NEXT must exist. Execution is bounded by --max-steps; zero STEP raises Illegal function call."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "NEXT",
+    "slug": "next",
+    "category": "Loops",
+    "status": "supported",
+    "summary": "Increment a FOR counter and either repeat its body or finish the loop.",
+    "syntax": "FOR counter = start TO end [STEP step]\n    statements\nNEXT [counter [, counter ...]]",
+    "parameters": [
+      "counter: optional, but when present must match the current innermost FOR.",
+      "Multiple names: NEXT J,I closes nested loops in that order."
+    ],
+    "use_cases": [
+      "Draw triangles with nested row/column loops.",
+      "Add or multiply a known number of values."
+    ],
+    "examples": [
+      {
+        "source": "10 FOR I=1 TO 2\n20 FOR J=1 TO 2\n30 PRINT I*J;\n40 NEXT J,I",
+        "inputs": "",
+        "output": " 1  2  2  4 ",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "A positive-step loop with start>end is skipped; a negative-step loop with start<end is skipped.",
+      "NEXT must exist. Execution is bounded by --max-steps; zero STEP raises Illegal function call."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "WHILE",
+    "slug": "while",
+    "category": "Loops",
+    "status": "supported",
+    "summary": "Repeat a block while its condition is nonzero; test before each iteration.",
+    "syntax": "WHILE condition\n    statements\nWEND",
+    "parameters": [
+      "condition: numeric expression checked before the body."
+    ],
+    "use_cases": [
+      "Repeat until a counter reaches a limit.",
+      "Use loops with an unknown iteration count."
+    ],
+    "examples": [
+      {
+        "source": "10 N=0\n20 WHILE N<3\n30 N=N+1\n40 PRINT N;\n50 WEND",
+        "inputs": "",
+        "output": " 1  2  3 ",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "A false initial condition skips the body. Infinite loops hit the instruction budget or can be stopped with F6."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "WEND",
+    "slug": "wend",
+    "category": "Loops",
+    "status": "supported",
+    "summary": "Close a WHILE block and return to its condition.",
+    "syntax": "WHILE condition\n    statements\nWEND",
+    "parameters": [
+      "No arguments. A matching WHILE is required."
+    ],
+    "use_cases": [
+      "Repeat until a counter reaches a limit.",
+      "Use loops with an unknown iteration count."
+    ],
+    "examples": [
+      {
+        "source": "10 N=0\n20 WHILE N<3\n30 N=N+1\n40 PRINT N;\n50 WEND",
+        "inputs": "",
+        "output": " 1  2  3 ",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "A false initial condition skips the body. Infinite loops hit the instruction budget or can be stopped with F6."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "GOTO",
+    "slug": "goto",
+    "category": "Control flow",
+    "status": "supported",
+    "summary": "Jump directly to an existing numbered program line.",
+    "syntax": "GOTO line",
+    "parameters": [
+      "line: numeric expression yielding an integer line number that exists."
+    ],
+    "use_cases": [
+      "Repeat a simple menu.",
+      "Skip to a selected section of a numbered program."
+    ],
+    "examples": [
+      {
+        "source": "10 GOTO 30\n20 PRINT \"Skipped\"\n30 PRINT \"Arrived\"",
+        "inputs": "",
+        "output": "Arrived\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Undefined lines raise Undefined line number. GOTO does not save a return location."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "GOSUB",
+    "slug": "gosub",
+    "category": "Subroutines",
+    "status": "supported",
+    "summary": "Call a numbered subroutine and remember where to return.",
+    "syntax": "GOSUB line\n...\nline statements\nRETURN",
+    "parameters": [
+      "line: existing numbered entry point."
+    ],
+    "use_cases": [
+      "Reuse the row drawing routine in the diamond example.",
+      "Share a calculation without duplicating statements."
+    ],
+    "examples": [
+      {
+        "source": "10 GOSUB 100\n20 PRINT \"Back\"\n30 END\n100 PRINT \"Called\"\n110 RETURN",
+        "inputs": "",
+        "output": "Called\nBack\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Use END before the subroutine area to avoid falling into it. RETURN without GOSUB raises an error.",
+      "RETURN line and QBasic SUB/FUNCTION procedures are not implemented."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "RETURN",
+    "slug": "return",
+    "category": "Subroutines",
+    "status": "supported",
+    "summary": "Resume after the most recent GOSUB.",
+    "syntax": "GOSUB line\n...\nline statements\nRETURN",
+    "parameters": [
+      "No arguments in this implementation."
+    ],
+    "use_cases": [
+      "Reuse the row drawing routine in the diamond example.",
+      "Share a calculation without duplicating statements."
+    ],
+    "examples": [
+      {
+        "source": "10 GOSUB 100\n20 PRINT \"Back\"\n30 END\n100 PRINT \"Called\"\n110 RETURN",
+        "inputs": "",
+        "output": "Called\nBack\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Use END before the subroutine area to avoid falling into it. RETURN without GOSUB raises an error.",
+      "RETURN line and QBasic SUB/FUNCTION procedures are not implemented."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DIM",
+    "slug": "dim",
+    "category": "Arrays",
+    "status": "supported",
+    "summary": "Allocate zero-based arrays with inclusive upper bounds.",
+    "syntax": "DIM name(upper [, upper ...]) [, name(upper ...) ...]",
+    "parameters": [
+      "name: array variable, optionally with a type suffix.",
+      "upper: nonnegative upper index, not the element count. DIM A(4) has five cells."
+    ],
+    "use_cases": [
+      "Store marks for several students.",
+      "Store rows and columns of a small grid."
+    ],
+    "examples": [
+      {
+        "source": "10 DIM A(2)\n20 A(0)=10: A(2)=30\n30 PRINT A(0)+A(2)",
+        "inputs": "",
+        "output": " 40 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Indices are zero-based. Implicit arrays default to upper bound 10 in each dimension.",
+      "Cumulative array capacity is 100,000 cells. Duplicate DIM, bad rank and out-of-range subscripts raise errors.",
+      "OPTION BASE, REDIM, AS declarations and user-defined array types are not implemented."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DATA",
+    "slug": "data",
+    "category": "Data",
+    "status": "supported",
+    "summary": "Store literal values in the program for READ statements.",
+    "syntax": "DATA literal [, literal ...]",
+    "parameters": [
+      "items: numeric literals (optionally signed) or quoted strings separated by commas."
+    ],
+    "use_cases": [
+      "Load a fixed list of scores.",
+      "Replay a small table without keyboard input."
+    ],
+    "examples": [
+      {
+        "source": "10 DATA 5,6,\"Ada\"\n20 READ A,B,N$\n30 PRINT A+B;N$\n40 RESTORE\n50 READ X\n60 PRINT X",
+        "inputs": "",
+        "output": " 11 Ada\n 5 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Unquoted DATA strings and calculated DATA expressions are not supported. READ past the end raises Out of DATA.",
+      "DATA is collected before execution, even if the DATA line is skipped by control flow."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "READ",
+    "slug": "read",
+    "category": "Data",
+    "status": "supported",
+    "summary": "Assign the next DATA values to variables in sequence.",
+    "syntax": "READ target [, target ...]",
+    "parameters": [
+      "targets: scalar variables or array elements whose types match the DATA values."
+    ],
+    "use_cases": [
+      "Load a fixed list of scores.",
+      "Replay a small table without keyboard input."
+    ],
+    "examples": [
+      {
+        "source": "10 DATA 5,6,\"Ada\"\n20 READ A,B,N$\n30 PRINT A+B;N$\n40 RESTORE\n50 READ X\n60 PRINT X",
+        "inputs": "",
+        "output": " 11 Ada\n 5 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Unquoted DATA strings and calculated DATA expressions are not supported. READ past the end raises Out of DATA.",
+      "DATA is collected before execution, even if the DATA line is skipped by control flow."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "RESTORE",
+    "slug": "restore",
+    "category": "Data",
+    "status": "supported",
+    "summary": "Reset the DATA cursor to the start or to DATA at/after a specified line.",
+    "syntax": "RESTORE [line]",
+    "parameters": [
+      "line: optional existing program line. Without it, restart at the first DATA value."
+    ],
+    "use_cases": [
+      "Load a fixed list of scores.",
+      "Replay a small table without keyboard input."
+    ],
+    "examples": [
+      {
+        "source": "10 DATA 5,6,\"Ada\"\n20 READ A,B,N$\n30 PRINT A+B;N$\n40 RESTORE\n50 READ X\n60 PRINT X",
+        "inputs": "",
+        "output": " 11 Ada\n 5 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Unquoted DATA strings and calculated DATA expressions are not supported. READ past the end raises Out of DATA.",
+      "DATA is collected before execution, even if the DATA line is skipped by control flow."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "END",
+    "slug": "end",
+    "category": "Control flow",
+    "status": "supported",
+    "summary": "Stop execution normally.",
+    "syntax": "END",
+    "parameters": [
+      "No arguments."
+    ],
+    "use_cases": [
+      "Finish the main program before subroutine lines.",
+      "Stop after validation or a final result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT \"Done\"\n20 END\n30 PRINT \"Skipped\"",
+        "inputs": "",
+        "output": "Done\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "STOP and END both halt in Ghost BASIC. CONT and resumable STOP are not implemented."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "STOP",
+    "slug": "stop",
+    "category": "Control flow",
+    "status": "supported",
+    "summary": "Halt execution at this point.",
+    "syntax": "STOP",
+    "parameters": [
+      "No arguments."
+    ],
+    "use_cases": [
+      "Finish the main program before subroutine lines.",
+      "Stop after validation or a final result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT \"Done\"\n20 STOP\n30 PRINT \"Skipped\"",
+        "inputs": "",
+        "output": "Done\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "STOP and END both halt in Ghost BASIC. CONT and resumable STOP are not implemented."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "REM",
+    "slug": "rem",
+    "category": "Comments",
+    "status": "supported",
+    "summary": "Treat the rest of the physical line as a comment.",
+    "syntax": "REM comment text\n' comment text",
+    "parameters": [
+      "comment text: explanatory text that is not executed."
+    ],
+    "use_cases": [
+      "Explain a formula.",
+      "Leave a practice challenge next to a loop."
+    ],
+    "examples": [
+      {
+        "source": "10 REM Display a greeting\n20 PRINT \"Hello\" : REM a colon inside this comment is ignored",
+        "inputs": "",
+        "output": "Hello\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Comments end at the physical newline. REM text is not parsed as statements. Apostrophe is an alias."
+    ],
+    "aliases": [
+      "'"
+    ]
+  },
+  {
+    "keyword": "CLS",
+    "slug": "cls",
+    "category": "Terminal effects",
+    "status": "partial",
+    "summary": "Emit a terminal clear-screen sequence.",
+    "syntax": "CLS",
+    "parameters": [
+      "No arguments."
+    ],
+    "use_cases": [
+      "Clear a compatible batch/prompt terminal between displays."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT \"Before\"\n20 CLS\n30 PRINT \"After\"",
+        "inputs": "",
+        "output": "Before\n\u001b[2J\u001b[HAfter\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "ANSI clear sequence is emitted; this is not an emulated BASIC screen buffer.",
+      "The ASCII IDE filters control escapes rather than clearing its interface."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "BEEP",
+    "slug": "beep",
+    "category": "Terminal effects",
+    "status": "partial",
+    "summary": "Emit the ASCII bell character.",
+    "syntax": "BEEP",
+    "parameters": [
+      "No arguments."
+    ],
+    "use_cases": [
+      "Request a terminal notification where bells are enabled."
+    ],
+    "examples": [
+      {
+        "source": "10 BEEP",
+        "inputs": "",
+        "output": "\u0007",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Sound depends on the terminal settings. The IDE filters the bell; synthesized audio is not implemented."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "RUN",
+    "slug": "run",
+    "category": "Environment",
+    "status": "supported",
+    "summary": "Execute the current stored program from its beginning.",
+    "syntax": "RUN",
+    "parameters": [
+      "No arguments; RUN filename is not supported."
+    ],
+    "use_cases": [
+      "Run a program after LOAD or editing."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT \"Run works\"\nRUN",
+        "inputs": "",
+        "output": "Run works",
+        "mode": "shell"
+      }
+    ],
+    "notes": [
+      "RUN clears variables, arrays and DATA state. F5 runs the editor buffer in the UI."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LIST",
+    "slug": "list",
+    "category": "Environment",
+    "status": "supported",
+    "summary": "Display stored numbered source in sorted order.",
+    "syntax": "LIST",
+    "parameters": [
+      "No arguments; line ranges are not supported."
+    ],
+    "use_cases": [
+      "Inspect a loaded program."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT \"Hello\"\nLIST",
+        "inputs": "",
+        "output": "10 PRINT \"Hello\"",
+        "mode": "shell"
+      }
+    ],
+    "notes": [
+      "The UI lists the current editor text. LIST does not execute source."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LOAD",
+    "slug": "load",
+    "category": "Environment",
+    "status": "supported",
+    "summary": "Load a text source file into the current program.",
+    "syntax": "LOAD \"filename\"",
+    "parameters": [
+      "filename: quoted path inside the workspace (--root)."
+    ],
+    "use_cases": [
+      "Load a sample for execution."
+    ],
+    "examples": [
+      {
+        "source": "LOAD \"examples/hello.bas\"\nLIST",
+        "inputs": "",
+        "output": "The file is loaded and listed.",
+        "mode": "shell"
+      }
+    ],
+    "notes": [
+      "UTF-8/BOM and DOS CP437 text supported; SAVE writes UTF-8. Tokenized/protected files are not supported.",
+      "Prompt LOAD requires numbered source. The UI can open unnumbered QBasic text for editing, but cannot execute it.",
+      "A failed LOAD keeps the existing source. Files are limited to 1 MB."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "SAVE",
+    "slug": "save",
+    "category": "Environment",
+    "status": "supported",
+    "summary": "Save the current source as UTF-8 text.",
+    "syntax": "SAVE \"filename\"",
+    "parameters": [
+      "filename: quoted path inside the workspace."
+    ],
+    "use_cases": [
+      "Keep changes to an exercise."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT \"Saved\"\nSAVE \"practice.bas\"",
+        "inputs": "",
+        "output": "A UTF-8 source file is written.",
+        "mode": "shell"
+      }
+    ],
+    "notes": [
+      "Prompt SAVE can overwrite a file. The UI asks before Save as replaces a different existing file.",
+      "No tokenized or protected SAVE format; opening a DOS file does not rewrite it."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "NEW",
+    "slug": "new",
+    "category": "Environment",
+    "status": "supported",
+    "summary": "Start a new source program; the classic prompt also clears variables and arrays immediately.",
+    "syntax": "NEW",
+    "parameters": [
+      "No arguments."
+    ],
+    "use_cases": [
+      "Start a new exercise."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT \"old\"\nNEW\nLIST",
+        "inputs": "",
+        "output": "The program listing is empty.",
+        "mode": "shell"
+      }
+    ],
+    "notes": [
+      "Prompt NEW discards source immediately. The UI asks before discarding unsaved editor changes.",
+      "In the UI, NEW replaces the editor buffer; the next RUN resets runtime variables."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "CLEAR",
+    "slug": "clear",
+    "category": "Environment",
+    "status": "supported",
+    "summary": "Clear variables and arrays without deleting stored source.",
+    "syntax": "CLEAR",
+    "parameters": [
+      "No arguments; classic memory-size arguments are not implemented."
+    ],
+    "use_cases": [
+      "Reset immediate-mode calculations."
+    ],
+    "examples": [
+      {
+        "source": "A=7\nCLEAR\nPRINT A",
+        "inputs": "",
+        "output": "0",
+        "mode": "shell"
+      }
+    ],
+    "notes": [
+      "Supported as a prompt command, not as a numbered-program statement or the UI bottom-field command. Use RUN to reset before execution."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "HELP",
+    "slug": "help",
+    "category": "Environment",
+    "status": "supported",
+    "summary": "Show the keyword index or a detailed topic.",
+    "syntax": "HELP [keyword]",
+    "parameters": [
+      "keyword: optional statement, function, operator or alias."
+    ],
+    "use_cases": [
+      "Learn a keyword without internet access."
+    ],
+    "examples": [
+      {
+        "source": "HELP PRINT",
+        "inputs": "",
+        "output": "Syntax, parameters, use cases, examples and notes for PRINT.",
+        "mode": "shell"
+      }
+    ],
+    "notes": [
+      "F1 opens searchable help in the UI. Planned topics are marked Not implemented."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "SYSTEM",
+    "slug": "system",
+    "category": "Environment",
+    "status": "supported",
+    "summary": "Exit the programming environment.",
+    "syntax": "SYSTEM",
+    "parameters": [
+      "No arguments."
+    ],
+    "use_cases": [
+      "Leave the prompt or close the IDE."
+    ],
+    "examples": [
+      {
+        "source": "SYSTEM",
+        "inputs": "",
+        "output": "The environment exits.",
+        "mode": "shell"
+      }
+    ],
+    "notes": [
+      "The UI checks unsaved work. The prompt exits immediately. QUIT and EXIT are aliases."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "QUIT",
+    "slug": "quit",
+    "category": "Environment",
+    "status": "supported",
+    "summary": "Exit the programming environment; alias of SYSTEM.",
+    "syntax": "QUIT",
+    "parameters": [
+      "No arguments."
+    ],
+    "use_cases": [
+      "Close the environment from its command field."
+    ],
+    "examples": [
+      {
+        "source": "QUIT",
+        "inputs": "",
+        "output": "The environment exits.",
+        "mode": "shell"
+      }
+    ],
+    "notes": [
+      "This is an environment command, not a numbered BASIC statement."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "EXIT",
+    "slug": "exit",
+    "category": "Environment",
+    "status": "supported",
+    "summary": "Exit the programming environment; alias of SYSTEM.",
+    "syntax": "EXIT",
+    "parameters": [
+      "No arguments in the environment command."
+    ],
+    "use_cases": [
+      "Leave the classic prompt."
+    ],
+    "examples": [
+      {
+        "source": "EXIT",
+        "inputs": "",
+        "output": "The environment exits.",
+        "mode": "shell"
+      }
+    ],
+    "notes": [
+      "QBasic EXIT FOR, EXIT DO, EXIT SUB and EXIT FUNCTION are separate planned features and are not implemented."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "+",
+    "slug": "operator-add",
+    "category": "Operators",
+    "status": "supported",
+    "summary": "Add two numbers, or concatenate two strings.",
+    "syntax": "left + right",
+    "parameters": [
+      "Operands: two numbers or two strings."
+    ],
+    "use_cases": [
+      "Build arithmetic formulas or conditions.",
+      "Trace how operands change the result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 2+3;\"A\"+\"B\"",
+        "inputs": "",
+        "output": " 5 AB\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Both operands must be numeric or both strings; implicit numeric-to-string conversion is not performed."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "-",
+    "slug": "operator-subtract",
+    "category": "Operators",
+    "status": "supported",
+    "summary": "Subtract numbers; prefix minus negates a value.",
+    "syntax": "left - right",
+    "parameters": [
+      "Operands: numeric expressions."
+    ],
+    "use_cases": [
+      "Build arithmetic formulas or conditions.",
+      "Trace how operands change the result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 7-2;-2^2",
+        "inputs": "",
+        "output": " 5 -4 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Exponentiation binds more tightly than unary minus; use (-2)^2 for positive four."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "*",
+    "slug": "operator-multiply",
+    "category": "Operators",
+    "status": "supported",
+    "summary": "Multiply numeric values.",
+    "syntax": "left * right",
+    "parameters": [
+      "Operands: numeric expressions."
+    ],
+    "use_cases": [
+      "Build arithmetic formulas or conditions.",
+      "Trace how operands change the result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 3*4",
+        "inputs": "",
+        "output": " 12 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Multiplication precedes addition. Strings cannot be multiplied."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "/",
+    "slug": "operator-divide",
+    "category": "Operators",
+    "status": "supported",
+    "summary": "Divide numeric values, preserving a fractional result.",
+    "syntax": "left / right",
+    "parameters": [
+      "Operands: numeric expressions."
+    ],
+    "use_cases": [
+      "Build arithmetic formulas or conditions.",
+      "Trace how operands change the result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 7/2",
+        "inputs": "",
+        "output": " 3.5 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "A zero divisor raises Division by zero."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "\\",
+    "slug": "operator-integer-divide",
+    "category": "Operators",
+    "status": "supported",
+    "summary": "Divide rounded 16-bit integer operands and truncate the quotient toward zero.",
+    "syntax": "left \\ right",
+    "parameters": [
+      "Operands: numeric expressions."
+    ],
+    "use_cases": [
+      "Build arithmetic formulas or conditions.",
+      "Trace how operands change the result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 7\\2;-7\\2",
+        "inputs": "",
+        "output": " 3 -3 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Operands are rounded nearest-even to signed 16-bit before division; out-of-range operands overflow."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "^",
+    "slug": "operator-power",
+    "category": "Operators",
+    "status": "supported",
+    "summary": "Raise a numeric base to a power.",
+    "syntax": "left ^ right",
+    "parameters": [
+      "Operands: numeric expressions."
+    ],
+    "use_cases": [
+      "Build arithmetic formulas or conditions.",
+      "Trace how operands change the result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 2^3^2;(-2)^2",
+        "inputs": "",
+        "output": " 64  4 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Powers associate left in this implementation: 2^3^2 is (2^3)^2. Negative-base fractional powers raise an error."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "MOD",
+    "slug": "mod",
+    "category": "Operators",
+    "status": "supported",
+    "summary": "Return the remainder after integer division.",
+    "syntax": "left MOD right",
+    "parameters": [
+      "Operands: numeric expressions."
+    ],
+    "use_cases": [
+      "Build arithmetic formulas or conditions.",
+      "Trace how operands change the result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 7 MOD 3;-7 MOD 3",
+        "inputs": "",
+        "output": " 1 -1 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Operands use signed 16-bit nearest-even rounding; remainder follows the dividend sign, unlike Python modulo."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "NOT",
+    "slug": "not",
+    "category": "Operators",
+    "status": "supported",
+    "summary": "Bitwise complement a rounded signed 16-bit value.",
+    "syntax": "NOT expression",
+    "parameters": [
+      "Operands: numeric expressions."
+    ],
+    "use_cases": [
+      "Build arithmetic formulas or conditions.",
+      "Trace how operands change the result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT NOT 0;NOT 1=1",
+        "inputs": "",
+        "output": "-1  0 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "NOT binds below comparisons; NOT 1=1 means NOT (1=1)."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "AND",
+    "slug": "and",
+    "category": "Operators",
+    "status": "supported",
+    "summary": "Bitwise AND of two rounded signed 16-bit values.",
+    "syntax": "left AND right",
+    "parameters": [
+      "Operands: numeric expressions."
+    ],
+    "use_cases": [
+      "Build arithmetic formulas or conditions.",
+      "Trace how operands change the result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 6 AND 3",
+        "inputs": "",
+        "output": " 2 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Both sides are evaluated; AND does not short-circuit. Parenthesize complex conditions."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "OR",
+    "slug": "or",
+    "category": "Operators",
+    "status": "supported",
+    "summary": "Bitwise OR of two rounded signed 16-bit values.",
+    "syntax": "left OR right",
+    "parameters": [
+      "Operands: numeric expressions."
+    ],
+    "use_cases": [
+      "Build arithmetic formulas or conditions.",
+      "Trace how operands change the result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 4 OR 1",
+        "inputs": "",
+        "output": " 5 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Both sides are evaluated; OR does not short-circuit."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "XOR",
+    "slug": "xor",
+    "category": "Operators",
+    "status": "supported",
+    "summary": "Bitwise exclusive OR: keep bits set on exactly one side.",
+    "syntax": "left XOR right",
+    "parameters": [
+      "Operands: numeric expressions."
+    ],
+    "use_cases": [
+      "Build arithmetic formulas or conditions.",
+      "Trace how operands change the result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 6 XOR 3",
+        "inputs": "",
+        "output": " 5 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "This is bitwise XOR, not exponentiation; use ^ for powers."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "EQV",
+    "slug": "eqv",
+    "category": "Operators",
+    "status": "supported",
+    "summary": "Bitwise equivalence: complement of XOR.",
+    "syntax": "left EQV right",
+    "parameters": [
+      "Operands: numeric expressions."
+    ],
+    "use_cases": [
+      "Build arithmetic formulas or conditions.",
+      "Trace how operands change the result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 1 EQV 1",
+        "inputs": "",
+        "output": "-1 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "True comparisons use -1 (all bits set); both operands are evaluated."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "IMP",
+    "slug": "imp",
+    "category": "Operators",
+    "status": "supported",
+    "summary": "Bitwise implication: NOT left OR right.",
+    "syntax": "left IMP right",
+    "parameters": [
+      "Operands: numeric expressions."
+    ],
+    "use_cases": [
+      "Build arithmetic formulas or conditions.",
+      "Trace how operands change the result."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 0 IMP 0",
+        "inputs": "",
+        "output": "-1 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Signed 16-bit operations; use parentheses when combining comparisons."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "=",
+    "slug": "operator-equal",
+    "category": "Comparisons",
+    "status": "supported",
+    "summary": "Test whether the left value is equal to the right value.",
+    "syntax": "left = right",
+    "parameters": [
+      "left/right: both numeric or both strings.",
+      "Result: -1 for true, 0 for false."
+    ],
+    "use_cases": [
+      "Validate entered values.",
+      "Choose an IF branch."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 2=2",
+        "inputs": "",
+        "output": "-1 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Strings compare lexically using Unicode codepoints, not legacy codepage bytes.",
+      "= also introduces assignment in LET; within an expression it compares values."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "<>",
+    "slug": "operator-not-equal",
+    "category": "Comparisons",
+    "status": "supported",
+    "summary": "Test whether the left value is not equal to the right value.",
+    "syntax": "left <> right",
+    "parameters": [
+      "left/right: both numeric or both strings.",
+      "Result: -1 for true, 0 for false."
+    ],
+    "use_cases": [
+      "Validate entered values.",
+      "Choose an IF branch."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 2<>3",
+        "inputs": "",
+        "output": "-1 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Strings compare lexically using Unicode codepoints, not legacy codepage bytes.",
+      "= also introduces assignment in LET; within an expression it compares values."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "<",
+    "slug": "operator-less-than",
+    "category": "Comparisons",
+    "status": "supported",
+    "summary": "Test whether the left value is less than the right value.",
+    "syntax": "left < right",
+    "parameters": [
+      "left/right: both numeric or both strings.",
+      "Result: -1 for true, 0 for false."
+    ],
+    "use_cases": [
+      "Validate entered values.",
+      "Choose an IF branch."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 2<3",
+        "inputs": "",
+        "output": "-1 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Strings compare lexically using Unicode codepoints, not legacy codepage bytes.",
+      "= also introduces assignment in LET; within an expression it compares values."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": ">",
+    "slug": "operator-greater-than",
+    "category": "Comparisons",
+    "status": "supported",
+    "summary": "Test whether the left value is greater than the right value.",
+    "syntax": "left > right",
+    "parameters": [
+      "left/right: both numeric or both strings.",
+      "Result: -1 for true, 0 for false."
+    ],
+    "use_cases": [
+      "Validate entered values.",
+      "Choose an IF branch."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 2>3",
+        "inputs": "",
+        "output": " 0 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Strings compare lexically using Unicode codepoints, not legacy codepage bytes.",
+      "= also introduces assignment in LET; within an expression it compares values."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "<=",
+    "slug": "operator-less-or-equal",
+    "category": "Comparisons",
+    "status": "supported",
+    "summary": "Test whether the left value is less than or equal to the right value.",
+    "syntax": "left <= right",
+    "parameters": [
+      "left/right: both numeric or both strings.",
+      "Result: -1 for true, 0 for false."
+    ],
+    "use_cases": [
+      "Validate entered values.",
+      "Choose an IF branch."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 2<=2",
+        "inputs": "",
+        "output": "-1 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Strings compare lexically using Unicode codepoints, not legacy codepage bytes.",
+      "= also introduces assignment in LET; within an expression it compares values."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": ">=",
+    "slug": "operator-greater-or-equal",
+    "category": "Comparisons",
+    "status": "supported",
+    "summary": "Test whether the left value is greater than or equal to the right value.",
+    "syntax": "left >= right",
+    "parameters": [
+      "left/right: both numeric or both strings.",
+      "Result: -1 for true, 0 for false."
+    ],
+    "use_cases": [
+      "Validate entered values.",
+      "Choose an IF branch."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT 3>=2",
+        "inputs": "",
+        "output": "-1 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Strings compare lexically using Unicode codepoints, not legacy codepage bytes.",
+      "= also introduces assignment in LET; within an expression it compares values."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": ";",
+    "slug": "operator-semicolon",
+    "category": "Punctuation",
+    "status": "supported",
+    "summary": "Keep PRINT items on the same line without inserting a print zone.",
+    "syntax": "PRINT expression; [expression ...]",
+    "parameters": [
+      "No value parameter: this is punctuation between PRINT items."
+    ],
+    "use_cases": [
+      "Write a compact line of code.",
+      "Understand PRINT formatting and statement boundaries."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT \"A\";\"B\";\n20 PRINT \"C\"",
+        "inputs": "",
+        "output": "ABC\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "A final semicolon suppresses the newline. INPUT also uses a semicolon after an optional prompt."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": ",",
+    "slug": "operator-comma",
+    "category": "Punctuation",
+    "status": "supported",
+    "summary": "Separate arguments, array indices or data fields; in PRINT advance to a print zone.",
+    "syntax": "PRINT expression, expression\nDIM name(upper, upper)",
+    "parameters": [
+      "Meaning depends on context: PRINT, INPUT, function arguments, DIM or DATA."
+    ],
+    "use_cases": [
+      "Write a compact line of code.",
+      "Understand PRINT formatting and statement boundaries."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT \"A\",\"B\"",
+        "inputs": "",
+        "output": "A             B\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "PRINT zones are 14 columns in this implementation; there is no automatic screen wrap."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": ":",
+    "slug": "operator-colon",
+    "category": "Punctuation",
+    "status": "supported",
+    "summary": "Separate multiple BASIC statements on one numbered line.",
+    "syntax": "line statement : statement",
+    "parameters": [
+      "Each separated item is a complete statement."
+    ],
+    "use_cases": [
+      "Write a compact line of code.",
+      "Understand PRINT formatting and statement boundaries."
+    ],
+    "examples": [
+      {
+        "source": "10 A=2: A=A+3: PRINT A",
+        "inputs": "",
+        "output": " 5 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "After IF THEN, colon-separated statements stay in that branch; comments consume the rest of the physical line."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "ABS",
+    "slug": "abs",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Return the nonnegative magnitude of a number.",
+    "syntax": "ABS(number)",
+    "parameters": [
+      "number: numeric expression."
+    ],
+    "use_cases": [
+      "Find an absolute difference."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT ABS(-7)",
+        "inputs": "",
+        "output": " 7 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "ABS removes a negative sign; it does not round."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "SGN",
+    "slug": "sgn",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Return -1, 0 or 1 according to a number's sign.",
+    "syntax": "SGN(number)",
+    "parameters": [
+      "number: numeric expression."
+    ],
+    "use_cases": [
+      "Classify profit, zero or loss."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT SGN(-7)",
+        "inputs": "",
+        "output": "-1 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "The result describes the sign, not the magnitude."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "INT",
+    "slug": "int",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Round down toward negative infinity.",
+    "syntax": "INT(number)",
+    "parameters": [
+      "number: numeric expression."
+    ],
+    "use_cases": [
+      "Count completed units or periods."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT INT(-1.2)",
+        "inputs": "",
+        "output": "-2 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "INT differs from FIX for negative non-integers."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "FIX",
+    "slug": "fix",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Discard the fractional part, rounding toward zero.",
+    "syntax": "FIX(number)",
+    "parameters": [
+      "number: numeric expression."
+    ],
+    "use_cases": [
+      "Truncate a quotient."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT FIX(-1.2)",
+        "inputs": "",
+        "output": "-1 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "FIX(-1.2) is -1, whereas INT(-1.2) is -2."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "SQR",
+    "slug": "sqr",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Return the nonnegative square root.",
+    "syntax": "SQR(number)",
+    "parameters": [
+      "number: numeric expression >= 0."
+    ],
+    "use_cases": [
+      "Limit trial division in a prime test."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT SQR(9)",
+        "inputs": "",
+        "output": " 3 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "A negative argument raises Illegal function call. Use ^2 to square a value."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "SIN",
+    "slug": "sin",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Calculate the sine of an angle in radians.",
+    "syntax": "SIN(angle)",
+    "parameters": [
+      "angle: numeric radians, not degrees."
+    ],
+    "use_cases": [
+      "Model periodic motion."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT SIN(0)",
+        "inputs": "",
+        "output": " 0 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "For degrees, multiply by pi/180 before calling. Floating-point approximation applies."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "COS",
+    "slug": "cos",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Calculate the cosine of an angle in radians.",
+    "syntax": "COS(angle)",
+    "parameters": [
+      "angle: numeric radians."
+    ],
+    "use_cases": [
+      "Calculate a circular horizontal coordinate."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT COS(0)",
+        "inputs": "",
+        "output": " 1 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Use radians; trigonometric values are approximate."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "TAN",
+    "slug": "tan",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Calculate the tangent of an angle in radians.",
+    "syntax": "TAN(angle)",
+    "parameters": [
+      "angle: numeric radians."
+    ],
+    "use_cases": [
+      "Relate an angle to a slope."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT TAN(0)",
+        "inputs": "",
+        "output": " 0 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Near odd multiples of pi/2 the result is numerically unstable; avoid those angles."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "ATN",
+    "slug": "atn",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Return the inverse tangent as an angle in radians.",
+    "syntax": "ATN(number)",
+    "parameters": [
+      "number: numeric ratio or slope."
+    ],
+    "use_cases": [
+      "Recover an angle from a slope."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT ATN(0)",
+        "inputs": "",
+        "output": " 0 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "This is a one-argument arctangent, not a two-coordinate atan2."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LOG",
+    "slug": "log",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Calculate the natural logarithm (base e).",
+    "syntax": "LOG(number)",
+    "parameters": [
+      "number: positive numeric expression."
+    ],
+    "use_cases": [
+      "Explore exponential growth inverses."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT LOG(1)",
+        "inputs": "",
+        "output": " 0 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Zero and negative arguments raise Illegal function call. For another base use LOG(x)/LOG(base)."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "EXP",
+    "slug": "exp",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Calculate e raised to a numeric power.",
+    "syntax": "EXP(number)",
+    "parameters": [
+      "number: exponent."
+    ],
+    "use_cases": [
+      "Explore continuous exponential growth."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT EXP(0)",
+        "inputs": "",
+        "output": " 1 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Large arguments may raise Overflow. This is not 10 raised to a power."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "CINT",
+    "slug": "cint",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Convert to a signed 16-bit integer using nearest-even rounding.",
+    "syntax": "CINT(number)",
+    "parameters": [
+      "number: numeric expression whose rounded result fits -32768 to 32767."
+    ],
+    "use_cases": [
+      "Round an input to an integer deliberately."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT CINT(2.5)",
+        "inputs": "",
+        "output": " 2 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Ties round to even; 2.5 becomes 2 and 3.5 becomes 4. Out-of-range results raise Overflow."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "CSNG",
+    "slug": "csng",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Convert a numeric expression to IEEE single precision.",
+    "syntax": "CSNG(number)",
+    "parameters": [
+      "number: numeric value representable in single precision."
+    ],
+    "use_cases": [
+      "Observe single-precision rounding."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT CSNG(1.25)",
+        "inputs": "",
+        "output": " 1.25 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Equivalent precision to ! and unsuffixed variable assignment; not legacy MBF."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "CDBL",
+    "slug": "cdbl",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Convert a numeric expression to IEEE double precision.",
+    "syntax": "CDBL(number)",
+    "parameters": [
+      "number: numeric expression."
+    ],
+    "use_cases": [
+      "Store calculations in a # variable."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT CDBL(1.25)",
+        "inputs": "",
+        "output": " 1.25 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Conversion cannot recover digits already lost in a single-precision value."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LEN",
+    "slug": "len",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Count the characters in a string.",
+    "syntax": "LEN(text$)",
+    "parameters": [
+      "text$: string expression, including an empty string."
+    ],
+    "use_cases": [
+      "Check a name length."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT LEN(\"BASIC\")",
+        "inputs": "",
+        "output": " 5 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Counts Unicode characters, not encoded DOS bytes. Numeric arguments raise Type mismatch."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "ASC",
+    "slug": "asc",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Return the Unicode codepoint of the first character in a string.",
+    "syntax": "ASC(text$)",
+    "parameters": [
+      "text$: nonempty string; later characters are ignored."
+    ],
+    "use_cases": [
+      "Inspect the first character."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT ASC(\"A\")",
+        "inputs": "",
+        "output": " 65 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "An empty string raises Illegal function call; behavior beyond ASCII differs from codepage-based GW-BASIC."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "CHR$",
+    "slug": "chr-string",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Create a one-character string from a code in 0 through 255.",
+    "syntax": "CHR$(code)",
+    "parameters": [
+      "code: numeric argument rounded to an integer from 0 to 255."
+    ],
+    "use_cases": [
+      "Create punctuation or a double quote."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT CHR$(65)",
+        "inputs": "",
+        "output": "A\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Maps to Unicode codepoints, not CP437 glyphs; not a general Unicode constructor."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "STR$",
+    "slug": "str-string",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Convert a number to text with a leading space for a nonnegative value.",
+    "syntax": "STR$(number)",
+    "parameters": [
+      "number: numeric expression."
+    ],
+    "use_cases": [
+      "Concatenate a number into a label."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT \"[\"+STR$(12)+\"]\"",
+        "inputs": "",
+        "output": "[ 12]\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "No trailing numeric padding space in the returned string. MID$(STR$(n),2) removes a positive leading space."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "VAL",
+    "slug": "val",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Read a decimal numeric prefix from a string.",
+    "syntax": "VAL(text$)",
+    "parameters": [
+      "text$: string with optional leading whitespace/sign and decimal exponent."
+    ],
+    "use_cases": [
+      "Extract a number from a numeric text prefix."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT VAL(\" -12.5tail\")",
+        "inputs": "",
+        "output": "-12.5 \n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Returns 0 when no decimal prefix is present. Hex/octal strings and legacy embedded-space parsing are not implemented."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LEFT$",
+    "slug": "left-string",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Return up to count characters from the beginning of a string.",
+    "syntax": "LEFT$(text$, count)",
+    "parameters": [
+      "text$: source string.",
+      "count: rounded integer >=0; a count larger than the string returns the entire string."
+    ],
+    "use_cases": [
+      "Extract a short prefix."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT LEFT$(\"BASIC\",2)",
+        "inputs": "",
+        "output": "BA\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Count 0 returns an empty string. Negative counts raise Illegal function call."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "RIGHT$",
+    "slug": "right-string",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Return up to count characters from the end of a string.",
+    "syntax": "RIGHT$(text$, count)",
+    "parameters": [
+      "text$: source string.",
+      "count: rounded integer >=0."
+    ],
+    "use_cases": [
+      "Extract a file suffix."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT RIGHT$(\"BASIC\",2)",
+        "inputs": "",
+        "output": "IC\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "Count 0 returns an empty string; excessive count returns the whole string."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "MID$",
+    "slug": "mid-string",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Extract characters from a one-based start position.",
+    "syntax": "MID$(text$, start [, length])",
+    "parameters": [
+      "text$: source string.",
+      "start: rounded integer >=1; positions start at 1, not 0.",
+      "length: optional rounded integer >=0; omit it to read to the end."
+    ],
+    "use_cases": [
+      "Extract part of a name.",
+      "Remove STR$ numeric padding for pattern output."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT MID$(\"BASIC\",2,3)",
+        "inputs": "",
+        "output": "ASI\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "A start beyond the end returns an empty string. MID$ assignment is not implemented."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "SPACE$",
+    "slug": "space-string",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Return a string containing count spaces.",
+    "syntax": "SPACE$(count)",
+    "parameters": [
+      "count: rounded integer from 0 to 32767."
+    ],
+    "use_cases": [
+      "Indent a text pattern."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT \"[\"+SPACE$(3)+\"]\"",
+        "inputs": "",
+        "output": "[   ]\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "The maximum string size is 32767 characters. Negative counts raise Illegal function call."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "STRING$",
+    "slug": "string-string",
+    "category": "Functions",
+    "status": "supported",
+    "summary": "Repeat one character count times.",
+    "syntax": "STRING$(count, char$)\nSTRING$(count, code)",
+    "parameters": [
+      "count: rounded integer from 0 to 32767.",
+      "char$: nonempty string; only its first character is repeated.",
+      "code: numeric character code from 0 to 255 instead of char$."
+    ],
+    "use_cases": [
+      "Draw a separator.",
+      "Repeat a symbol in a text pattern."
+    ],
+    "examples": [
+      {
+        "source": "10 PRINT STRING$(4,\"*\")",
+        "inputs": "",
+        "output": "****\n",
+        "mode": "program"
+      }
+    ],
+    "notes": [
+      "An empty character string is illegal. Numeric character codes use CHR$ semantics."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "SUB",
+    "slug": "sub",
+    "category": "Procedures",
+    "status": "planned",
+    "summary": "Define a named subroutine with parameters and local variables.",
+    "syntax": "SUB name [(parameters)]\n    statements\nEND SUB",
+    "parameters": [
+      "name: subroutine identifier.",
+      "parameters: optional formal variables supplied by a call."
+    ],
+    "use_cases": [
+      "Group reusable drawing or input logic."
+    ],
+    "examples": [
+      {
+        "source": "CALL Greet\nEND\nSUB Greet\n    PRINT \"Hello\"\nEND SUB",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "FUNCTION",
+    "slug": "function",
+    "category": "Procedures",
+    "status": "planned",
+    "summary": "Define a named procedure that returns a value in an expression.",
+    "syntax": "FUNCTION name [(parameters)]\n    name = expression\nEND FUNCTION",
+    "parameters": [
+      "name: function identifier and return variable.",
+      "parameters: optional input variables."
+    ],
+    "use_cases": [
+      "Reuse a formula in expressions."
+    ],
+    "examples": [
+      {
+        "source": "FUNCTION Twice (X)\n    Twice = X*2\nEND FUNCTION",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "CALL",
+    "slug": "call",
+    "category": "Procedures",
+    "status": "planned",
+    "summary": "Invoke a named SUB procedure.",
+    "syntax": "CALL name [(arguments)]",
+    "parameters": [
+      "name: a declared or defined SUB.",
+      "arguments: values or variables matching its parameters."
+    ],
+    "use_cases": [
+      "Run a reusable procedure."
+    ],
+    "examples": [
+      {
+        "source": "CALL Greet(\"Ada\")",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DECLARE",
+    "slug": "declare",
+    "category": "Procedures",
+    "status": "planned",
+    "summary": "Describe the signature of a SUB or FUNCTION before use.",
+    "syntax": "DECLARE SUB name [(parameters)]\nDECLARE FUNCTION name [(parameters)]",
+    "parameters": [
+      "name: procedure identifier.",
+      "parameters: formal argument names and optional types."
+    ],
+    "use_cases": [
+      "Declare procedures near the top of a QBasic module."
+    ],
+    "examples": [
+      {
+        "source": "DECLARE SUB Greet (N$)",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "AS",
+    "slug": "as",
+    "category": "Types",
+    "status": "planned",
+    "summary": "Specify a declared type in QBasic declarations or procedure signatures.",
+    "syntax": "DIM name AS type",
+    "parameters": [
+      "name: declared variable.",
+      "type: a supported QBasic type or a user-defined record."
+    ],
+    "use_cases": [
+      "Declare a variable type explicitly."
+    ],
+    "examples": [
+      {
+        "source": "DIM COUNT AS INTEGER",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "INTEGER",
+    "slug": "integer",
+    "category": "Types",
+    "status": "planned",
+    "summary": "Name QBasic's signed 16-bit integer type in an AS declaration.",
+    "syntax": "DIM name AS INTEGER",
+    "parameters": [
+      "name: variable holding integers from -32768 to 32767."
+    ],
+    "use_cases": [
+      "Store small whole-number counters."
+    ],
+    "examples": [
+      {
+        "source": "DIM COUNT AS INTEGER",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility.",
+      "For currently supported variables, use suffixes %, !, # or $ instead of AS declarations."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LONG",
+    "slug": "long",
+    "category": "Types",
+    "status": "planned",
+    "summary": "Name QBasic's signed 32-bit integer type.",
+    "syntax": "DIM name AS LONG",
+    "parameters": [
+      "name: a long-integer variable."
+    ],
+    "use_cases": [
+      "Store whole-number counts larger than 16-bit range."
+    ],
+    "examples": [
+      {
+        "source": "DIM COUNT AS LONG",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "SINGLE",
+    "slug": "single",
+    "category": "Types",
+    "status": "planned",
+    "summary": "Name QBasic's single-precision numeric type in declarations.",
+    "syntax": "DIM name AS SINGLE",
+    "parameters": [
+      "name: single-precision numeric variable."
+    ],
+    "use_cases": [
+      "Declare approximate fractional values."
+    ],
+    "examples": [
+      {
+        "source": "DIM RATE AS SINGLE",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility.",
+      "For currently supported variables, use suffixes %, !, # or $ instead of AS declarations."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DOUBLE",
+    "slug": "double",
+    "category": "Types",
+    "status": "planned",
+    "summary": "Name QBasic's double-precision numeric type in declarations.",
+    "syntax": "DIM name AS DOUBLE",
+    "parameters": [
+      "name: double-precision numeric variable."
+    ],
+    "use_cases": [
+      "Request greater numeric precision."
+    ],
+    "examples": [
+      {
+        "source": "DIM TOTAL AS DOUBLE",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility.",
+      "For currently supported variables, use suffixes %, !, # or $ instead of AS declarations."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "STRING",
+    "slug": "string",
+    "category": "Types",
+    "status": "planned",
+    "summary": "Name a string type in a QBasic declaration.",
+    "syntax": "DIM name AS STRING",
+    "parameters": [
+      "name: text variable; fixed-length forms are separate syntax."
+    ],
+    "use_cases": [
+      "Declare text variables explicitly."
+    ],
+    "examples": [
+      {
+        "source": "DIM TITLE AS STRING",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility.",
+      "For currently supported variables, use suffixes %, !, # or $ instead of AS declarations."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "SHARED",
+    "slug": "shared",
+    "category": "Scope",
+    "status": "planned",
+    "summary": "Share a variable between module code and procedures.",
+    "syntax": "DIM SHARED name\nSHARED name",
+    "parameters": [
+      "name: variable or array to share."
+    ],
+    "use_cases": [
+      "Share application state across procedures."
+    ],
+    "examples": [
+      {
+        "source": "DIM SHARED SCORE AS INTEGER",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "STATIC",
+    "slug": "static",
+    "category": "Scope",
+    "status": "planned",
+    "summary": "Retain procedure-local variable values between calls.",
+    "syntax": "STATIC name\nSUB name [STATIC]",
+    "parameters": [
+      "name: local variable, or procedure marked for static storage."
+    ],
+    "use_cases": [
+      "Remember a procedure's previous result."
+    ],
+    "examples": [
+      {
+        "source": "STATIC COUNTER AS INTEGER",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "TYPE",
+    "slug": "type",
+    "category": "Types",
+    "status": "planned",
+    "summary": "Define a QBasic record with named fields.",
+    "syntax": "TYPE name\n    field AS type\nEND TYPE",
+    "parameters": [
+      "name: record type identifier.",
+      "field/type: members and their declared types."
+    ],
+    "use_cases": [
+      "Group related fields such as a name and score."
+    ],
+    "examples": [
+      {
+        "source": "TYPE Student\n    SCORE AS INTEGER\nEND TYPE",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "CONST",
+    "slug": "const",
+    "category": "Variables",
+    "status": "planned",
+    "summary": "Define a named constant rather than a mutable variable.",
+    "syntax": "CONST name = constant-expression",
+    "parameters": [
+      "name: constant identifier.",
+      "constant-expression: value evaluated for the declaration."
+    ],
+    "use_cases": [
+      "Give a fixed formula parameter a readable name."
+    ],
+    "examples": [
+      {
+        "source": "CONST PI = 3.14159",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility.",
+      "Currently use a normal assignment and avoid changing that variable by convention."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DO",
+    "slug": "do",
+    "category": "Loops",
+    "status": "planned",
+    "summary": "Begin a QBasic condition-controlled loop.",
+    "syntax": "DO [WHILE condition | UNTIL condition]\n    statements\nLOOP",
+    "parameters": [
+      "condition: optional pre-test expression."
+    ],
+    "use_cases": [
+      "Repeat an input menu until a condition changes."
+    ],
+    "examples": [
+      {
+        "source": "DO WHILE N<3\n    N=N+1\nLOOP",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LOOP",
+    "slug": "loop",
+    "category": "Loops",
+    "status": "planned",
+    "summary": "End a DO block, optionally testing a condition after the body.",
+    "syntax": "DO\n    statements\nLOOP [WHILE condition | UNTIL condition]",
+    "parameters": [
+      "condition: optional post-test expression."
+    ],
+    "use_cases": [
+      "Run a body at least once before deciding to repeat."
+    ],
+    "examples": [
+      {
+        "source": "DO\n    N=N+1\nLOOP UNTIL N>=3",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "UNTIL",
+    "slug": "until",
+    "category": "Loops",
+    "status": "planned",
+    "summary": "Repeat a DO loop until its condition becomes true.",
+    "syntax": "DO UNTIL condition\n    statements\nLOOP",
+    "parameters": [
+      "condition: expression whose true value ends the loop."
+    ],
+    "use_cases": [
+      "Repeat until an entered value is acceptable."
+    ],
+    "examples": [
+      {
+        "source": "DO UNTIL N>=3\n    N=N+1\nLOOP",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "SELECT",
+    "slug": "select",
+    "category": "Control flow",
+    "status": "planned",
+    "summary": "Choose one matching CASE branch from a set of alternatives.",
+    "syntax": "SELECT CASE expression\nCASE value\n    statements\nCASE ELSE\n    statements\nEND SELECT",
+    "parameters": [
+      "expression: value to classify.",
+      "CASE values: alternatives; CASE ELSE handles no match."
+    ],
+    "use_cases": [
+      "Dispatch a menu choice without many IF statements."
+    ],
+    "examples": [
+      {
+        "source": "SELECT CASE CHOICE\nCASE 1\n    PRINT \"One\"\nCASE ELSE\n    PRINT \"Other\"\nEND SELECT",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "CASE",
+    "slug": "case",
+    "category": "Control flow",
+    "status": "planned",
+    "summary": "Specify a branch within a SELECT CASE block.",
+    "syntax": "CASE value [, value ...]\nCASE ELSE",
+    "parameters": [
+      "values: values to match; ranges and relational forms are dialect-specific extensions."
+    ],
+    "use_cases": [
+      "Group several menu choices into one branch."
+    ],
+    "examples": [
+      {
+        "source": "SELECT CASE N\nCASE 1, 2\n    PRINT \"Small\"\nEND SELECT",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "ELSEIF",
+    "slug": "elseif",
+    "category": "Control flow",
+    "status": "planned",
+    "summary": "Add another condition to a multiline QBasic IF block.",
+    "syntax": "IF condition THEN\n    statements\nELSEIF condition THEN\n    statements\nEND IF",
+    "parameters": [
+      "condition: the next expression tested if earlier conditions were false."
+    ],
+    "use_cases": [
+      "Test several grading thresholds in order."
+    ],
+    "examples": [
+      {
+        "source": "IF N>0 THEN\n    PRINT \"Positive\"\nELSEIF N<0 THEN\n    PRINT \"Negative\"\nEND IF",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "REDIM",
+    "slug": "redim",
+    "category": "Arrays",
+    "status": "planned",
+    "summary": "Declare or change dimensions of a dynamic QBasic array.",
+    "syntax": "REDIM name(upper [, upper ...])",
+    "parameters": [
+      "name: dynamic array.",
+      "upper: new bounds; lower-bound syntax depends on the dialect."
+    ],
+    "use_cases": [
+      "Allocate an array after reading the required size."
+    ],
+    "examples": [
+      {
+        "source": "REDIM SCORES(20)",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "OPTION BASE",
+    "slug": "option-base",
+    "category": "Arrays",
+    "status": "planned",
+    "summary": "Set a default lower bound for array declarations in supporting dialects.",
+    "syntax": "OPTION BASE 0\nOPTION BASE 1",
+    "parameters": [
+      "base: default lower index, normally 0 or 1."
+    ],
+    "use_cases": [
+      "Use one-based arrays in a legacy program."
+    ],
+    "examples": [
+      {
+        "source": "OPTION BASE 1\nDIM A(5)",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "OPEN",
+    "slug": "open",
+    "category": "Files",
+    "status": "planned",
+    "summary": "Open a BASIC data file and associate it with a numbered handle.",
+    "syntax": "OPEN \"filename\" FOR INPUT AS #number\nOPEN \"filename\" FOR OUTPUT AS #number",
+    "parameters": [
+      "filename: data file path.",
+      "mode: INPUT, OUTPUT, APPEND or a dialect-specific random/binary mode.",
+      "number: file handle used by file statements."
+    ],
+    "use_cases": [
+      "Read a stored table or write results to a file."
+    ],
+    "examples": [
+      {
+        "source": "OPEN \"scores.txt\" FOR OUTPUT AS #1\nPRINT #1, \"Ada\", 10\nCLOSE #1",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "CLOSE",
+    "slug": "close",
+    "category": "Files",
+    "status": "planned",
+    "summary": "Close one or more BASIC file handles.",
+    "syntax": "CLOSE [#number [, #number ...]]",
+    "parameters": [
+      "number: optional open file handle; no handles traditionally closes all."
+    ],
+    "use_cases": [
+      "Finish file work and release resources."
+    ],
+    "examples": [
+      {
+        "source": "CLOSE #1",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "PRINT#",
+    "slug": "print-file",
+    "category": "Files",
+    "status": "planned",
+    "summary": "Write formatted values to an opened BASIC file.",
+    "syntax": "PRINT #number, expression [; expression ...]",
+    "parameters": [
+      "number: output file handle.",
+      "expressions: values to write."
+    ],
+    "use_cases": [
+      "Save a generated report."
+    ],
+    "examples": [
+      {
+        "source": "PRINT #1, \"Result\", 42",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "INPUT#",
+    "slug": "input-file",
+    "category": "Files",
+    "status": "planned",
+    "summary": "Read fields from an open BASIC input file.",
+    "syntax": "INPUT #number, variable [, variable ...]",
+    "parameters": [
+      "number: input file handle.",
+      "variables: targets compatible with stored field values."
+    ],
+    "use_cases": [
+      "Load a record of scores."
+    ],
+    "examples": [
+      {
+        "source": "INPUT #1, NAME$, SCORE",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LINE INPUT",
+    "slug": "line-input",
+    "category": "Input/output",
+    "status": "planned",
+    "summary": "Read a complete input line into a string without splitting it into fields.",
+    "syntax": "LINE INPUT [\"prompt\";] text$",
+    "parameters": [
+      "text$: string target.",
+      "prompt: optional user prompt."
+    ],
+    "use_cases": [
+      "Read a sentence containing commas."
+    ],
+    "examples": [
+      {
+        "source": "LINE INPUT \"Description\"; DESCRIPTION$",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LINE INPUT#",
+    "slug": "line-input-file",
+    "category": "Files",
+    "status": "planned",
+    "summary": "Read an entire line from an open text file.",
+    "syntax": "LINE INPUT #number, text$",
+    "parameters": [
+      "number: input file handle.",
+      "text$: target string."
+    ],
+    "use_cases": [
+      "Process a text file line by line."
+    ],
+    "examples": [
+      {
+        "source": "LINE INPUT #1, ROW$",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "WRITE",
+    "slug": "write",
+    "category": "Input/output",
+    "status": "planned",
+    "summary": "Output values in a delimited representation suitable for reading back.",
+    "syntax": "WRITE expression [, expression ...]",
+    "parameters": [
+      "expressions: numeric or string fields."
+    ],
+    "use_cases": [
+      "Produce comma-separated output."
+    ],
+    "examples": [
+      {
+        "source": "WRITE \"Ada\", 10",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "EOF",
+    "slug": "eof",
+    "category": "Files",
+    "status": "planned",
+    "summary": "Test whether an open file has reached end of input.",
+    "syntax": "EOF(number)",
+    "parameters": [
+      "number: open file handle."
+    ],
+    "use_cases": [
+      "Stop reading at the end of a data file."
+    ],
+    "examples": [
+      {
+        "source": "WHILE NOT EOF(1)\n    LINE INPUT #1, ROW$\nWEND",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LOF",
+    "slug": "lof",
+    "category": "Files",
+    "status": "planned",
+    "summary": "Return the length of an open file in bytes.",
+    "syntax": "LOF(number)",
+    "parameters": [
+      "number: open file handle."
+    ],
+    "use_cases": [
+      "Check a data file size."
+    ],
+    "examples": [
+      {
+        "source": "PRINT LOF(1)",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LOC",
+    "slug": "loc",
+    "category": "Files",
+    "status": "planned",
+    "summary": "Report a file's current position using mode-dependent units.",
+    "syntax": "LOC(number)",
+    "parameters": [
+      "number: open file handle."
+    ],
+    "use_cases": [
+      "Inspect progress through a data file."
+    ],
+    "examples": [
+      {
+        "source": "PRINT LOC(1)",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "GET",
+    "slug": "get",
+    "category": "Files / graphics",
+    "status": "planned",
+    "summary": "Read a random/binary record or capture a graphics region, depending on syntax.",
+    "syntax": "GET #number [, record]\nGET (x1,y1)-(x2,y2), array",
+    "parameters": [
+      "File form: number and optional record/position.",
+      "Graphics form: coordinates and destination array."
+    ],
+    "use_cases": [
+      "Read a stored record.",
+      "Capture a sprite in a graphics program."
+    ],
+    "examples": [
+      {
+        "source": "GET #1, 1",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "PUT",
+    "slug": "put",
+    "category": "Files / graphics",
+    "status": "planned",
+    "summary": "Write a random/binary record or draw stored graphics data, depending on syntax.",
+    "syntax": "PUT #number [, record]\nPUT (x,y), array",
+    "parameters": [
+      "File form: number and optional record/position.",
+      "Graphics form: destination coordinates and stored image array."
+    ],
+    "use_cases": [
+      "Write a stored record.",
+      "Draw a captured sprite."
+    ],
+    "examples": [
+      {
+        "source": "PUT #1, 1",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "FIELD",
+    "slug": "field",
+    "category": "Files",
+    "status": "planned",
+    "summary": "Map sections of a random-access file record to string variables.",
+    "syntax": "FIELD #number, length AS text$ [, length AS text$ ...]",
+    "parameters": [
+      "number: random-access handle.",
+      "length: byte width of the associated string field."
+    ],
+    "use_cases": [
+      "Read fixed-width legacy records."
+    ],
+    "examples": [
+      {
+        "source": "FIELD #1, 10 AS NAME$, 4 AS VALUE$",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "RANDOMIZE",
+    "slug": "randomize",
+    "category": "Random numbers",
+    "status": "planned",
+    "summary": "Initialize the pseudo-random number generator.",
+    "syntax": "RANDOMIZE [seed]",
+    "parameters": [
+      "seed: optional numeric starting state."
+    ],
+    "use_cases": [
+      "Produce a repeatable random sequence for a test."
+    ],
+    "examples": [
+      {
+        "source": "RANDOMIZE 42",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "RND",
+    "slug": "rnd",
+    "category": "Random numbers",
+    "status": "planned",
+    "summary": "Return a pseudo-random value; argument behavior is dialect-dependent.",
+    "syntax": "RND[(argument)]",
+    "parameters": [
+      "argument: controls generator behavior in classic BASIC; reference only here."
+    ],
+    "use_cases": [
+      "Choose a random game value."
+    ],
+    "examples": [
+      {
+        "source": "PRINT INT(RND*6)+1",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "INSTR",
+    "slug": "instr",
+    "category": "Strings",
+    "status": "planned",
+    "summary": "Find the one-based location of a substring.",
+    "syntax": "INSTR([start,] text$, find$)",
+    "parameters": [
+      "start: optional starting position.",
+      "text$: source string.",
+      "find$: substring to locate."
+    ],
+    "use_cases": [
+      "Find a delimiter in text."
+    ],
+    "examples": [
+      {
+        "source": "PRINT INSTR(\"BASIC\", \"SI\")",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DATE$",
+    "slug": "date-string",
+    "category": "Date / time",
+    "status": "planned",
+    "summary": "Read a date string, or set it in dialects supporting date assignment.",
+    "syntax": "DATE$",
+    "parameters": [
+      "No arguments when reading."
+    ],
+    "use_cases": [
+      "Display a date in a legacy application."
+    ],
+    "examples": [
+      {
+        "source": "PRINT DATE$",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "TIME$",
+    "slug": "time-string",
+    "category": "Date / time",
+    "status": "planned",
+    "summary": "Read a time string, or set it in dialects supporting time assignment.",
+    "syntax": "TIME$",
+    "parameters": [
+      "No arguments when reading."
+    ],
+    "use_cases": [
+      "Display a clock string."
+    ],
+    "examples": [
+      {
+        "source": "PRINT TIME$",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "TIMER",
+    "slug": "timer",
+    "category": "Date / time",
+    "status": "planned",
+    "summary": "Return seconds elapsed since midnight in classic BASIC.",
+    "syntax": "TIMER",
+    "parameters": [
+      "No arguments."
+    ],
+    "use_cases": [
+      "Measure a short interval."
+    ],
+    "examples": [
+      {
+        "source": "START=TIMER",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "SCREEN",
+    "slug": "screen",
+    "category": "Graphics",
+    "status": "planned",
+    "summary": "Select a legacy video mode; a function form exists in some dialects.",
+    "syntax": "SCREEN mode",
+    "parameters": [
+      "mode: legacy screen-mode number; supported resolutions/palettes depend on hardware/dialect."
+    ],
+    "use_cases": [
+      "Start a legacy graphics program."
+    ],
+    "examples": [
+      {
+        "source": "SCREEN 12",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "PSET",
+    "slug": "pset",
+    "category": "Graphics",
+    "status": "planned",
+    "summary": "Set a pixel to a color in an active graphics mode.",
+    "syntax": "PSET (x,y) [, color]",
+    "parameters": [
+      "x/y: pixel position.",
+      "color: optional palette index."
+    ],
+    "use_cases": [
+      "Plot individual points."
+    ],
+    "examples": [
+      {
+        "source": "PSET (20,30), 4",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "PRESET",
+    "slug": "preset",
+    "category": "Graphics",
+    "status": "planned",
+    "summary": "Reset a pixel, usually to the background color when no color is supplied.",
+    "syntax": "PRESET (x,y) [, color]",
+    "parameters": [
+      "x/y: pixel position.",
+      "color: optional palette index."
+    ],
+    "use_cases": [
+      "Erase a plotted point."
+    ],
+    "examples": [
+      {
+        "source": "PRESET (20,30)",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "POINT",
+    "slug": "point",
+    "category": "Graphics",
+    "status": "planned",
+    "summary": "Read a graphics pixel color in its coordinate form.",
+    "syntax": "POINT(x,y)",
+    "parameters": [
+      "x/y: pixel position; other classic forms are dialect-dependent."
+    ],
+    "use_cases": [
+      "Inspect a collision or drawing pixel."
+    ],
+    "examples": [
+      {
+        "source": "PRINT POINT(20,30)",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LINE",
+    "slug": "line",
+    "category": "Graphics",
+    "status": "planned",
+    "summary": "Draw a line or rectangular box in a graphics mode.",
+    "syntax": "LINE (x1,y1)-(x2,y2) [, color] [, B | BF]",
+    "parameters": [
+      "Coordinates: line endpoints or opposite box corners.",
+      "B: outline box; BF: filled box."
+    ],
+    "use_cases": [
+      "Draw a border or rectangle."
+    ],
+    "examples": [
+      {
+        "source": "LINE (10,10)-(50,40), 4, B",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "CIRCLE",
+    "slug": "circle",
+    "category": "Graphics",
+    "status": "planned",
+    "summary": "Draw a circle or arc in a graphics mode.",
+    "syntax": "CIRCLE (x,y), radius [, color]",
+    "parameters": [
+      "x/y: center.",
+      "radius: circle size.",
+      "color: optional palette index; additional arc/aspect arguments exist in legacy dialects."
+    ],
+    "use_cases": [
+      "Draw a circular object."
+    ],
+    "examples": [
+      {
+        "source": "CIRCLE (80,60), 20, 4",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "PAINT",
+    "slug": "paint",
+    "category": "Graphics",
+    "status": "planned",
+    "summary": "Flood-fill a graphics region from a seed point.",
+    "syntax": "PAINT (x,y) [, paint [, border]]",
+    "parameters": [
+      "x/y: seed point.",
+      "paint/border: fill and boundary colors."
+    ],
+    "use_cases": [
+      "Color the inside of a closed shape."
+    ],
+    "examples": [
+      {
+        "source": "PAINT (80,60), 2, 4",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DRAW",
+    "slug": "draw",
+    "category": "Graphics",
+    "status": "planned",
+    "summary": "Interpret a compact graphics drawing-command string.",
+    "syntax": "DRAW command$",
+    "parameters": [
+      "command$: legacy movement, direction, color and scale commands."
+    ],
+    "use_cases": [
+      "Draw a small vector shape from text commands."
+    ],
+    "examples": [
+      {
+        "source": "DRAW \"R20D20L20U20\"",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "PALETTE",
+    "slug": "palette",
+    "category": "Graphics",
+    "status": "planned",
+    "summary": "Change a palette entry in supported legacy modes.",
+    "syntax": "PALETTE [attribute, color]",
+    "parameters": [
+      "attribute: palette index.",
+      "color: hardware-dependent color value."
+    ],
+    "use_cases": [
+      "Change a graphics palette."
+    ],
+    "examples": [
+      {
+        "source": "PALETTE 1, 4",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "VIEW",
+    "slug": "view",
+    "category": "Graphics",
+    "status": "planned",
+    "summary": "Set a graphics viewport or text window using dialect-specific forms.",
+    "syntax": "VIEW (x1,y1)-(x2,y2)",
+    "parameters": [
+      "Coordinates: viewport bounds; optional fill/border forms depend on dialect."
+    ],
+    "use_cases": [
+      "Restrict drawing to a region."
+    ],
+    "examples": [
+      {
+        "source": "VIEW (10,10)-(100,100)",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "WINDOW",
+    "slug": "window",
+    "category": "Graphics",
+    "status": "planned",
+    "summary": "Map logical graphics coordinates onto the viewport.",
+    "syntax": "WINDOW (x1,y1)-(x2,y2)",
+    "parameters": [
+      "Coordinates: logical coordinate bounds."
+    ],
+    "use_cases": [
+      "Draw a graph in mathematical coordinates."
+    ],
+    "examples": [
+      {
+        "source": "WINDOW (-10,-10)-(10,10)",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LOCATE",
+    "slug": "locate",
+    "category": "Terminal layout",
+    "status": "planned",
+    "summary": "Move the legacy text cursor to a row and column.",
+    "syntax": "LOCATE [row] [, column]",
+    "parameters": [
+      "row/column: normally one-based text positions; additional cursor options are dialect-specific."
+    ],
+    "use_cases": [
+      "Position labels in a text form."
+    ],
+    "examples": [
+      {
+        "source": "LOCATE 5, 10",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "COLOR",
+    "slug": "color",
+    "category": "Terminal layout",
+    "status": "planned",
+    "summary": "Set legacy text/graphics colors using mode-specific arguments.",
+    "syntax": "COLOR [foreground] [, background]",
+    "parameters": [
+      "foreground/background: palette indices appropriate for the active mode."
+    ],
+    "use_cases": [
+      "Color a title or form."
+    ],
+    "examples": [
+      {
+        "source": "COLOR 14, 1",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "WIDTH",
+    "slug": "width",
+    "category": "Terminal layout",
+    "status": "planned",
+    "summary": "Set legacy text dimensions or a supported device's output width.",
+    "syntax": "WIDTH columns [, rows]",
+    "parameters": [
+      "columns/rows: supported text mode dimensions."
+    ],
+    "use_cases": [
+      "Request an 80-column screen."
+    ],
+    "examples": [
+      {
+        "source": "WIDTH 80, 25",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "INKEY$",
+    "slug": "inkey-string",
+    "category": "Keyboard",
+    "status": "planned",
+    "summary": "Poll for an available key without waiting for a full input line.",
+    "syntax": "INKEY$",
+    "parameters": [
+      "No arguments; returns an empty string when no key is available."
+    ],
+    "use_cases": [
+      "React to keys in a game loop."
+    ],
+    "examples": [
+      {
+        "source": "K$=INKEY$",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "SOUND",
+    "slug": "sound",
+    "category": "Audio",
+    "status": "planned",
+    "summary": "Request a legacy tone with specified frequency and duration.",
+    "syntax": "SOUND frequency, duration",
+    "parameters": [
+      "frequency: tone frequency in Hz.",
+      "duration: legacy timing units; not implemented by the terminal bell."
+    ],
+    "use_cases": [
+      "Play a simple note."
+    ],
+    "examples": [
+      {
+        "source": "SOUND 440, 9",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "PLAY",
+    "slug": "play",
+    "category": "Audio",
+    "status": "planned",
+    "summary": "Interpret a music macro string in supporting BASIC dialects.",
+    "syntax": "PLAY music$",
+    "parameters": [
+      "music$: notes, durations and tempo commands."
+    ],
+    "use_cases": [
+      "Play a short melody."
+    ],
+    "examples": [
+      {
+        "source": "PLAY \"T120 CDE\"",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "CONT",
+    "slug": "cont",
+    "category": "Environment",
+    "status": "planned",
+    "summary": "Resume a program suspended by STOP or a break in supporting interpreters.",
+    "syntax": "CONT",
+    "parameters": [
+      "No arguments."
+    ],
+    "use_cases": [
+      "Continue after inspecting a stopped program."
+    ],
+    "examples": [
+      {
+        "source": "CONT",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "SWAP",
+    "slug": "swap",
+    "category": "Variables",
+    "status": "planned",
+    "summary": "Exchange the values of two compatible variables.",
+    "syntax": "SWAP left, right",
+    "parameters": [
+      "left/right: compatible variable targets."
+    ],
+    "use_cases": [
+      "Reorder a pair without a temporary variable."
+    ],
+    "examples": [
+      {
+        "source": "SWAP A, B",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility.",
+      "Currently use a temporary variable: T=A: A=B: B=T."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "PRINT USING",
+    "slug": "print-using",
+    "category": "Formatting",
+    "status": "planned",
+    "summary": "Format PRINT output with a legacy picture/template string.",
+    "syntax": "PRINT USING format$; expressions",
+    "parameters": [
+      "format$: numeric/string formatting picture.",
+      "expressions: values matching the picture."
+    ],
+    "use_cases": [
+      "Print amounts with a fixed number of decimal places."
+    ],
+    "examples": [
+      {
+        "source": "PRINT USING \"###.##\"; 12.5",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "ON",
+    "slug": "on",
+    "category": "Control flow",
+    "status": "planned",
+    "summary": "Select a branch/subroutine by numeric index, or introduce legacy event/error handlers.",
+    "syntax": "ON index GOTO line1, line2, ...\nON index GOSUB line1, line2, ...",
+    "parameters": [
+      "index: one-based branch selection.",
+      "lines: candidate target line numbers."
+    ],
+    "use_cases": [
+      "Dispatch a menu selection."
+    ],
+    "examples": [
+      {
+        "source": "ON CHOICE GOTO 100,200,300",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "ERROR",
+    "slug": "error",
+    "category": "Errors",
+    "status": "planned",
+    "summary": "Raise a BASIC error by its legacy code.",
+    "syntax": "ERROR code",
+    "parameters": [
+      "code: valid error number for the target BASIC dialect."
+    ],
+    "use_cases": [
+      "Test an error-handling path."
+    ],
+    "examples": [
+      {
+        "source": "ERROR 5",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "RESUME",
+    "slug": "resume",
+    "category": "Errors",
+    "status": "planned",
+    "summary": "Resume execution after a handled error.",
+    "syntax": "RESUME\nRESUME NEXT\nRESUME line",
+    "parameters": [
+      "Optional NEXT or line determines where execution continues."
+    ],
+    "use_cases": [
+      "Recover after an ON ERROR handler."
+    ],
+    "examples": [
+      {
+        "source": "RESUME NEXT",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "ERR",
+    "slug": "err",
+    "category": "Errors",
+    "status": "planned",
+    "summary": "Read the code of the last trapped BASIC error.",
+    "syntax": "ERR",
+    "parameters": [
+      "No arguments."
+    ],
+    "use_cases": [
+      "Classify an error inside a handler."
+    ],
+    "examples": [
+      {
+        "source": "PRINT ERR",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "ERL",
+    "slug": "erl",
+    "category": "Errors",
+    "status": "planned",
+    "summary": "Read the line number associated with the last trapped error.",
+    "syntax": "ERL",
+    "parameters": [
+      "No arguments."
+    ],
+    "use_cases": [
+      "Report where an error occurred."
+    ],
+    "examples": [
+      {
+        "source": "PRINT ERL",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DEF FN",
+    "slug": "def-fn",
+    "category": "Functions",
+    "status": "planned",
+    "summary": "Define a single-expression user function in classic numbered BASIC.",
+    "syntax": "DEF FNname(parameters) = expression",
+    "parameters": [
+      "name: function identifier after FN.",
+      "parameters: formal variables for the expression."
+    ],
+    "use_cases": [
+      "Name a reusable one-line formula."
+    ],
+    "examples": [
+      {
+        "source": "DEF FNTWICE(X)=X*2",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DEFINT",
+    "slug": "defint",
+    "category": "Types",
+    "status": "planned",
+    "summary": "Set the default integer type for names beginning with a letter range.",
+    "syntax": "DEFINT letter[-letter]",
+    "parameters": [
+      "letter range: initial letters affected by the declaration."
+    ],
+    "use_cases": [
+      "Use integer defaults in a legacy module."
+    ],
+    "examples": [
+      {
+        "source": "DEFINT A-Z",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DEFSNG",
+    "slug": "defsng",
+    "category": "Types",
+    "status": "planned",
+    "summary": "Set the default single-precision type for a letter range.",
+    "syntax": "DEFSNG letter[-letter]",
+    "parameters": [
+      "letter range: variable-name initials."
+    ],
+    "use_cases": [
+      "Restore single-precision defaults."
+    ],
+    "examples": [
+      {
+        "source": "DEFSNG A-Z",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DEFDBL",
+    "slug": "defdbl",
+    "category": "Types",
+    "status": "planned",
+    "summary": "Set the default double-precision type for a letter range.",
+    "syntax": "DEFDBL letter[-letter]",
+    "parameters": [
+      "letter range: variable-name initials."
+    ],
+    "use_cases": [
+      "Use double-precision defaults in a module."
+    ],
+    "examples": [
+      {
+        "source": "DEFDBL A-Z",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DEFSTR",
+    "slug": "defstr",
+    "category": "Types",
+    "status": "planned",
+    "summary": "Set the default string type for a letter range.",
+    "syntax": "DEFSTR letter[-letter]",
+    "parameters": [
+      "letter range: variable-name initials."
+    ],
+    "use_cases": [
+      "Read a legacy module using string defaults."
+    ],
+    "examples": [
+      {
+        "source": "DEFSTR A-Z",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "LSET",
+    "slug": "lset",
+    "category": "Strings / files",
+    "status": "planned",
+    "summary": "Left-align text in an existing fixed-width string field.",
+    "syntax": "LSET target$ = text$",
+    "parameters": [
+      "target$: existing destination field.",
+      "text$: source text to align."
+    ],
+    "use_cases": [
+      "Populate a fixed-width file field."
+    ],
+    "examples": [
+      {
+        "source": "LSET NAME$ = \"Ada\"",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "RSET",
+    "slug": "rset",
+    "category": "Strings / files",
+    "status": "planned",
+    "summary": "Right-align text in an existing fixed-width string field.",
+    "syntax": "RSET target$ = text$",
+    "parameters": [
+      "target$: existing destination field.",
+      "text$: source text to align."
+    ],
+    "use_cases": [
+      "Align a field before random-file output."
+    ],
+    "examples": [
+      {
+        "source": "RSET NAME$ = \"Ada\"",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "AUTO",
+    "slug": "auto",
+    "category": "Environment",
+    "status": "planned",
+    "summary": "Generate successive line-number prompts in a classic BASIC editor.",
+    "syntax": "AUTO [start] [, increment]",
+    "parameters": [
+      "start: optional initial line.",
+      "increment: optional gap between numbers."
+    ],
+    "use_cases": [
+      "Enter numbered source interactively."
+    ],
+    "examples": [
+      {
+        "source": "AUTO 10,10",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "EDIT",
+    "slug": "edit",
+    "category": "Environment",
+    "status": "planned",
+    "summary": "Request editing of a numbered line in supporting classic interpreters.",
+    "syntax": "EDIT line",
+    "parameters": [
+      "line: existing source line."
+    ],
+    "use_cases": [
+      "Change a stored line."
+    ],
+    "examples": [
+      {
+        "source": "EDIT 20",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility.",
+      "Currently edit the source directly in the ASCII IDE."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DELETE",
+    "slug": "delete",
+    "category": "Environment",
+    "status": "planned",
+    "summary": "Delete a line or range of numbered source.",
+    "syntax": "DELETE first[-last]",
+    "parameters": [
+      "first/last: source line bounds."
+    ],
+    "use_cases": [
+      "Remove a section of a program."
+    ],
+    "examples": [
+      {
+        "source": "DELETE 100-200",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "RENUM",
+    "slug": "renum",
+    "category": "Environment",
+    "status": "planned",
+    "summary": "Renumber source lines and eligible references.",
+    "syntax": "RENUM [new] [, old] [, increment]",
+    "parameters": [
+      "new: new starting number.",
+      "old: original starting line.",
+      "increment: new gap."
+    ],
+    "use_cases": [
+      "Make room for inserted source lines."
+    ],
+    "examples": [
+      {
+        "source": "RENUM 10,0,10",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "MERGE",
+    "slug": "merge",
+    "category": "Environment",
+    "status": "planned",
+    "summary": "Merge an ASCII numbered source file into a stored program.",
+    "syntax": "MERGE \"filename\"",
+    "parameters": [
+      "filename: classic text BASIC source."
+    ],
+    "use_cases": [
+      "Combine a program with a subroutine listing."
+    ],
+    "examples": [
+      {
+        "source": "MERGE \"library.bas\"",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "CHAIN",
+    "slug": "chain",
+    "category": "Environment",
+    "status": "planned",
+    "summary": "Transfer to another BASIC program with dialect-specific state sharing.",
+    "syntax": "CHAIN \"filename\"",
+    "parameters": [
+      "filename: next BASIC program; extra sharing options vary by dialect."
+    ],
+    "use_cases": [
+      "Split a legacy application across programs."
+    ],
+    "examples": [
+      {
+        "source": "CHAIN \"next.bas\"",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "FILES",
+    "slug": "files",
+    "category": "Files",
+    "status": "planned",
+    "summary": "List matching files in the interpreter's filesystem view.",
+    "syntax": "FILES [\"pattern\"]",
+    "parameters": [
+      "pattern: optional wildcard filter."
+    ],
+    "use_cases": [
+      "Find a program to load."
+    ],
+    "examples": [
+      {
+        "source": "FILES \"*.BAS\"",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility.",
+      "Currently use the F3 examples dropdown to find the supplied programs."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "KILL",
+    "slug": "kill",
+    "category": "Files",
+    "status": "planned",
+    "summary": "Delete a file in a supporting BASIC filesystem.",
+    "syntax": "KILL \"filename\"",
+    "parameters": [
+      "filename: file path or supported pattern."
+    ],
+    "use_cases": [
+      "Remove a generated temporary file."
+    ],
+    "examples": [
+      {
+        "source": "KILL \"temporary.txt\"",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "NAME",
+    "slug": "name",
+    "category": "Files",
+    "status": "planned",
+    "summary": "Rename a file in a supporting BASIC filesystem.",
+    "syntax": "NAME \"old\" AS \"new\"",
+    "parameters": [
+      "old/new: source and destination paths."
+    ],
+    "use_cases": [
+      "Rename an output file."
+    ],
+    "examples": [
+      {
+        "source": "NAME \"old.txt\" AS \"new.txt\"",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "PEEK",
+    "slug": "peek",
+    "category": "Machine access",
+    "status": "planned",
+    "summary": "Read a byte from the emulated machine memory in supporting interpreters.",
+    "syntax": "PEEK(address)",
+    "parameters": [
+      "address: memory offset interpreted under the current segment/dialect."
+    ],
+    "use_cases": [
+      "Inspect a legacy virtual machine's memory."
+    ],
+    "examples": [
+      {
+        "source": "PRINT PEEK(0)",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility.",
+      "Future support requires virtualized capabilities; no direct host memory access is available."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "POKE",
+    "slug": "poke",
+    "category": "Machine access",
+    "status": "planned",
+    "summary": "Write a byte to the emulated machine memory in supporting interpreters.",
+    "syntax": "POKE address, byte",
+    "parameters": [
+      "address: target offset.",
+      "byte: value 0 through 255."
+    ],
+    "use_cases": [
+      "Understand legacy memory-access code."
+    ],
+    "examples": [
+      {
+        "source": "POKE 0, 0",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility.",
+      "Future support requires virtualized capabilities; no direct host memory access is available."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "DEF SEG",
+    "slug": "def-seg",
+    "category": "Machine access",
+    "status": "planned",
+    "summary": "Select a memory segment for legacy address operations.",
+    "syntax": "DEF SEG [= segment]",
+    "parameters": [
+      "segment: optional legacy memory segment."
+    ],
+    "use_cases": [
+      "Read machine-specific BASIC source."
+    ],
+    "examples": [
+      {
+        "source": "DEF SEG = &HB800",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility.",
+      "Future support requires virtualized capabilities; no direct host memory access is available."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "USR",
+    "slug": "usr",
+    "category": "Machine access",
+    "status": "planned",
+    "summary": "Invoke a legacy machine-language function in supporting interpreters.",
+    "syntax": "USR(argument)",
+    "parameters": [
+      "argument: value supplied to a previously configured machine-language entry."
+    ],
+    "use_cases": [
+      "Understand machine-specific extensions in old source."
+    ],
+    "examples": [
+      {
+        "source": "PRINT USR(0)",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
+      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility.",
+      "Future support requires virtualized capabilities; no direct host memory access is available."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "END IF",
+    "slug": "end-if",
+    "category": "Structured control",
+    "status": "planned",
+    "summary": "Close a multiline QBasic IF block.",
+    "syntax": "IF condition THEN\n    statements\nEND IF",
+    "parameters": [
+      "No arguments; closes the corresponding multiline IF."
+    ],
+    "use_cases": [
+      "Finish a structured conditional."
+    ],
+    "examples": [
+      {
+        "source": "IF A>0 THEN\n    PRINT A\nEND IF",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented. Plain END/STOP and numbered GOSUB/RETURN are the current supported alternatives where applicable."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "END SUB",
+    "slug": "end-sub",
+    "category": "Structured control",
+    "status": "planned",
+    "summary": "Close a SUB procedure definition.",
+    "syntax": "SUB name\n    statements\nEND SUB",
+    "parameters": [
+      "No arguments; ends the matching procedure definition."
+    ],
+    "use_cases": [
+      "Finish a reusable subroutine."
+    ],
+    "examples": [
+      {
+        "source": "SUB Greet\n    PRINT \"Hello\"\nEND SUB",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented. Plain END/STOP and numbered GOSUB/RETURN are the current supported alternatives where applicable."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "END FUNCTION",
+    "slug": "end-function",
+    "category": "Structured control",
+    "status": "planned",
+    "summary": "Close a FUNCTION procedure definition.",
+    "syntax": "FUNCTION name(parameters)\n    name=expression\nEND FUNCTION",
+    "parameters": [
+      "No arguments; closes the function definition."
+    ],
+    "use_cases": [
+      "Finish a reusable calculation function."
+    ],
+    "examples": [
+      {
+        "source": "FUNCTION Twice(X)\n    Twice=X*2\nEND FUNCTION",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented. Plain END/STOP and numbered GOSUB/RETURN are the current supported alternatives where applicable."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "END SELECT",
+    "slug": "end-select",
+    "category": "Structured control",
+    "status": "planned",
+    "summary": "Close a SELECT CASE block.",
+    "syntax": "SELECT CASE expression\n    CASE value\n        statements\nEND SELECT",
+    "parameters": [
+      "No arguments; closes the matching selection block."
+    ],
+    "use_cases": [
+      "Finish a multi-way branch."
+    ],
+    "examples": [
+      {
+        "source": "SELECT CASE N\nCASE 1\n    PRINT \"One\"\nEND SELECT",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented. Plain END/STOP and numbered GOSUB/RETURN are the current supported alternatives where applicable."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "EXIT FOR",
+    "slug": "exit-for",
+    "category": "Structured control",
+    "status": "planned",
+    "summary": "Leave the nearest active FOR loop early in QBasic.",
+    "syntax": "EXIT FOR",
+    "parameters": [
+      "No expression; selects the enclosing FOR block."
+    ],
+    "use_cases": [
+      "Stop a search once a value is found."
+    ],
+    "examples": [
+      {
+        "source": "FOR I=1 TO 10\n    IF I=5 THEN EXIT FOR\nNEXT I",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented. Plain END/STOP and numbered GOSUB/RETURN are the current supported alternatives where applicable."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "EXIT DO",
+    "slug": "exit-do",
+    "category": "Structured control",
+    "status": "planned",
+    "summary": "Leave the nearest active DO loop early in QBasic.",
+    "syntax": "EXIT DO",
+    "parameters": [
+      "No expression; selects the enclosing DO block."
+    ],
+    "use_cases": [
+      "Stop an input/menu loop."
+    ],
+    "examples": [
+      {
+        "source": "DO\n    IF DONE THEN EXIT DO\nLOOP",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented. Plain END/STOP and numbered GOSUB/RETURN are the current supported alternatives where applicable."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "EXIT SUB",
+    "slug": "exit-sub",
+    "category": "Structured control",
+    "status": "planned",
+    "summary": "Return early from a SUB procedure in QBasic.",
+    "syntax": "EXIT SUB",
+    "parameters": [
+      "No expression; ends the current SUB call."
+    ],
+    "use_cases": [
+      "Reject invalid procedure arguments early."
+    ],
+    "examples": [
+      {
+        "source": "SUB Check(X)\n    IF X<0 THEN EXIT SUB\n    PRINT X\nEND SUB",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented. Plain END/STOP and numbered GOSUB/RETURN are the current supported alternatives where applicable."
+    ],
+    "aliases": []
+  },
+  {
+    "keyword": "EXIT FUNCTION",
+    "slug": "exit-function",
+    "category": "Structured control",
+    "status": "planned",
+    "summary": "Return early from a FUNCTION procedure in QBasic.",
+    "syntax": "EXIT FUNCTION",
+    "parameters": [
+      "No expression; assign the return variable separately."
+    ],
+    "use_cases": [
+      "Finish a function before its final line."
+    ],
+    "examples": [
+      {
+        "source": "FUNCTION Safe(X)\n    IF X<0 THEN EXIT FUNCTION\n    Safe=X\nEND FUNCTION",
+        "inputs": "",
+        "output": "",
+        "mode": "reference"
+      }
+    ],
+    "notes": [
+      "Not implemented. Plain END/STOP and numbered GOSUB/RETURN are the current supported alternatives where applicable."
+    ],
+    "aliases": []
+  }
+]

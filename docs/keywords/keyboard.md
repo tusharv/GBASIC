@@ -1,0 +1,53 @@
+# KEYBOARD
+
+**Status:** User guide  
+**Category:** Getting started
+
+Navigate the editor, open a program, run it and enter answers without leaving the terminal.
+
+## Syntax
+
+```basic
+F1 Help | F2 Save | F3 Open | F4 Save as | F5 Run | F6 Stop | F7 Input | F10 Quit
+```
+
+## Parameters
+
+- Function keys: use Fn if your keyboard reserves them.
+- Ctrl+S Save; Ctrl+O Open; Ctrl+N New; Ctrl+Q Quit; Ctrl+C Stop.
+- Tab/Shift+Tab: move focus; Tab in the editor inserts indentation.
+
+## Use cases
+
+- Find an example with F3 and run it with F5.
+- Answer INPUT prompts in the bottom command field.
+
+## Examples
+
+### Example 1 (program)
+
+```basic
+10 INPUT "Name";N$
+20 PRINT "Hello ";N$
+```
+
+Input (one answer per line):
+
+```text
+Ada
+```
+
+Expected output / effect:
+
+```text
+Name? Hello Ada
+```
+
+## Notes
+
+- Escape or F1 closes this help. In the topic list use arrows; in the page use PageDown/PageUp.
+- Open lists examples; choose a file, Enter to select, Enter again to open. Unsaved edits show *.
+- Startup animation lasts 5 seconds; a key/click or --no-splash skips it.
+- Syntax notation: [...] is optional, {...|...} means choose an alternative, and ... means repeat. Do not type notation brackets/braces unless a code example shows them literally.
+
+[Back to keyword index](INDEX.md)

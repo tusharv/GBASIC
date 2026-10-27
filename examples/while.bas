@@ -1,0 +1,5 @@
+10 N=5: F=1
+20 WHILE N>0
+30 F=F*N: N=N-1
+40 WEND
+50 PRINT "5! =";F

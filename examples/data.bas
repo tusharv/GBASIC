@@ -1,0 +1,9 @@
+10 DIM N$(2),S(2)
+20 DATA "Ada",10,"Grace",20,"Alan",30
+30 FOR I=0 TO 2
+40 READ N$(I),S(I)
+50 PRINT N$(I);": ";S(I)
+60 NEXT I
+70 RESTORE
+80 READ FIRST$
+90 PRINT "First: ";FIRST$

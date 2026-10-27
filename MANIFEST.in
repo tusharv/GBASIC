@@ -1,0 +1,12 @@
+include *.md
+include LICENSE
+include examples/hello.bas examples/fibonacci.bas examples/subroutines.bas
+include examples/data.bas examples/input.bas examples/while.bas examples/types.bas
+include examples/logic_*.bas examples/triangle_*.bas examples/calc_*.bas
+include examples/*.md
+exclude examples/MONEY.BAS examples/NIBBLES.BAS
+recursive-include docs *.md
+recursive-include tests *.py
+include .github/workflows/ci.yml
+
+recursive-include tools *.py
