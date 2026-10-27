@@ -1,7 +1,8 @@
 # Ghost BASIC
 
-An independent MIT-licensed BASIC environment for Python 3.12+. Version 0.3 includes a
-full-screen ASCII terminal editor, searchable keyword help and a tested BASIC interpreter.
+An independent MIT-licensed BASIC environment for Python 3.12+. Version 0.4 includes a
+full-screen ASCII terminal editor, searchable keyword help, a tested BASIC interpreter,
+and optional **Code Magic** powered by Ollama Cloud.
 It is **not yet a complete GW-BASIC or QBasic implementation**.
 
 ## Screenshots
@@ -57,6 +58,7 @@ program output panel, immediate command / INPUT field, clickable menus and keybo
 | F5 | Run the source in the editor |
 | F6 / Ctrl+C | Stop a program, including one waiting for INPUT |
 | F7 | Focus the immediate command / INPUT field |
+| F8 | Code Magic: debug, explain, write and suggest with Ollama Cloud |
 | Ctrl+N | New program |
 | F10 / Ctrl+Q | Quit |
 | Tab / Shift+Tab | Move between controls; in the editor, Tab inserts indentation |
@@ -84,6 +86,27 @@ requires numbered BASIC**; QBasic procedures are not implemented yet. Enter a si
 If a program uses INPUT, type its answer in the bottom field and press Enter. While idle,
 that field accepts immediate statements and RUN, LIST, NEW, LOAD "file", SAVE "file", HELP
 and SYSTEM. Run clears variables and arrays; immediate statements preserve them.
+
+## Code Magic — your BASIC companion
+
+Press **F8** or click **Magic** to open the right panel beside your code. In **Settings**, add your [Ollama API key](https://ollama.com/settings/keys)
+in the masked field, choose a Cloud model, and select **Use settings**. Then ask for help:
+
+- **Debug** a runtime error and understand the fix.
+- **Explain** loops, variables and control flow.
+- **Write** a new program or add a feature to the current one.
+- **Suggest** improvements and exercises to try next.
+
+Magic checks proposed BASIC syntax and can request one correction. Review **Changes**,
+then **Apply** directly to the current editor on the left; **Ctrl+Z** undoes, **F5** tests, and **F2** saves.
+A syntax check is not a guarantee of correct behavior.
+
+![Code Magic setup in the ASCII terminal](site/assets/screenshots/magic.png)
+
+The key stays in the current session. You can also set `OLLAMA_API_KEY` and optionally
+`OLLAMA_MODEL` before launching. **Send** shares your request and included program/output
+with Ollama Cloud; **Context: OFF** leaves out the program and diagnostics. Ordinary BASIC
+work remains offline. See the [setup, examples and limits](docs/CODE_MAGIC.md).
 
 ## Install in another checkout
 

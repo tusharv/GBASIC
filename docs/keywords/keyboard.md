@@ -8,7 +8,7 @@ Navigate the editor, open a program, run it and enter answers without leaving th
 ## Syntax
 
 ```basic
-F1 Help | F2 Save | F3 Open | F4 Save as | F5 Run | F6 Stop | F7 Input | F10 Quit
+F1 Help | F2 Save | F3 Open | F4 Save as | F5 Run | F6 Stop | F7 Input | F8 Magic | F10 Quit
 ```
 
 ## Parameters
@@ -21,6 +21,7 @@ F1 Help | F2 Save | F3 Open | F4 Save as | F5 Run | F6 Stop | F7 Input | F10 Qui
 
 - Find an example with F3 and run it with F5.
 - Answer INPUT prompts in the bottom command field.
+- Open F8 Magic to debug, explain, write or improve BASIC with your Ollama Cloud API key.
 
 ## Examples
 
@@ -49,5 +50,6 @@ Name? Hello Ada
 - Open lists examples; choose a file, Enter to select, Enter again to open. Unsaved edits show *.
 - Startup animation lasts 5 seconds; a key/click or --no-splash skips it.
 - Syntax notation: [...] is optional, {...|...} means choose an alternative, and ... means repeat. Do not type notation brackets/braces unless a code example shows them literally.
+- Magic: Send shares the request and optional program/output with Ollama Cloud. Keys stay in the session; OLLAMA_API_KEY and OLLAMA_MODEL can configure it. Review Changes before Apply, Ctrl+Z to undo, F5 to test, F2 to save.
 
 [Back to keyword index](INDEX.md)

@@ -5,4 +5,4 @@ from .program import Program
 from .runtime import Runtime
 
 __all__ = ["BasicError", "Program", "Runtime"]
-__version__ = "0.3.0"
+__version__ = "0.4.0"

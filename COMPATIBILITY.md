@@ -1,4 +1,4 @@
-# Compatibility report — 0.3.0
+# Compatibility report — 0.4.0
 
 Target: GW-BASIC-style numbered source and immediate mode; QBasic is a planned extension.
 No complete GW-BASIC, BASICA, PCjr, Tandy or QBasic compatibility is claimed. Tests assert
@@ -27,6 +27,7 @@ local behavior, not differential equivalence to an original interpreter.
 | Startup splash | Implemented | Animated ASCII ghost, automatic timeout, any-key/click skip, --no-splash; 80x24/120x40 and resize tests |
 | Offline keyword help | Implemented | 175 topics; contextual/searchable F1, HELP keyword, --help-keyword and Markdown pages; planned topics explicitly reference-only |
 | ASCII terminal UI | Implemented editor subset | Open with examples dropdown/save/new, unsaved and overwrite prompts, Run/Stop, INPUT and immediate commands; headless 80x24/120x40 plus manual TTY launch |
+| Code Magic | Optional Cloud assistant | F8; Ollama API key, model selection, context toggle, syntax-check/repair, diff review, undo; tested with simulated HTTP, live inference requires a user key |
 | Step API | Implemented | prepare/step, pc, instruction source line, variables; no breakpoint UI |
 | CLS / BEEP | Terminal only | ANSI clear / ASCII bell; no virtual screen, backend tests or audio hardware claim |
 
@@ -62,7 +63,7 @@ strings remain Unicode. A trailing DOS EOF marker and CRLF/CR line endings are n
 - Audio: SOUND, PLAY, timing and synthesized optional backends.
 - Machine: PEEK/POKE, DEF SEG, CALL/USR, ports, device extensions and ROM behavior.
   Require explicit virtualized capability design, never unrestricted host access.
-- Product: full BASIC syntax highlighting, breakpoint/watch debugger UI, Ollama companion, native installers.
+- Product: full BASIC syntax highlighting, breakpoint/watch debugger UI, local Ollama mode, native installers.
 - UI: execution requires numbered source, 80x24 minimum recommended; tiny layouts and advanced terminal
   emulators are not exhaustively tested. Thread cancellation is cooperative, not process isolation.
 

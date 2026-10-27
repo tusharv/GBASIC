@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ghost-basic"
-version = "0.3.0"
+version = "0.4.0"
 description = "An independent, offline BASIC interpreter and interactive environment"
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
 authors = [{name = "Ghost BASIC contributors"}]
-dependencies = ["textual>=6.12,<7"]
+dependencies = ["textual>=6.12,<7", "httpx>=0.27,<1"]
 
 [project.optional-dependencies]
 screenshots = ["CairoSVG>=2.7,<3"]

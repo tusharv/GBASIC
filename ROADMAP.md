@@ -12,7 +12,7 @@ continued implementation; remaining work exceeds this first milestone's scope.
 | 4 QBasic | Planned | shared core only | unnumbered source mapping; multiline IF; DO/LOOP; procedures, scopes, TYPE |
 | 5 Graphics / sound | Planned | terminal CLS/BEEP only | virtual buffers/modes, drawing and keyboard abstractions, deterministic audio events, optional backends |
 | 6 Terminal IDE | Tested editor subset | ASCII Textual editor, open/save/new, worker Run/Stop/INPUT, immediate commands, 175-topic searchable/contextual help and headless UI tests | full syntax highlighting, breakpoint/watch debugger, process isolation, Windows/Linux live terminal verification |
-| 7 Ghost AI | Planned | no runtime network calls | opt-in loopback Ollama client, timeouts, model config, validation, explanation/search UX, tests with fake server |
+| 7 Ghost AI | Cloud companion implemented | F8 Debug/Explain/Write/Suggest, explicit Send, API-key/model setup, syntax-check/repair loop, diff/apply/undo, cancellable HTTP and headless tests | live user-key inference, optional local Ollama mode, semantic checks |
 | 8 Release quality | In progress | local tests/lint/types/build/install, security limitations documented | cross-platform CI results, fuzz/differential tests, process isolation, native binaries, release signing |
 
 ## Precise continuation order
@@ -30,8 +30,8 @@ continued implementation; remaining work exceeds this first milestone's scope.
 6. Extend the delivered Textual editor with a separate worker process and source-level
    debugger controller. Preserve headless persistence, cancellation and INPUT regression tests;
    add syntax highlighting, breakpoints, watches and execution highlighting.
-7. Add optional Ollama with explicit user action, local-only default and AST validation.
-   Generated programs receive the same capability limits as handwritten programs.
+7. Extend the delivered opt-in Ollama Cloud assistant with local Ollama support and richer
+   semantic checks. Generated programs receive the same limits as handwritten programs.
 8. Run CI, build/install artifacts on Windows/macOS/Linux, and create native launchers
    only after source-package behavior is stable. Do not label unsupported features compatible.
 

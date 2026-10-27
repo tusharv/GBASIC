@@ -69,7 +69,7 @@ def test_site_local_assets_and_fragment_links():
 
 def test_readme_and_site_include_real_splash_and_editor_captures():
     readme = (ROOT / "README.md").read_text()
-    for name in ("editor", "splash", "examples", "help"):
+    for name in ("editor", "splash", "examples", "help", "magic"):
         image = SITE / "assets" / "screenshots" / f"{name}.png"
         data = image.read_bytes()
         assert data.startswith(b"\x89PNG\r\n\x1a\n")

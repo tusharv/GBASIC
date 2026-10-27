@@ -12,11 +12,13 @@ from textual.containers import Horizontal, Vertical
 from textual.screen import ModalScreen
 from textual.widgets import Button, Input, Select, Static, TextArea
 
+from .ai import AIContext, AISettings, MagicAgent, validate_proposal
 from .devices import Disk
 from .errors import BasicError
 from .execution import ProgramRunner
 from .help_topics import keyword_at_cursor
 from .keyword_help import KeywordHelpScreen
+from .magic import MagicEdit, MagicPanel, MagicSettingsScreen
 from .splash import SplashScreen
 
 _STARTER = '10 REM Welcome to Ghost BASIC\n20 PRINT "Hello, world!"\n30 END\n'
@@ -120,12 +122,14 @@ class GhostBasicApp(App[None]):
     Screen { background: #000080; color: #eeeeee; }
     #title { height: 1; background: #00aaaa; color: #000040; text-style: bold; padding: 0 1; }
     #menu { height: 1; background: #bbbbbb; }
-    #menu Button { border: none; height: 1; min-width: 8; width: auto; padding: 0 1;
+    #menu Button { border: none; height: 1; min-width: 7; width: auto; padding: 0 1;
                    background: #bbbbbb; color: #000040; }
     #menu Button:focus, #menu Button:hover { background: #000080; color: #ffffff; }
     TextArea { border: ascii #aaaaaa; background: #000080; color: #ffffff;
                scrollbar-size: 0 0; padding: 0; }
     TextArea:focus { border: ascii #55ffff; }
+    #workspace { height: 1fr; }
+    #program { width: 1fr; height: 1fr; }
     #editor { height: 3fr; min-height: 7; }
     #output { height: 2fr; min-height: 5; background: #000020; }
     #command { height: 3; border: ascii #aaaaaa; background: #000020; color: #ffffff; }
@@ -160,6 +164,7 @@ class GhostBasicApp(App[None]):
         Binding("f5", "run", "Run", priority=True),
         Binding("f6,ctrl+c", "stop", "Stop", priority=True),
         Binding("f7", "command", "Command", priority=True),
+        Binding("f8", "magic", "Magic", priority=True),
         Binding("ctrl+n", "new", "New", priority=True),
         Binding("f10,ctrl+q", "request_quit", "Quit", priority=True),
     ]
@@ -171,9 +176,13 @@ class GhostBasicApp(App[None]):
         filename: str | None = None,
         max_steps: int = 100_000,
         show_splash: bool = False,
+        magic_agent: MagicAgent | None = None,
     ) -> None:
         super().__init__()
         self.show_splash = show_splash
+        self.magic_agent = magic_agent or MagicAgent()
+        self.ai_settings = AISettings.from_env()
+        self.last_run_source: str | None = None
         self.disk = Disk(root or Path.cwd())
         self.filename = filename
         self.runner = ProgramRunner(max_steps=max_steps)
@@ -199,19 +208,31 @@ class GhostBasicApp(App[None]):
                 ("Run", "run"),
                 ("Stop", "stop"),
                 ("Help", "help"),
+                ("Magic", "magic"),
                 ("Quit", "quit"),
             ]:
                 yield Button(label, id=f"menu-{action}", compact=True)
-        yield TextArea(_STARTER, id="editor", soft_wrap=False, tab_behavior="indent")
-        yield TextArea("", id="output", read_only=True, soft_wrap=True, highlight_cursor_line=False)
-        yield Input(
-            placeholder="Immediate BASIC command (F7) / program INPUT",
-            id="command",
-            max_length=32767,
-        )
+        with Horizontal(id="workspace"):
+            with Vertical(id="program"):
+                yield TextArea(_STARTER, id="editor", soft_wrap=False, tab_behavior="indent")
+                yield TextArea(
+                    "", id="output", read_only=True, soft_wrap=True, highlight_cursor_line=False
+                )
+                yield Input(
+                    placeholder="Immediate BASIC command (F7) / program INPUT",
+                    id="command",
+                    max_length=32767,
+                )
+            yield MagicPanel(
+                self.ai_settings,
+                self.magic_agent,
+                get_context=self.magic_context,
+                apply_edit=self.magic_applied,
+                close_panel=self.magic_closed,
+            )
         yield Static(self.status_text, id="status", markup=False)
         yield Static(
-            "F1 Help  F2 Save  F3 Open  F4 SaveAs  F5 Run  F6 Stop  F7 Input  F10 Quit",
+            "F1 Help F2 Save F3 Open F4 SaveAs F5 Run F6 Stop F7 Input F8 Magic F10 Quit",
             id="shortcuts",
             markup=False,
         )
@@ -233,12 +254,12 @@ class GhostBasicApp(App[None]):
         self.query_one("#editor", TextArea).focus()
 
     def check_action(self, action: str, parameters: tuple[object, ...]) -> bool | None:
-        if self.screen_stack and isinstance(self.screen, SplashScreen):
+        if self.screen_stack and isinstance(self.screen, (SplashScreen, MagicSettingsScreen)):
             return False
         if (
             self.screen_stack
             and isinstance(self.screen, KeywordHelpScreen)
-            and action in {"new", "open", "save", "save_as", "run", "stop", "command"}
+            and action in {"new", "open", "save", "save_as", "run", "stop", "command", "magic"}
         ):
             return False
         return super().check_action(action, parameters)
@@ -279,6 +300,7 @@ class GhostBasicApp(App[None]):
                 "run": self.action_run,
                 "stop": self.action_stop,
                 "help": self.action_help,
+                "magic": self.action_magic,
                 "quit": self.action_request_quit,
             }
             actions[action]()
@@ -379,6 +401,7 @@ class GhostBasicApp(App[None]):
         self.start_execution(self.query_one("#editor", TextArea).text)
 
     def start_execution(self, source: str, *, immediate: bool = False) -> None:
+        self.last_run_source = None if immediate else source
         self.run_had_error = False
         self.waiting_input = False
         self.runner.start(source, immediate=immediate)
@@ -473,6 +496,47 @@ class GhostBasicApp(App[None]):
 
     def help_closed(self, result: None) -> None:
         self.query_one("#editor", TextArea).focus()
+
+    @property
+    def magic_panel(self) -> MagicPanel:
+        return self.query_one(MagicPanel)
+
+    def magic_context(self) -> AIContext:
+        source = self.query_one("#editor", TextArea).text
+        diagnostics = self.output_text if self.last_run_source == source else ""
+        return AIContext(source, diagnostics)
+
+    def action_magic(self) -> None:
+        if self.magic_panel.display:
+            self.magic_panel.action_close()
+            return
+        if self.runner.running:
+            self.status("Stop the program with F6 before opening Magic.")
+            return
+        context = self.magic_context()
+        self.magic_panel.open_panel(has_error=bool(context.diagnostics and self.run_had_error))
+
+    def magic_closed(self) -> None:
+        self.query_one("#editor", TextArea).focus()
+
+    def magic_applied(self, edit: MagicEdit) -> bool:
+        editor = self.query_one("#editor", TextArea)
+        if self.runner.running:
+            self.status("Stop the program with F6 before applying Magic changes.")
+            return False
+        if editor.text != edit.original:
+            self.status("Program changed since the suggestion. Send a new request to Magic.")
+            return False
+        if validate_proposal(edit.replacement):
+            self.status("Magic suggestion failed the local syntax check; editor unchanged.")
+            return False
+        editor.history.checkpoint()
+        editor.replace(edit.replacement, (0, 0), editor.document.end)
+        editor.history.checkpoint()
+        editor.focus()
+        self.update_title()
+        self.status("Magic applied | Ctrl+Z Undo | F5 Run to test | F2 Save")
+        return True
 
     def action_request_quit(self) -> None:
         self.confirm_discard(lambda: self.when_idle(self.exit))

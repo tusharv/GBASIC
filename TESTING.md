@@ -172,3 +172,21 @@ repository administration; publishing status is tracked separately from these lo
 
 Public deployment: Pages run 40506709301 succeeded; the landing page, CSS, JavaScript and
 splash screenshot returned HTTP 200 at https://tusharv.github.io/GBASIC/.
+
+## Code Magic / right sidebar — 2026-10-27
+
+**391 tests pass.** HTTPX MockTransport checks cover the direct Cloud request contract,
+authentication/access/quota/model/network errors, malformed/oversized/truncated responses,
+credential redaction, cancellation, bounded history/context and one syntax-repair attempt.
+The API endpoint and model naming were verified against current Ollama documentation and
+its public model list. No live inference was attempted: no Ollama API key was configured.
+
+Headless terminal tests cover F8/right-side layout at 80x24 and 120x40, compact masked
+Settings, no request on open, editing while a request is pending, current-source context,
+review-before-apply, stale-source rejection, Ctrl+Z, unsaved state, cancellation, follow-ups,
+and no implicit save/run. A full UI-to-HTTP-contract test uses a simulated provider response.
+Real application captures were inspected; the right sidebar and code/output on the left are
+visible together. Website gallery was checked at 390px and 1280px without horizontal overflow.
+
+Ruff lint/format and strict mypy pass (21 modules); Node validates the unchanged gallery JS.
+Version 0.4.0 source and wheel builds succeed. Credential/settings storage remains session-only.

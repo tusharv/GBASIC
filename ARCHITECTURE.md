@@ -40,6 +40,8 @@ instructions, not a claim of separately approved design.
 | help_topics | Packaged catalog loading, aliases, search and plain/Markdown rendering |
 | keyword_help | Searchable ASCII F1 topic list and read-only page viewer |
 | splash | Skippable startup screen, ASCII frame rendering and owned animation timer |
+| ai | Opt-in async Ollama Cloud client, bounded syntax-check/repair agent |
+| magic | Left-side assistant, compact session settings, context, chat, diff review and apply result |
 | cli | Interactive UI by default on a TTY; explicit shell and batch modes |
 
 The runtime accepts text streams for keyboard input and output and has no direct disk,
@@ -151,3 +153,21 @@ so reading documentation cannot execute terminal controls.
 The catalog is bundled in source/wheel packages. tools/export_help.py regenerates the
 Markdown reference. Legacy entries are independent summaries for understanding old files,
 not copied manual content or evidence that those features are implemented.
+
+## Code Magic (0.4)
+
+F8 toggles a right-side MagicPanel beside the current code/output. Send snapshots the latest
+editor source and includes last-run diagnostics only if source matches. MagicPanel owns a cancellable Textual async worker; HTTPX closes requests on cancellation.
+Only Send calls the fixed HTTPS Cloud endpoint. AISettings is session state (key excluded
+from repr), optionally initialized from named environment variables. Model input is editable.
+No disk settings, environment enumeration, automatic inference or browser-side keys.
+
+MagicAgent supplies the supported dialect and bounded chat/context, parses a single complete
+BASIC block, and uses Runtime.prepare without executing instructions. Duplicate, unsorted,
+empty or oversized numbered lines are rejected. One correction call is allowed; a total
+120-second timeout bounds both calls. Syntax checking cannot prove runtime semantics.
+
+MagicPanel displays plain text/code/diff and enables Apply only after Changes is viewed
+and syntax validation succeeds. GhostBasicApp checks the original snapshot again and applies
+one undoable TextArea edit, preserving filename and saved_source. Saving/running stays explicit.
+See docs/CODE_MAGIC.md for credentials, data flow, bounds and live-test limitations.

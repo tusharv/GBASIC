@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0 — 2026-10-27
+
+- Add a right-side F8 Code Magic panel beside the current editor, with Ollama Cloud: Debug, Explain, Write and Suggest, with follow-up chat.
+- Add session-only masked key/model settings and OLLAMA_API_KEY / OLLAMA_MODEL support.
+- Share source and matching run diagnostics only on Send, with a context toggle.
+- Compile-check proposals without running them; allow one bounded correction attempt.
+- Review a complete diff before applying; preserve unsaved state and Ctrl+Z undo.
+- Add cancellable asynchronous HTTPS, timeouts, response bounds and actionable provider errors.
+- Add HTTP-contract and terminal UI tests, setup documentation and a real Magic screenshot.
+
 ## 0.3.0 — 2026-10-27
 
 - Add 175 offline help topics with purpose, syntax, parameters, use cases, examples,

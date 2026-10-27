@@ -50,6 +50,11 @@ async def capture(destination: Path, font: str) -> None:
         app.screen.query_one("#help-search", Input).value = "FOR"
         await pilot.pause()
         save(app, "help")
+        await pilot.press("escape")
+        app.ai_settings.api_key = ""
+        app.ai_settings.model = "gemma4:31b"
+        await pilot.press("f8")
+        save(app, "magic")
 
     app = GhostBasicApp(root=root, show_splash=True)
     async with app.run_test(size=(110, 36)) as pilot:
