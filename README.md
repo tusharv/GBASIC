@@ -4,6 +4,31 @@ An independent MIT-licensed BASIC environment for Python 3.12+. Version 0.3 incl
 full-screen ASCII terminal editor, searchable keyword help and a tested BASIC interpreter.
 It is **not yet a complete GW-BASIC or QBasic implementation**.
 
+## Screenshots
+
+Real captures of the running terminal application. The ghost moves in the app; its image
+below shows one frame of the startup animation.
+
+### Editor and program output
+
+![Ghost BASIC editor running the pyramid example](site/assets/screenshots/editor.png)
+
+### Startup splash and flying ghost
+
+![Ghost BASIC splash screen with the ASCII ghost](site/assets/screenshots/splash.png)
+
+<details>
+<summary>See the examples picker and keyword help</summary>
+
+![Open dialog with the examples dropdown expanded](site/assets/screenshots/examples.png)
+
+![Searchable keyword reference displaying FOR loop help](site/assets/screenshots/help.png)
+
+</details>
+
+The [landing page source](site/index.html) and [GitHub Pages deployment guide](docs/GITHUB_PAGES.md)
+are included in this repository.
+
 ## Launch the terminal UI
 
 On this machine, launch from the project folder with:

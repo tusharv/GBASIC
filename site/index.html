@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ghost BASIC is an open-source Python BASIC environment with a classic blue terminal editor, 42 learning programs, and 175 offline help topics.">
+  <meta name="theme-color" content="#1010a8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'self'; object-src 'none'">
+  <meta property="og:title" content="Ghost BASIC — Your next line of BASIC starts here.">
+  <meta property="og:description" content="A classic terminal. A real interpreter. A friendly place to learn one loop at a time.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tusharv.github.io/GBASIC/">
+  <meta property="og:image" content="https://tusharv.github.io/GBASIC/assets/screenshots/editor.png">
+  <link rel="icon" href="assets/ghost.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+  <title>Ghost BASIC — Your next line of BASIC starts here.</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header wrap">
+    <a class="brand" href="#" aria-label="Ghost BASIC home"><img src="assets/ghost.svg" alt="" width="32" height="34"><span>Ghost <strong>BASIC</strong><span class="brand-dot">.</span></span></a>
+    <nav aria-label="Main navigation"><a href="#workspace">The workspace</a><a href="#examples">Examples</a><a href="#install">Install</a><a class="nav-source" href="https://github.com/tusharv/GBASIC">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="eyebrow"><span class="live-dot" aria-hidden="true"></span> OPEN SOURCE. OFFLINE. A LITTLE OLD SCHOOL.</div>
+      <div class="hero-heading">
+        <h1 id="hero-title">Your next idea starts<br>with a line of <span>BASIC.</span></h1>
+        <pre class="hero-ghost" aria-hidden="true">    .-.
+   (o o)
+   | O \
+  /     \
+ (       )
+  '~~~~~'</pre>
+      </div>
+      <p class="hero-description">A classic blue terminal. A real Python interpreter. A friendly place to learn one loop at a time.</p>
+      <div class="hero-actions"><a class="button primary" href="#install">Get Ghost BASIC <span aria-hidden="true">↓</span></a><a class="text-link" href="https://github.com/tusharv/GBASIC">Explore the source <span aria-hidden="true">↗</span></a></div>
+      <div class="hero-meta"><span>Python 3.12+</span><span>MIT licensed</span><span>No AI service required</span></div>
+    </section>
+
+    <section class="workspace wrap" id="workspace" aria-labelledby="workspace-title">
+      <div class="section-heading"><div><p class="eyebrow">MEET YOUR WORKSPACE</p><h2 id="workspace-title">Feels familiar.<br>Ready for your next program.</h2></div><p>Edit, run, ask for help, and try again.<br>Everything stays right in your terminal.</p></div>
+      <div class="tab-group screenshot-group" data-tab-group>
+        <div class="tab-bar" role="tablist" aria-label="Application screenshots">
+          <button id="view-editor" role="tab" aria-selected="true" aria-controls="shot-editor"><kbd>F5</kbd> Editor &amp; output</button>
+          <button id="view-examples" role="tab" aria-selected="false" aria-controls="shot-examples"><kbd>F3</kbd> Examples</button>
+          <button id="view-help" role="tab" aria-selected="false" aria-controls="shot-help"><kbd>F1</kbd> Keyword help</button>
+          <button id="view-splash" role="tab" aria-selected="false" aria-controls="shot-splash"><img src="assets/ghost.svg" width="16" height="17" alt=""> Splash screen</button>
+        </div>
+        <figure class="shot-panel" id="shot-editor" role="tabpanel" aria-labelledby="view-editor"><a href="assets/screenshots/editor.png" aria-label="View full-size editor screenshot"><img src="assets/screenshots/editor.png" width="1600" height="1092" fetchpriority="high" alt="Ghost BASIC's running terminal editor showing the pyramid source and its five-row star output."></a><figcaption><span>Write above. See the result below.</span><span class="mono">Captured from the running app</span></figcaption></figure>
+        <figure class="shot-panel" id="shot-examples" role="tabpanel" aria-labelledby="view-examples"><a href="assets/screenshots/examples.png" aria-label="View full-size examples picker screenshot"><img src="assets/screenshots/examples.png" width="1600" height="1092" loading="lazy" alt="The expanded ASCII Open dialog lists calculation and learning programs from the examples folder."></a><figcaption><span>A program to start with, not a blank page.</span><span class="mono">F3 → choose a file → F5</span></figcaption></figure>
+        <figure class="shot-panel" id="shot-help" role="tabpanel" aria-labelledby="view-help"><a href="assets/screenshots/help.png" aria-label="View full-size keyword help screenshot"><img src="assets/screenshots/help.png" width="1600" height="1092" loading="lazy" alt="Searchable offline help displaying FOR loop syntax, parameters, and use cases, alongside the keyword list."></a><figcaption><span>Understand the keyword, then use it.</span><span class="mono">175 offline reference topics</span></figcaption></figure>
+        <figure class="shot-panel" id="shot-splash" role="tabpanel" aria-labelledby="view-splash"><a href="assets/screenshots/splash.png" aria-label="View full-size splash screenshot"><img src="assets/screenshots/splash.png" width="1600" height="1092" loading="lazy" alt="Ghost BASIC startup splash with a white ASCII ghost flying across the classic blue screen."></a><figcaption><span>A five-second hello from your resident ghost.</span><span class="mono">Animated in the app · any key to skip</span></figcaption></figure>
+      </div>
+      <noscript><p>All screenshots are shown above. The application itself runs locally; this website is a showcase.</p></noscript>
+      <div class="workspace-facts"><span><strong>42</strong> runnable learning examples</span><span><strong>175</strong> offline help topics</span><span><strong>F3 → F5</strong> open, then run</span></div>
+    </section>
+
+    <section class="features wrap" aria-label="What you can do">
+      <article><span class="feature-key">.BAS</span><h3>Make something that runs.</h3><p>Numbered programs, immediate commands, loops, arrays, branching, and subroutines. Save your work and pick it up again.</p></article>
+      <article><span class="feature-key">F1</span><h3>Learn as you write.</h3><p>Find a keyword's purpose, parameters, use cases, and examples. Put the cursor on a keyword and press F1 for contextual help.</p></article>
+      <article><span class="feature-key">LOCAL</span><h3>Your terminal. Your programs.</h3><p>After installation, BASIC runs offline. Open UTF-8 and DOS CP437 text, with clear compatibility notes for older programs.</p></article>
+    </section>
+
+    <section class="learning" id="examples" aria-labelledby="examples-title">
+      <div class="wrap">
+        <div class="section-heading"><div><p class="eyebrow">LEARN BY CHANGING THINGS</p><h2 id="examples-title">Small programs.<br>Big “I get it” moments.</h2></div><p>Predict the output. Change one value.<br>Press F5. Follow your curiosity.</p></div>
+        <div class="lesson-grid">
+          <article class="lesson"><span class="line-number">10</span><h3>Build a triangle.</h3><p>Start with a row, then think in loops. Try pyramids, hollow triangles, Floyd's triangle, and a diamond.</p><pre aria-label="BASIC triangle example"><code>10 FOR ROW=1 TO 5
+20 FOR COL=1 TO ROW
+30 PRINT "*";
+40 NEXT COL
+50 PRINT
+60 NEXT ROW</code></pre><div class="expected-label">EXPECTED OUTPUT</div><pre class="output" aria-label="Triangle output">*
+**
+***
+****
+*****</pre><a href="https://github.com/tusharv/GBASIC/blob/main/examples/README.md">Explore pattern exercises <span aria-hidden="true">→</span></a></article>
+          <article class="lesson"><span class="line-number">20</span><h3>Put input to work.</h3><p>Ask for values, use a formula, and get an answer. There are 22 calculators to explore, including compound interest.</p><pre aria-label="BASIC simple interest example"><code>10 INPUT "Principal";P
+20 INPUT "Rate percent";R
+30 INPUT "Years";Y
+40 I=P*R*Y/100
+50 PRINT "Interest =";I</code></pre><div class="expected-label">TRY 1000, 10, AND 2</div><pre class="output" aria-label="Simple interest output">Interest = 200</pre><a href="https://github.com/tusharv/GBASIC/blob/main/examples/CALCULATORS.md">Explore calculation exercises <span aria-hidden="true">→</span></a></article>
+          <article class="lesson"><span class="line-number">30</span><h3>Go one keyword deeper.</h3><p>Find out why a loop works. Every implemented keyword has a page, with planned features clearly marked.</p><pre aria-label="Keyword help commands"><code>HELP FOR
+HELP INPUT
+HELP MID$
+
+REM Or put the cursor on a
+REM keyword and press F1.</code></pre><div class="expected-label">INSIDE EACH HELP PAGE</div><p class="help-contents">Purpose. Syntax. Parameters.<br>Use cases. Examples. Limitations.</p><a href="https://github.com/tusharv/GBASIC/blob/main/docs/keywords/INDEX.md">Browse the keyword reference <span aria-hidden="true">→</span></a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="install wrap" id="install" aria-labelledby="install-title">
+      <div><p class="eyebrow">YOUR NEXT LINE STARTS HERE</p><h2 id="install-title">Meet your new<br>old-school workspace.</h2><p>Bring Python 3.12 or newer.<br>The source and dependencies take care of the rest.</p><a class="text-link" href="https://www.python.org/downloads/">Need Python? <span aria-hidden="true">↗</span></a><p class="install-note">The package installs <code>GBASIC</code> and <code>ghost-basic</code>. Activate the environment to use either command directly.</p></div>
+      <div class="tab-group install-box" data-tab-group>
+        <div class="tab-bar" role="tablist" aria-label="Installation operating system"><button id="os-unix" role="tab" aria-selected="true" aria-controls="install-unix">macOS / Linux</button><button id="os-windows" role="tab" aria-selected="false" aria-controls="install-windows">Windows</button></div>
+        <div class="install-panel" id="install-unix" role="tabpanel" aria-labelledby="os-unix"><div class="code-toolbar"><span>TERMINAL</span><button class="copy-button" data-copy="install-code-unix" aria-label="Copy macOS and Linux installation commands">Copy commands</button></div><pre><code id="install-code-unix">git clone https://github.com/tusharv/GBASIC.git
+cd GBASIC
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e .
+GBASIC</code></pre></div>
+        <div class="install-panel" id="install-windows" role="tabpanel" aria-labelledby="os-windows"><div class="code-toolbar"><span>POWERSHELL</span><button class="copy-button" data-copy="install-code-windows" aria-label="Copy Windows installation commands">Copy commands</button></div><pre><code id="install-code-windows">git clone https://github.com/tusharv/GBASIC.git
+cd GBASIC
+py -3.12 -m venv .venv
+.venv\Scripts\python.exe -m pip install -e .
+.venv\Scripts\GBASIC.exe</code></pre><p>Uses the environment directly; PowerShell activation is optional.</p></div>
+        <p class="first-run"><kbd>F3</kbd> Open an example. <kbd>F5</kbd> Run it. <kbd>F1</kbd> Find your next answer.</p>
+        <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="compatibility wrap" aria-labelledby="compatibility-title"><span class="compatibility-label">A CLEAR PICTURE</span><div><h2 id="compatibility-title">Classic inspiration. Honest compatibility.</h2><p>Ghost BASIC is an independent interpreter with a growing GW-BASIC-style subset. It is <strong>not yet a complete GW-BASIC or QBasic implementation</strong>. Execution currently requires numbered BASIC. Unnumbered QBasic files can be viewed and edited; procedures, graphics, synthesized audio, and AI integration remain planned.</p><a href="https://github.com/tusharv/GBASIC/blob/main/COMPATIBILITY.md">Read the compatibility report <span aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer wrap"><a class="brand" href="#"><img src="assets/ghost.svg" alt="" width="28" height="30"><span>Ghost <strong>BASIC</strong>.</span></a><p>Made for the joy of figuring it out.<br><span class="mono">Independent. Open source. MIT licensed.</span></p><div><a href="https://github.com/tusharv/GBASIC">GitHub</a><a href="https://github.com/tusharv/GBASIC/blob/main/CONTRIBUTING.md">Contribute</a><a href="https://github.com/tusharv/GBASIC/blob/main/LICENSE">License</a></div></footer>
+</body>
+</html>
