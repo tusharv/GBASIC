@@ -203,7 +203,11 @@ class GhostBasicApp(App[None]):
         if sys.platform == "darwin":
             try:
                 return subprocess.run(
-                    ["pbpaste"], capture_output=True, text=True, check=True, timeout=1,
+                    ["pbpaste"],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                    timeout=1,
                 ).stdout
             except (OSError, subprocess.SubprocessError):
                 pass
@@ -215,7 +219,12 @@ class GhostBasicApp(App[None]):
         if sys.platform == "darwin":
             try:
                 subprocess.run(
-                    ["pbcopy"], input=text, text=True, capture_output=True, check=True, timeout=1,
+                    ["pbcopy"],
+                    input=text,
+                    text=True,
+                    capture_output=True,
+                    check=True,
+                    timeout=1,
                 )
             except (OSError, subprocess.SubprocessError):
                 pass
@@ -242,7 +251,9 @@ class GhostBasicApp(App[None]):
                 offset = label.lower().rindex(mnemonic)
                 caption.stylize("underline", offset, offset + 1)
                 yield Button(
-                    caption, id=f"menu-{action}", compact=True,
+                    caption,
+                    id=f"menu-{action}",
+                    compact=True,
                     tooltip=f"{label} (Alt+{mnemonic.upper()})",
                 )
         with Horizontal(id="workspace"):
