@@ -1,6 +1,8 @@
 """ASCII-framed, QBasic-inspired terminal editor using the shared BASIC engine."""
 
 import re
+import subprocess
+import sys
 from collections.abc import Callable
 from pathlib import Path
 
@@ -163,7 +165,7 @@ class GhostBasicApp(App[None]):
         Binding("f3,ctrl+o", "open", "Open", priority=True),
         Binding("f4", "save_as", "Save as", priority=True),
         Binding("f5", "run", "Run", priority=True),
-        Binding("f6,ctrl+c", "stop", "Stop", priority=True),
+        Binding("f6", "stop", "Stop", priority=True),
         Binding("f7", "command", "Command", priority=True),
         Binding("f8", "magic", "Magic", priority=True),
         Binding("ctrl+n", "new", "New", priority=True),
@@ -194,6 +196,29 @@ class GhostBasicApp(App[None]):
         self.waiting_input = False
         self.run_had_error = False
         self.deferred: Callable[[], object] | None = None
+
+    @property
+    def clipboard(self) -> str:
+        # Textual's local clipboard cannot read text copied in other macOS apps.
+        if sys.platform == "darwin":
+            try:
+                return subprocess.run(
+                    ["pbpaste"], capture_output=True, text=True, check=True, timeout=1,
+                ).stdout
+            except (OSError, subprocess.SubprocessError):
+                pass
+        return super().clipboard
+
+    def copy_to_clipboard(self, text: str) -> None:
+        super().copy_to_clipboard(text)
+        # macOS Terminal doesn't support Textual's OSC 52 clipboard escape.
+        if sys.platform == "darwin":
+            try:
+                subprocess.run(
+                    ["pbcopy"], input=text, text=True, capture_output=True, check=True, timeout=1,
+                )
+            except (OSError, subprocess.SubprocessError):
+                pass
 
     @property
     def dirty(self) -> bool:

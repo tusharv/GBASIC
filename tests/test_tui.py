@@ -4,6 +4,71 @@ from textual.widgets import Input, TextArea
 from ghost_basic.tui import GhostBasicApp
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize("source_id", ["editor", "output"])
+async def test_copy_selection_and_paste_into_editor(tmp_path, source_id, monkeypatch):
+    from textual.document._document import Selection
+
+    monkeypatch.setattr("sys.platform", "linux")
+    app = GhostBasicApp(root=tmp_path)
+    async with app.run_test() as pilot:
+        source = app.query_one(f"#{source_id}", TextArea)
+        source.load_text("selected text")
+        source.selection = Selection((0, 0), (0, 8))
+        source.focus()
+        await pilot.press("ctrl+c")
+        assert app.clipboard == "selected"
+        editor = app.query_one("#editor", TextArea)
+        editor.load_text("")
+        editor.focus()
+        await pilot.press("ctrl+v")
+        assert editor.text == "selected"
+
+
+@pytest.mark.asyncio
+async def test_macos_clipboard_round_trip(tmp_path, monkeypatch):
+    import subprocess
+
+    from textual.document._document import Selection
+
+    system_clipboard = "copied in another app"
+
+    def run_clipboard(args, **kwargs):
+        nonlocal system_clipboard
+        if args == ["pbcopy"]:
+            system_clipboard = kwargs["input"]
+            return subprocess.CompletedProcess(args, 0, "", "")
+        assert args == ["pbpaste"]
+        return subprocess.CompletedProcess(args, 0, system_clipboard, "")
+
+    monkeypatch.setattr("sys.platform", "darwin")
+    monkeypatch.setattr(subprocess, "run", run_clipboard)
+    app = GhostBasicApp(root=tmp_path)
+    async with app.run_test() as pilot:
+        editor = app.query_one("#editor", TextArea)
+        editor.load_text("")
+        editor.focus()
+        await pilot.press("ctrl+v")
+        assert editor.text == "copied in another app"
+        editor.selection = Selection((0, 0), (0, 6))
+        await pilot.press("ctrl+c")
+        assert system_clipboard == "copied"
+
+
+@pytest.mark.parametrize("error", [FileNotFoundError(), TimeoutError()])
+def test_macos_clipboard_unavailable_uses_local_clipboard(tmp_path, monkeypatch, error):
+    import subprocess
+
+    def unavailable(*args, **kwargs):
+        raise error
+
+    monkeypatch.setattr("sys.platform", "darwin")
+    monkeypatch.setattr(subprocess, "run", unavailable)
+    app = GhostBasicApp(root=tmp_path)
+    app.copy_to_clipboard("local text")
+    assert app.clipboard == "local text"
+
+
 async def settle(pilot, app):
     for _ in range(100):
         await pilot.pause(0.02)

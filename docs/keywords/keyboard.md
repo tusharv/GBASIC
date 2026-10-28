@@ -14,7 +14,8 @@ F1 Help | F2 Save | F3 Open | F4 Save as | F5 Run | F6 Stop | F7 Input | F8 Magi
 ## Parameters
 
 - Function keys: use Fn if your keyboard reserves them.
-- Ctrl+S Save; Ctrl+O Open; Ctrl+N New; Ctrl+Q Quit; Ctrl+C Stop.
+- Ctrl+S Save; Ctrl+O Open; Ctrl+N New; Ctrl+Q Quit; F6 Stop.
+- Ctrl+C Copy selection; Ctrl+X Cut selection; Ctrl+V Paste. Shift+arrows select text.
 - Tab/Shift+Tab: move focus; Tab in the editor inserts indentation.
 
 ## Use cases

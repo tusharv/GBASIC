@@ -56,7 +56,8 @@ program output panel, immediate command / INPUT field, clickable menus and keybo
 | F3 / Ctrl+O | Open a BASIC source file |
 | F4 | Save as |
 | F5 | Run the source in the editor |
-| F6 / Ctrl+C | Stop a program, including one waiting for INPUT |
+| F6 | Stop a program, including one waiting for INPUT |
+| Ctrl+C / Ctrl+X / Ctrl+V | Copy selection / cut selection / paste |
 | F7 | Focus the immediate command / INPUT field |
 | F8 | Code Magic: debug, explain, write and suggest with Ollama Cloud |
 | Ctrl+N | New program |
@@ -73,6 +74,13 @@ filename prefix to navigate. The dropdown refreshes on each Open, lists `.bas` f
 application. On keyboards that reserve function keys, use Fn+F3 / Fn+F5, the Ctrl shortcuts,
 or click the menu buttons. Unsaved edits show `*`; New, Open and Quit ask before discarding.
 Save as asks before replacing a different existing file.
+
+**Copy and paste:** drag to select text in the editor, output or help, then press
+**Ctrl+C** to copy. Use **Ctrl+V** to paste into the editor or input field.
+On macOS, these shortcuts use the system clipboard; **Cmd+V** also pastes through
+your terminal. Hold **Shift** while pressing arrow keys to select with the keyboard.
+Other terminals need OSC 52 clipboard support to copy into other applications;
+use the terminal's Paste shortcut for text copied outside GBASIC.
 
 The UI can open and edit numbered BASIC or unnumbered QBasic text. **Execution currently
 requires numbered BASIC**; QBasic procedures are not implemented yet. Enter a simple example in the upper panel:
