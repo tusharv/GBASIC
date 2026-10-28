@@ -9,6 +9,10 @@
     "parameters": [
       "Function keys: use Fn if your keyboard reserves them.",
       "Ctrl+S Save; Ctrl+O Open; Ctrl+N New; Ctrl+Q Quit; F6 Stop.",
+      "Alt+N New; Alt+O Open; Alt+S Save; Alt+A or Ctrl+Shift+S Save as.",
+      "Alt+R Run; Alt+T Stop; Alt+H Help; Alt+M Magic; Alt+I Input; Alt+Q Quit.",
+      "On macOS, enable Use Option as Meta key in your terminal for Alt shortcuts.",
+      "If Ctrl+Shift+S is sent as Ctrl+S by your terminal, use Alt+A or F4 for Save as.",
       "Ctrl+C Copy selection; Ctrl+X Cut selection; Ctrl+V Paste. Shift+arrows select text.",
       "Tab/Shift+Tab: move focus; Tab in the editor inserts indentation."
     ],

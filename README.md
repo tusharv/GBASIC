@@ -51,17 +51,17 @@ program output panel, immediate command / INPUT field, clickable menus and keybo
 
 | Key | Action |
 | --- | --- |
-| F1 | Help |
-| F2 / Ctrl+S | Save (asks for a filename for a new program) |
-| F3 / Ctrl+O | Open a BASIC source file |
-| F4 | Save as |
-| F5 | Run the source in the editor |
-| F6 | Stop a program, including one waiting for INPUT |
+| F1 / Alt+H | Help |
+| F2 / Ctrl+S / Alt+S | Save (asks for a filename for a new program) |
+| F3 / Ctrl+O / Alt+O | Open a BASIC source file |
+| F4 / Ctrl+Shift+S / Alt+A | Save as |
+| F5 / Alt+R | Run the source in the editor |
+| F6 / Alt+T | Stop a program, including one waiting for INPUT |
 | Ctrl+C / Ctrl+X / Ctrl+V | Copy selection / cut selection / paste |
-| F7 | Focus the immediate command / INPUT field |
-| F8 | Code Magic: debug, explain, write and suggest with Ollama Cloud |
-| Ctrl+N | New program |
-| F10 / Ctrl+Q | Quit |
+| F7 / Alt+I | Focus the immediate command / INPUT field |
+| F8 / Alt+M | Code Magic: debug, explain, write and suggest with Ollama Cloud |
+| Ctrl+N / Alt+N | New program |
+| F10 / Ctrl+Q / Alt+Q | Quit |
 | Tab / Shift+Tab | Move between controls; in the editor, Tab inserts indentation |
 
 **Load a sample:** press **F3**, expand the examples dropdown with **Enter** (or click),
@@ -74,6 +74,11 @@ filename prefix to navigate. The dropdown refreshes on each Open, lists `.bas` f
 application. On keyboards that reserve function keys, use Fn+F3 / Fn+F5, the Ctrl shortcuts,
 or click the menu buttons. Unsaved edits show `*`; New, Open and Quit ask before discarding.
 Save as asks before replacing a different existing file.
+
+Menu letters are underlined for their Alt shortcuts; hover over a menu button to see
+its shortcut. On macOS, enable **Use Option as Meta key** in your terminal settings
+so Option sends Alt shortcuts. Some terminals cannot distinguish Ctrl+Shift+S from
+Ctrl+S; use Alt+A or F4 for Save As there.
 
 **Copy and paste:** drag to select text in the editor, output or help, then press
 **Ctrl+C** to copy. Use **Ctrl+V** to paste into the editor or input field.

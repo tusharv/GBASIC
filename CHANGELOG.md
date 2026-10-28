@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Add Alt shortcuts with underlined menu letters and shortcut tooltips, plus Ctrl+Shift+S for Save As.
 - Restore Ctrl+C copying in text panels; keep F6 for stopping programs.
 - Use the macOS system clipboard for copy, cut and paste, with a local fallback.
 - Give Magic the open filename and latest editor text, including unsaved changes, by default.

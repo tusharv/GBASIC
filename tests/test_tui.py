@@ -5,6 +5,38 @@ from ghost_basic.tui import GhostBasicApp
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize("key", ["alt+a", "ctrl+shift+s"])
+async def test_save_as_shortcuts_write_new_file(tmp_path, key):
+    app = GhostBasicApp(root=tmp_path)
+    async with app.run_test() as pilot:
+        await pilot.press(key)
+        app.screen.query_one("#filename", Input).value = "new-name.bas"
+        await pilot.press("enter")
+        await pilot.pause()
+        assert (tmp_path / "new-name.bas").read_text() == app.saved_source
+        assert app.filename == "new-name.bas"
+
+
+@pytest.mark.asyncio
+async def test_alt_help_magic_input_and_quit(tmp_path):
+    from ghost_basic.keyword_help import KeywordHelpScreen
+
+    app = GhostBasicApp(root=tmp_path)
+    async with app.run_test() as pilot:
+        await pilot.press("alt+h")
+        assert isinstance(app.screen, KeywordHelpScreen)
+        await pilot.press("escape")
+        await pilot.press("alt+m")
+        assert app.magic_panel.display
+        await pilot.press("alt+m")
+        assert not app.magic_panel.display
+        await pilot.press("alt+i")
+        assert app.focused is app.query_one("#command", Input)
+        await pilot.press("alt+q")
+        assert not app.is_running
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize("source_id", ["editor", "output"])
 async def test_copy_selection_and_paste_into_editor(tmp_path, source_id, monkeypatch):
     from textual.document._document import Selection
@@ -95,43 +127,46 @@ async def test_ascii_editor_and_run(tmp_path, size):
 
 
 @pytest.mark.asyncio
-async def test_open_and_save(tmp_path):
+@pytest.mark.parametrize("open_key,save_key", [("f3", "f2"), ("alt+o", "alt+s")])
+async def test_open_and_save(tmp_path, open_key, save_key):
     (tmp_path / "hello.bas").write_text('10 PRINT "loaded"\n')
     app = GhostBasicApp(root=tmp_path)
     async with app.run_test() as pilot:
-        await pilot.press("f3")
+        await pilot.press(open_key)
         app.screen.query_one("#filename", Input).value = "hello.bas"
         await pilot.press("enter")
         await pilot.pause()
         editor = app.query_one("#editor", TextArea)
         assert "loaded" in editor.text
         editor.load_text('10 PRINT "saved"\n')
-        await pilot.press("f2")
+        await pilot.press(save_key)
         await pilot.pause()
         assert (tmp_path / "hello.bas").read_text() == '10 PRINT "saved"\n'
         assert not app.dirty
 
 
 @pytest.mark.asyncio
-async def test_unsaved_new_cancel_and_discard(tmp_path):
+@pytest.mark.parametrize("new_key", ["ctrl+n", "alt+n"])
+async def test_unsaved_new_cancel_and_discard(tmp_path, new_key):
     app = GhostBasicApp(root=tmp_path)
     async with app.run_test() as pilot:
         app.query_one("#editor", TextArea).load_text('10 PRINT "keep"')
         await pilot.pause()
-        await pilot.press("ctrl+n")
+        await pilot.press(new_key)
         await pilot.press("escape")
         assert "keep" in app.query_one("#editor", TextArea).text
-        await pilot.press("ctrl+n")
+        await pilot.press(new_key)
         await pilot.click("#discard")
         assert app.query_one("#editor", TextArea).text == ""
 
 
 @pytest.mark.asyncio
-async def test_input_and_stop(tmp_path):
+@pytest.mark.parametrize("run_key,stop_key", [("f5", "f6"), ("alt+r", "alt+t")])
+async def test_input_and_stop(tmp_path, run_key, stop_key):
     app = GhostBasicApp(root=tmp_path, max_steps=100_000_000)
     async with app.run_test() as pilot:
         app.query_one("#editor", TextArea).load_text("10 INPUT N$\n20 PRINT N$")
-        await pilot.press("f5")
+        await pilot.press(run_key)
         for _ in range(100):
             await pilot.pause(0.02)
             if app.waiting_input:
@@ -144,8 +179,8 @@ async def test_input_and_stop(tmp_path):
         await settle(pilot, app)
         assert "Ada" in app.output_text
         app.query_one("#editor", TextArea).load_text("10 GOTO 10")
-        await pilot.press("f5")
-        await pilot.press("f6")
+        await pilot.press(run_key)
+        await pilot.press(stop_key)
         await settle(pilot, app)
         assert "Stopped" in app.output_text
 

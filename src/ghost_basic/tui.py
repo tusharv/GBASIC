@@ -160,16 +160,16 @@ class GhostBasicApp(App[None]):
     .dialog-buttons Button:focus, #close:focus { background: #00aaaa; }
     """
     BINDINGS = [
-        Binding("f1", "help", "Help", priority=True),
-        Binding("f2,ctrl+s", "save", "Save", priority=True),
-        Binding("f3,ctrl+o", "open", "Open", priority=True),
-        Binding("f4", "save_as", "Save as", priority=True),
-        Binding("f5", "run", "Run", priority=True),
-        Binding("f6", "stop", "Stop", priority=True),
-        Binding("f7", "command", "Command", priority=True),
-        Binding("f8", "magic", "Magic", priority=True),
-        Binding("ctrl+n", "new", "New", priority=True),
-        Binding("f10,ctrl+q", "request_quit", "Quit", priority=True),
+        Binding("f1,alt+h", "help", "Help", priority=True),
+        Binding("f2,ctrl+s,alt+s", "save", "Save", priority=True),
+        Binding("f3,ctrl+o,alt+o", "open", "Open", priority=True),
+        Binding("f4,ctrl+shift+s,alt+a", "save_as", "Save as", priority=True),
+        Binding("f5,alt+r", "run", "Run", priority=True),
+        Binding("f6,alt+t", "stop", "Stop", priority=True),
+        Binding("f7,alt+i", "command", "Command", priority=True),
+        Binding("f8,alt+m", "magic", "Magic", priority=True),
+        Binding("ctrl+n,alt+n", "new", "New", priority=True),
+        Binding("f10,ctrl+q,alt+q", "request_quit", "Quit", priority=True),
     ]
 
     def __init__(
@@ -227,18 +227,24 @@ class GhostBasicApp(App[None]):
     def compose(self) -> ComposeResult:
         yield Static("GHOST BASIC | Python BASIC programming environment", id="title", markup=False)
         with Horizontal(id="menu"):
-            for label, action in [
-                ("New", "new"),
-                ("Open", "open"),
-                ("Save", "save"),
-                ("Save as", "save_as"),
-                ("Run", "run"),
-                ("Stop", "stop"),
-                ("Help", "help"),
-                ("Magic", "magic"),
-                ("Quit", "quit"),
+            for label, action, mnemonic in [
+                ("New", "new", "n"),
+                ("Open", "open", "o"),
+                ("Save", "save", "s"),
+                ("Save as", "save_as", "a"),
+                ("Run", "run", "r"),
+                ("Stop", "stop", "t"),
+                ("Help", "help", "h"),
+                ("Magic", "magic", "m"),
+                ("Quit", "quit", "q"),
             ]:
-                yield Button(label, id=f"menu-{action}", compact=True)
+                caption = Text(label)
+                offset = label.lower().rindex(mnemonic)
+                caption.stylize("underline", offset, offset + 1)
+                yield Button(
+                    caption, id=f"menu-{action}", compact=True,
+                    tooltip=f"{label} (Alt+{mnemonic.upper()})",
+                )
         with Horizontal(id="workspace"):
             with Vertical(id="program"):
                 yield TextArea(_STARTER, id="editor", soft_wrap=False, tab_behavior="indent")
