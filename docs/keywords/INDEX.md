@@ -41,11 +41,11 @@ From a terminal: GBASIC --help-keyword PRINT. Escape/F1 closes the UI reference.
 | [CHAIN](chain.md) | Environment | Not implemented - reference only |
 | [CHR$](chr-string.md) | Functions | Supported |
 | [CINT](cint.md) | Functions | Supported |
-| [CIRCLE](circle.md) | Graphics | Not implemented - reference only |
+| [CIRCLE](circle.md) | Graphics | Supported subset |
 | [CLEAR](clear.md) | Environment | Supported |
 | [CLOSE](close.md) | Files | Not implemented - reference only |
 | [CLS](cls.md) | Terminal effects | Supported subset |
-| [COLOR](color.md) | Terminal layout | Not implemented - reference only |
+| [COLOR](color.md) | Terminal layout | Supported subset |
 | [CONST](const.md) | Variables | Not implemented - reference only |
 | [CONT](cont.md) | Environment | Not implemented - reference only |
 | [COS](cos.md) | Functions | Supported |
@@ -105,7 +105,7 @@ From a terminal: GBASIC --help-keyword PRINT. Escape/F1 closes the UI reference.
 | [LEFT$](left-string.md) | Functions | Supported |
 | [LEN](len.md) | Functions | Supported |
 | [LET](let.md) | Variables | Supported |
-| [LINE](line.md) | Graphics | Not implemented - reference only |
+| [LINE](line.md) | Graphics | Supported subset |
 | [LINE INPUT](line-input.md) | Input/output | Not implemented - reference only |
 | [LINE INPUT#](line-input-file.md) | Files | Not implemented - reference only |
 | [LIST](list.md) | Environment | Supported |
@@ -132,13 +132,13 @@ From a terminal: GBASIC --help-keyword PRINT. Escape/F1 closes the UI reference.
 | [PALETTE](palette.md) | Graphics | Not implemented - reference only |
 | [PEEK](peek.md) | Machine access | Not implemented - reference only |
 | [PLAY](play.md) | Audio | Not implemented - reference only |
-| [POINT](point.md) | Graphics | Not implemented - reference only |
+| [POINT](point.md) | Graphics | Supported subset |
 | [POKE](poke.md) | Machine access | Not implemented - reference only |
-| [PRESET](preset.md) | Graphics | Not implemented - reference only |
+| [PRESET](preset.md) | Graphics | Supported subset |
 | [PRINT](print.md) | Input/output | Supported |
 | [PRINT USING](print-using.md) | Formatting | Not implemented - reference only |
 | [PRINT#](print-file.md) | Files | Not implemented - reference only |
-| [PSET](pset.md) | Graphics | Not implemented - reference only |
+| [PSET](pset.md) | Graphics | Supported subset |
 | [PUT](put.md) | Files / graphics | Not implemented - reference only |
 | [QUIT](quit.md) | Environment | Supported |
 | [RANDOMIZE](randomize.md) | Random numbers | Not implemented - reference only |
@@ -154,7 +154,7 @@ From a terminal: GBASIC --help-keyword PRINT. Escape/F1 closes the UI reference.
 | [RSET](rset.md) | Strings / files | Not implemented - reference only |
 | [RUN](run.md) | Environment | Supported |
 | [SAVE](save.md) | Environment | Supported |
-| [SCREEN](screen.md) | Graphics | Not implemented - reference only |
+| [SCREEN](screen.md) | Graphics | Supported subset |
 | [SELECT](select.md) | Control flow | Not implemented - reference only |
 | [SGN](sgn.md) | Functions | Supported |
 | [SHARED](shared.md) | Scope | Not implemented - reference only |

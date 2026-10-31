@@ -215,3 +215,14 @@ python -m build
 [Architecture](ARCHITECTURE.md) · [Compatibility](COMPATIBILITY.md) ·
 [Roadmap and phase tracker](ROADMAP.md) · [Testing](TESTING.md) ·
 [Decisions](DECISIONS.md) · [Contributing](CONTRIBUTING.md)
+
+## Graphics
+
+Draw with SCREEN, COLOR, PSET/PRESET, LINE, CIRCLE and POINT. Run a graphics
+example with F3/F5 and press F9 to preview it, or export a PNG:
+
+```sh
+GBASIC examples/graphics_shapes.bas --graphics-output shapes.png
+```
+
+See [Graphics API and examples](docs/GRAPHICS.md) for the supported subset and Python API.

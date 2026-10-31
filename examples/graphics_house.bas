@@ -1,0 +1,23 @@
+10 REM Build a scene from filled boxes and lines. F5 run, F9 preview.
+20 REM Try changing the roof color 12 or adding another window.
+30 SCREEN 7
+40 COLOR 15,11: CLS
+50 LINE (0,150)-(319,199),2,BF
+60 FOR Y=-24 TO 24
+70 W=SQR(576-Y*Y): LINE (265-W,40+Y)-(265+W,40+Y),14
+80 NEXT Y
+90 LINE (75,85)-(225,160),6,BF
+100 FOR Y=40 TO 85
+110 W=(Y-40)*2
+120 LINE (150-W,Y)-(150+W,Y),12
+130 NEXT Y
+140 LINE (133,115)-(167,160),4,BF
+150 LINE (90,100)-(119,128),9,BF
+160 LINE (181,100)-(210,128),9,BF
+170 LINE (104,100)-(104,128),15
+180 LINE (90,114)-(119,114),15
+190 LINE (195,100)-(195,128),15
+200 LINE (181,114)-(210,114),15
+210 PSET (160,140),14
+220 PRINT "House ready. Press F9 to view."
+230 END

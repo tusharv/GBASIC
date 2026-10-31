@@ -19,6 +19,7 @@ from .credentials import CredentialStore
 from .devices import Disk
 from .errors import BasicError
 from .execution import ProgramRunner
+from .graphics_ui import GraphicsScreen
 from .help_topics import keyword_at_cursor
 from .keyword_help import KeywordHelpScreen
 from .magic import MagicEdit, MagicPanel, MagicSettingsScreen
@@ -168,6 +169,7 @@ class GhostBasicApp(App[None]):
         Binding("f6,alt+t", "stop", "Stop", priority=True),
         Binding("f7,alt+i", "command", "Command", priority=True),
         Binding("f8,alt+m", "magic", "Magic", priority=True),
+        Binding("f9", "graphics", "Graphics", priority=True),
         Binding("ctrl+n,alt+n", "new", "New", priority=True),
         Binding("f10,ctrl+q,alt+q", "request_quit", "Quit", priority=True),
     ]
@@ -277,7 +279,7 @@ class GhostBasicApp(App[None]):
             )
         yield Static(self.status_text, id="status", markup=False)
         yield Static(
-            "F1 Help F2 Save F3 Open F4 SaveAs F5 Run F6 Stop F7 Input F8 Magic F10 Quit",
+            "F1 Help F2 Save F3 Open F4 SaveAs F5 Run F6 Stop F7 Input F8 Magic F9 Graphics F10 Quit",
             id="shortcuts",
             markup=False,
         )
@@ -299,6 +301,8 @@ class GhostBasicApp(App[None]):
         self.query_one("#editor", TextArea).focus()
 
     def check_action(self, action: str, parameters: tuple[object, ...]) -> bool | None:
+        if self.screen_stack and isinstance(self.screen, GraphicsScreen):
+            return action == "graphics"
         if self.screen_stack and isinstance(self.screen, (SplashScreen, MagicSettingsScreen)):
             return False
         if (
@@ -454,6 +458,16 @@ class GhostBasicApp(App[None]):
         self.runner.start(source, immediate=immediate)
         self.status("Running | F6 Stop")
 
+    def action_graphics(self) -> None:
+        if isinstance(self.screen, GraphicsScreen):
+            self.screen.action_close()
+        elif self.runner.running:
+            self.status("Stop the program with F6 before opening graphics")
+        elif self.runner.runtime is None or not self.runner.runtime.graphics.mode:
+            self.status("No graphics screen | Run a program using SCREEN 7, 9 or 12")
+        else:
+            self.push_screen(GraphicsScreen(self.runner.runtime.graphics))
+
     def action_stop(self) -> None:
         if self.runner.running:
             self.runner.stop()
@@ -475,7 +489,12 @@ class GhostBasicApp(App[None]):
             elif event.kind == "done":
                 self.waiting_input = False
                 if not self.run_had_error:
-                    self.status("Finished | F5 Run again")
+                    graphics = self.runner.runtime and self.runner.runtime.graphics.mode
+                    self.status(
+                        "Finished | F9 Graphics | F5 Run again"
+                        if graphics
+                        else "Finished | F5 Run again"
+                    )
         if changed:
             self.append_output(changed)
         if self.deferred and not self.runner.running:

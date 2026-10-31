@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from .devices import TextInput, TextOutput
 from .errors import BasicError
 from .evaluator import evaluate
+from .graphics import Graphics
 from .parser import Parser
 from .program import Program
 from .syntax import Expr, Reference, Statement
@@ -46,6 +47,7 @@ class Runtime:
     ) -> None:
         self.output: TextOutput = output if output is not None else sys.stdout
         self.input: TextInput = input_stream if input_stream is not None else sys.stdin
+        self.graphics = Graphics()
         self.max_steps = max_steps
         self.max_cells = max_cells
         self.variables: dict[str, Value] = {}
@@ -65,6 +67,11 @@ class Runtime:
         return evaluate(expr, self.lookup)
 
     def lookup(self, ref: Reference) -> Value:
+        if ref.name == "POINT":
+            if len(ref.indices) != 2:
+                raise BasicError("Illegal function call: POINT requires x,y")
+            x, y = (self.value(e).integer() for e in ref.indices)
+            return numeric(self.graphics.point(x, y), Kind.INTEGER)
         if ref.indices:
             array, key = self.cell(ref)
             return array.cells.get(key, default(ref.name))
@@ -105,6 +112,7 @@ class Runtime:
 
     def prepare(self, program: Program, *, reset: bool = True) -> None:
         if reset:
+            self.graphics.screen(0)
             self.variables.clear()
             self.arrays.clear()
         self.instructions.clear()
@@ -293,8 +301,31 @@ class Runtime:
                 raise BasicError("Redo from start") from None
             for ref, value in zip(stmt.targets, values):
                 self.assign(ref, value)
+        elif op in ("SCREEN", "COLOR", "PSET", "PRESET", "LINE", "CIRCLE"):
+            args = [self.value(e).integer() for e in stmt.expressions]
+            if op == "SCREEN":
+                self.graphics.screen(args[0])
+            elif op == "COLOR":
+                self.graphics.color(args[0], args[1] if len(args) > 1 else None)
+            elif op in ("PSET", "PRESET"):
+                draw = self.graphics.pset if op == "PSET" else self.graphics.preset
+                draw(args[0], args[1], args[2] if len(args) > 2 else None)
+            elif op == "LINE":
+                self.graphics.line(
+                    args[0],
+                    args[1],
+                    args[2],
+                    args[3],
+                    args[4] if len(args) > 4 else None,
+                    box=stmt.text,
+                )
+            else:
+                self.graphics.circle(args[0], args[1], args[2], args[3] if len(args) > 3 else None)
         elif op == "CLS":
-            self.emit("\x1b[2J\x1b[H")
+            if self.graphics.mode:
+                self.graphics.clear()
+            else:
+                self.emit("\x1b[2J\x1b[H")
         elif op == "BEEP":
             self.emit("\a")
         elif op != "DATA":

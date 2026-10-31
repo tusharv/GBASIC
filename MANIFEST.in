@@ -14,3 +14,6 @@ recursive-include tools *.py
 recursive-include site *.html *.css *.js *.svg *.png
 include site/.nojekyll
 include .github/workflows/pages.yml
+recursive-include tests/compatibility *.json
+include examples/numeric_*.bas
+include examples/graphics_*.bas

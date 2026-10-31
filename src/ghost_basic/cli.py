@@ -20,10 +20,13 @@ def main() -> int:
     )
     parser.add_argument("--version", action="version", version="Ghost BASIC 0.4.1")
     parser.add_argument("--no-splash", action="store_true", help="skip the startup ghost animation")
+    parser.add_argument("--graphics-output", type=Path, help="save final graphics screen as PNG")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--ide", action="store_true", help="open the ASCII terminal editor")
     mode.add_argument("--shell", action="store_true", help="use the classic BASIC prompt")
     args = parser.parse_args()
+    if args.graphics_output and (not args.program or args.ide or args.help_keyword):
+        parser.error("--graphics-output requires a batch program")
     if args.max_steps < 1:
         parser.error("--max-steps must be positive")
     if args.help_keyword:
@@ -53,6 +56,8 @@ def main() -> int:
         try:
             source = read_source(args.program)
             shell.runtime.run(Program.from_source(source))
+            if args.graphics_output:
+                shell.runtime.graphics.save_png(args.graphics_output)
         except (BasicError, OSError, UnicodeError) as error:
             print(error, file=sys.stderr)
             return 1

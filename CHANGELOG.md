@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- Expand the graphics gallery with a house, checkerboard, bar chart, spiral, flower and skyline.
+
+- Add the Graphics API: 16-color screens, pixels, lines/boxes, circles and POINT readback.
+- Add F9 graphics previews, command-line PNG export and three runnable graphics examples.
+
+- Preserve operand precision in +, -, *, / and ABS/INT/FIX; promote integer calculation overflow to single.
+- Add three runnable numeric examples for signed literals, intermediate precision and integer calculations.
+
+- Classify decimal literals as integer, single or double; preserve precision through unary signs.
+- Interpret hex/octal constants as signed 16-bit values and accept short octal (&177777).
+- Add optional reference-interpreter comparisons and eight manual-linked BASIC probes.
+
 - Add Alt shortcuts with underlined menu letters and shortcut tooltips, plus Ctrl+Shift+S for Save As.
 - Restore Ctrl+C copying in text panels; keep F6 for stopping programs.
 - Use the macOS system clipboard for copy, cut and paste, with a local fallback.

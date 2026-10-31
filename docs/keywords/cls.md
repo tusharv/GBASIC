@@ -40,5 +40,6 @@ Before
 
 - ANSI clear sequence is emitted; this is not an emulated BASIC screen buffer.
 - The ASCII IDE filters control escapes rather than clearing its interface.
+- In graphics mode, clears pixels to the current background color without emitting a terminal escape sequence.
 
 [Back to keyword index](INDEX.md)

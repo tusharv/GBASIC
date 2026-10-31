@@ -3,7 +3,7 @@
 from .errors import BasicError
 from .lexer import Token, tokenize
 from .syntax import Binary, Expr, Literal, Reference, Statement, Unary
-from .values import Kind, Value, numeric
+from .values import Kind, Value, numeric, numeric_literal
 
 # GW-BASIC exponentiation associates left; sign binds below exponentiation.
 _PRECEDENCE = {
@@ -66,16 +66,7 @@ class Parser:
         elif token.kind == "STRING":
             left = Literal(Value(Kind.STRING, token.text[1:-1]))
         elif token.kind == "NUMBER":
-            text = token.text.upper()
-            if text.startswith("&"):
-                value = numeric(int(text[2:], 16 if text[1] == "H" else 8))
-            else:
-                suffix = text[-1] if text[-1] in "%!#" else ""
-                kind = {"%": Kind.INTEGER, "!": Kind.SINGLE, "#": Kind.DOUBLE}.get(
-                    suffix, Kind.DOUBLE
-                )
-                value = numeric(float((text[:-1] if suffix else text).replace("D", "E")), kind)
-            left = Literal(value)
+            left = Literal(numeric_literal(token.text))
         elif token.kind == "NAME":
             left = self.reference(token.text)
         else:
@@ -118,9 +109,41 @@ class Parser:
             self.fail("Unexpected token")
         return statements
 
+    def coordinates(self) -> tuple[Expr, Expr]:
+        self.expect("(")
+        x = self.expression()
+        self.expect(",")
+        y = self.expression()
+        self.expect(")")
+        return x, y
+
     def statement(self) -> Statement:
         op = self.take().text
         expressions: list[Expr] = []
+        if op in ("SCREEN", "COLOR"):
+            expressions.append(self.expression())
+            if op == "COLOR" and self.accept(","):
+                expressions.append(self.expression())
+            return Statement(op, tuple(expressions))
+        if op in ("PSET", "PRESET", "LINE", "CIRCLE"):
+            expressions.extend(self.coordinates())
+            if op == "LINE":
+                self.expect("-")
+                expressions.extend(self.coordinates())
+            elif op == "CIRCLE":
+                self.expect(",")
+                expressions.append(self.expression())
+            box = ""
+            if self.accept(","):
+                if self.current.text != ",":
+                    expressions.append(self.expression())
+                elif op != "LINE":
+                    self.fail("Expected color")
+                if op == "LINE" and self.accept(","):
+                    box = self.take().text
+                    if box not in ("B", "BF"):
+                        self.fail("Expected B or BF")
+            return Statement(op, tuple(expressions), text=box)
         if op in ("PRINT", "?"):
             separators = []
             while self.current.kind != "EOF" and self.current.text not in (":", "ELSE"):

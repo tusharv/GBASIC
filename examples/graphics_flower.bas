@@ -1,0 +1,17 @@
+10 REM Circles around a ring form petals. F5 run, F9 preview.
+20 REM Try 8 or 16 petals by changing N=12.
+30 SCREEN 7
+40 N=12: PI=3.14159265#
+50 LINE (160,100)-(160,199),10
+60 LINE (160,165)-(135,145),10
+70 LINE (160,175)-(185,155),10
+80 FOR I=0 TO N-1
+90 A=2*PI*I/N
+100 X=160+35*COS(A): Y=85+35*SIN(A)
+110 CIRCLE (X,Y),28,9+(I MOD 7)
+120 NEXT I
+130 FOR Y=-17 TO 17
+140 W=SQR(289-Y*Y): LINE (160-W,85+Y)-(160+W,85+Y),14
+150 NEXT Y
+160 PRINT "Flower ready. Press F9 to view."
+170 END

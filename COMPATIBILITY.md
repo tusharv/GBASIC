@@ -21,7 +21,7 @@ local behavior, not differential equivalence to an original interpreter.
 | DIM, arrays | Implemented subset | zero-based inclusive bounds, multiple dimensions, implicit bounds 10; no OPTION BASE or REDIM |
 | DATA READ RESTORE | Implemented subset | numeric/quoted string constants; RESTORE line; unquoted DATA strings unsupported |
 | Operators | Implemented subset | + - * / ^ integer division MOD; comparisons; NOT AND OR XOR EQV IMP; left-associative power |
-| Numeric representation | Approximation | 16-bit integer, IEEE single assignment, IEEE double arithmetic; no MBF or exact expression type propagation |
+| Numeric representation | Approximation | 16-bit integer, classified integer/single/double literals, IEEE single assignment, precision-aware + - * /; no MBF or full intrinsic/exponentiation type fidelity |
 | String behavior | Approximation | Unicode Python strings, max 32767 chars; no CP437 byte semantics or MID$ assignment |
 | BASIC errors | Implemented subset | source lines, syntax columns, arithmetic/types/bounds/data/control/file/budget errors; no ON ERROR/RESUME |
 | Startup splash | Implemented | Animated ASCII ghost, automatic timeout, any-key/click skip, --no-splash; 80x24/120x40 and resize tests |
@@ -29,7 +29,8 @@ local behavior, not differential equivalence to an original interpreter.
 | ASCII terminal UI | Implemented editor subset | Open with examples dropdown/save/new, unsaved and overwrite prompts, Run/Stop, INPUT and immediate commands; headless 80x24/120x40 plus manual TTY launch |
 | Code Magic | Optional Cloud assistant | F8; remembered key/model, validity check, context toggle, syntax-check/repair, diff review, undo; tested with simulated HTTP, live inference requires a user key |
 | Step API | Implemented | prepare/step, pc, instruction source line, variables; no breakpoint UI |
-| CLS / BEEP | Terminal only | ANSI clear / ASCII bell; no virtual screen, backend tests or audio hardware claim |
+| Graphics | Implemented subset | SCREEN 0/7/9/12, fixed 16 colors, COLOR, PSET/PRESET, explicit LINE and B/BF, full pixel circles, POINT(x,y), F9 preview, PNG export; see docs/GRAPHICS.md |
+| CLS / BEEP | Partial | CLS clears graphical framebuffer or terminal; BEEP remains terminal bell, no audio synthesis |
 
 ## Implemented intrinsic inventory
 
@@ -39,8 +40,15 @@ LEN, ASC, CHR$, STR$, VAL, LEFT$, RIGHT$, MID$, SPACE$, STRING$.
 Arity, type errors and selected domain/boundary behavior are tested. VAL currently parses
 a decimal numeric prefix only; no hex/octal VAL or embedded-space behavior. ASC/CHR$
 operate on Unicode characters / codepoints 0–255 rather than DOS codepage bytes.
-Hex/octal literals do not yet apply signed 16-bit reinterpretation. Formatting is approximate.
-Unsuffixed literal arithmetic is double; arithmetic overflow/promotion differs from GW-BASIC.
+Hex/octal literals use signed 16-bit reinterpretation; &HFFFF, &O177777 and &177777
+all yield -1. Values beyond 16 bits raise Overflow; QBasic long-integer suffixes remain unsupported.
+Decimal literals classify integer/single/double using range, significant digits, E/D and
+explicit suffixes. Unary signs preserve precision (negating the minimum integer promotes
+to single). The +, -, * and / operators select the widest operand precision; / on integers
+returns single. Integer arithmetic overflow promotes to single, while integer assignment
+remains range-checked. ABS, INT and FIX preserve operand precision (ABS of the minimum
+integer promotes to single). Exponentiation, other intrinsic result types and numeric
+formatting remain approximate. See tests/test_numeric_literals.py.
 Keywords cannot be packed into identifiers as in some tokenized legacy source forms.
 The editor accepts unnumbered QBasic text for viewing/editing. Execution still requires
 numbered source and rejects unnumbered programs with an explicit compatibility message.
@@ -58,8 +66,9 @@ strings remain Unicode. A trailing DOS EOF marker and CRLF/CR line endings are n
   binary/random GET/PUT/FIELD, MKI$/MKS$/MKD$/CVI/CVS/CVD, filesystem commands.
 - QBasic: multiline IF/ELSEIF/END IF, DO/LOOP, EXIT, SELECT CASE, CONST,
   SUB/FUNCTION, CALL, DECLARE, local/shared/static scope, TYPE and long integers.
-- Graphics/input: SCREEN, PSET/PRESET, POINT, LINE, CIRCLE, PAINT, DRAW, GET/PUT,
-  PALETTE, VIEW/WINDOW, LOCATE/COLOR/WIDTH, INKEY$, keyboard/joystick/timer events.
+- Graphics/input: other SCREEN modes/pages, STEP/implicit LINE start/styles, CIRCLE arcs/aspect,
+  PAINT, DRAW, GET/PUT, PALETTE, VIEW/WINDOW, text rendering, LOCATE/WIDTH, INKEY$,
+  animation and keyboard/joystick/timer events. Graphics COLOR is limited to fixed indices.
 - Audio: SOUND, PLAY, timing and synthesized optional backends.
 - Machine: PEEK/POKE, DEF SEG, CALL/USR, ports, device extensions and ROM behavior.
   Require explicit virtualized capability design, never unrestricted host access.
@@ -74,7 +83,7 @@ applicable, documentation, and a row with evidence here.
 
 ## Learning gallery
 
-Forty-two runnable examples, including ten patterns, three basic logic exercises and 22 input-based calculators, are
+Fifty-four runnable examples, including ten patterns, three basic logic exercises and 22 input-based calculators and three numeric precision examples and nine graphics programs, are
 covered by exact-output tests in tests/test_examples.py, tests/test_patterns.py and tests/test_calculators.py. Pattern
 exercises use only the implemented numbered BASIC subset; single-row cases and prime
 boundaries are verified. See examples/README.md for learning steps and numeric limits.

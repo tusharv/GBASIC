@@ -214,3 +214,75 @@ All 407 tests pass. Ruff lint/format and strict mypy also pass. Regression cover
 checks the open filename, unsaved editor text, file switching, default context on
 reopening, and the outgoing request metadata. The updated Magic screenshot was
 visually checked. Cloud requests use mocked responses; no live inference was tested.
+
+## Differential harness — 2026-10-31
+
+Full suite: **430 passed, 1 skipped** on local macOS. The skipped test is the explicit
+licensed-reference comparison: no `GHOST_BASIC_REFERENCE_COMMAND` was configured.
+Twelve new local tests exercise real subprocesses, exact spacing, CRLF normalization,
+input delivery, temporary-directory isolation, failed processes, timeouts, invalid
+configuration, required-reference mode, and five independently specified BASIC probes.
+The initial nine harness tests failed before implementation and passed afterward.
+
+Ruff lint/format checks and strict package mypy passed. Wheel and source archive built;
+archive inspection confirmed the runner, tests and JSON corpus are included. The harness
+is development tooling, intentionally outside the installed runtime package. See
+`docs/DIFFERENTIAL_TESTING.md` for adapter setup and resource/child-process limitations.
+No legacy compatibility result is claimed from the harness's Python subprocess tests.
+
+## Numeric literals — 2026-10-31
+
+Full suite: **469 passed, 1 skipped** (licensed reference not configured). Thirty-nine
+new regression cases cover integer/single/double classification, E/D and suffix selection,
+single rounding before CDBL, signed 16-bit hexadecimal and both octal prefixes, overflow,
+invalid literals, unary signs, and DATA/READ/bitwise execution. Before implementation,
+25 of these tests failed and 14 existing-behavior cases passed. The comparison corpus now
+contains seven probes; all pass their local Ghost BASIC expected-output checks.
+
+Ruff lint/format and strict mypy passed. A type-check failure caused by reusing an integer
+local name for a float was corrected and rechecked, with all 39 focused cases passing.
+An independent read-only code review found no substantive issues within this scope.
+Binary arithmetic promotion, intrinsic result types, MBF and full numeric formatting
+remain pending; no original-interpreter equivalence is claimed.
+
+## Expression precision and numeric gallery — 2026-10-31
+
+Full suite: **505 passed, 1 skipped**. The skipped comparison still requires a licensed
+reference runtime. The new batch adds 36 tests: result kinds for +, -, *, / and ABS/INT/FIX;
+integer overflow promotion; intermediate single rounding; mixed double operands;
+assignment after rounding; BASIC errors; and exact output from three numeric examples.
+Before implementation, 25 new tests failed and 11 existing-behavior cases passed.
+The expanded eight-probe differential corpus also passed all local checks.
+
+Ruff lint/format and strict mypy passed. Independent read-only review found no substantive
+issues and ran all 75 numeric-literal/expression tests successfully. Wheel and source builds
+passed; source archive inspection confirmed all three numeric_*.bas examples are shipped.
+Exponentiation and remaining intrinsic precision, MBF and legacy-runtime comparisons
+remain outside this verification claim.
+
+## Graphics API and examples — 2026-10-31
+
+Full suite: **536 passed, 1 skipped** (unconfigured licensed reference). Graphics coverage
+includes 24 tests for raster primitives, clipping, color and mode validation, POINT,
+RUN/immediate state, PNG CRC/decompression/CLI export, failed-export file preservation,
+three examples, 80x24/120x40 preview layout, active-worker guards and modal shortcuts.
+Seven newly runnable help examples are also checked by the help-example suite.
+The initial 15 graphics tests failed before implementation. Preview/example tests also
+failed before their implementation. Independent review exposed F9 stacking and unguarded
+editor actions; a failing regression was added, then the modal behavior was fixed.
+
+Lint/format and strict mypy pass for 24 modules. Wheel and source builds pass; archive
+inspection verified the graphics modules and all three graphics examples. The shapes
+example was exported to PNG and visually inspected. Live Windows/Linux terminals,
+original interpreter raster equivalence, and animated drawing remain unverified.
+Generated Markdown retains intentional hard-break spaces and exact BASIC output spacing.
+
+## Expanded graphics gallery — 2026-10-31
+
+Added six examples: house, checkerboard, bars, spiral, flower and skyline. Each executes
+under 20,000 steps and has tests for expected console output, characteristic pixels,
+mode and color diversity. All six rendered scenes were visually inspected; solid circular
+fills use horizontal scanlines to avoid holes between concentric outlines.
+
+Full suite: **542 passed, 1 skipped** (licensed reference unconfigured). Ruff lint/format
+pass. Wheel/source builds pass; the source archive contains all nine graphics examples.

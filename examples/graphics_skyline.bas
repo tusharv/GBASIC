@@ -1,0 +1,20 @@
+10 REM A night skyline with repeating lit windows. F5 run, F9 preview.
+20 REM Try different building heights in the DATA line.
+30 SCREEN 7
+40 COLOR 15,1: CLS
+50 FOR Y=-18 TO 18
+60 W=SQR(324-Y*Y): LINE (270-W,30+Y)-(270+W,30+Y),14
+70 NEXT Y
+80 DATA 80,130,100,150,110,65
+90 FOR I=0 TO 5
+100 READ H
+110 X=8+I*52
+120 LINE (X,200-H)-(X+43,199),8,BF
+130 FOR Y=210-H TO 185 STEP 16
+140 FOR W=X+7 TO X+31 STEP 12
+150 LINE (W,Y)-(W+5,Y+7),14,BF
+160 NEXT W
+170 NEXT Y
+180 NEXT I
+190 PRINT "Skyline ready. Press F9 to view."
+200 END

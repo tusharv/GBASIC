@@ -43,7 +43,7 @@ def test_aliases_and_search():
 
 
 def test_planned_syntax_is_marked_as_not_implemented():
-    for keyword in ("SUB", "FUNCTION", "OPEN", "SCREEN"):
+    for keyword in ("SUB", "FUNCTION", "OPEN", "PAINT"):
         topic = get_topic(keyword)
         assert topic.status == "planned"
         assert "Not implemented" in render_text(topic)

@@ -86,3 +86,42 @@ def formatted(value: Value) -> str:
     n = value.number()
     text = format(n, ".7g" if value.kind == Kind.SINGLE else ".15g")
     return (" " if n >= 0 else "") + text + " "
+
+
+def numeric_literal(text: str) -> Value:
+    """Convert a lexer-validated literal, retaining its BASIC precision category."""
+    text = text.upper()
+    if text.startswith("&"):
+        hexadecimal = text.startswith("&H")
+        digits = text[2:] if text.startswith(("&H", "&O")) else text[1:]
+        digits = digits.lstrip("0") or "0"
+        # Reject huge literals before allocating a host arbitrary-precision integer.
+        if len(digits) > (4 if hexadecimal else 6):
+            raise BasicError("Overflow")
+        radix_number = int(digits, 16 if hexadecimal else 8)
+        if radix_number > 65535:
+            raise BasicError("Overflow")
+        return numeric(radix_number if radix_number < 32768 else radix_number - 65536, Kind.INTEGER)
+
+    suffix = text[-1] if text[-1] in "%!#" else ""
+    body = text[:-1] if suffix else text
+    number = float(body.replace("D", "E"))
+    if suffix:
+        kind = {"%": Kind.INTEGER, "!": Kind.SINGLE, "#": Kind.DOUBLE}[suffix]
+    elif "D" in body:
+        kind = Kind.DOUBLE
+    elif "E" in body:
+        kind = Kind.SINGLE
+    elif "." not in body and number <= 32767:
+        kind = Kind.INTEGER
+    else:
+        significant = body.replace(".", "").lstrip("0")
+        kind = Kind.SINGLE if len(significant) <= 7 else Kind.DOUBLE
+    return numeric(number, kind)
+
+
+def arithmetic_result(number: float, kind: Kind) -> Value:
+    """Promote overflowing integer calculations; assignments still use strict coerce."""
+    if kind == Kind.INTEGER and not -32768 <= number <= 32767:
+        kind = Kind.SINGLE
+    return numeric(number, kind)

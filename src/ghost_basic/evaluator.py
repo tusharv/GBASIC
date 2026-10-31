@@ -6,7 +6,7 @@ from collections.abc import Callable
 
 from .errors import BasicError
 from .syntax import Binary, Expr, Literal, Reference, Unary
-from .values import Kind, Value, formatted, numeric
+from .values import Kind, Value, arithmetic_result, formatted, numeric
 
 _MATH: dict[str, Callable[[float], float]] = {
     "ABS": abs,
@@ -58,6 +58,8 @@ def intrinsic(name: str, args: list[Value]) -> Value:
     if len(args) not in arities.get(name, (1,)):
         raise BasicError("Illegal function call: argument count")
     a = args[0]
+    if name in ("ABS", "INT", "FIX"):
+        return arithmetic_result(_MATH[name](a.number()), a.kind)
     if name in _MATH:
         return numeric(_MATH[name](a.number()))
     if name == "SGN":
@@ -138,7 +140,8 @@ def _evaluate(expr: Expr, lookup: Callable[[Reference], Value]) -> Value:
         value = evaluate(expr.operand, lookup)
         if expr.op == "NOT":
             return numeric(~value.integer(), Kind.INTEGER)
-        return numeric(value.number() if expr.op == "+" else -value.number())
+        result = value.number() if expr.op == "+" else -value.number()
+        return arithmetic_result(result, value.kind)
     assert isinstance(expr, Binary)
     left, right = evaluate(expr.left, lookup), evaluate(expr.right, lookup)
     op = expr.op
@@ -154,7 +157,18 @@ def _evaluate(expr: Expr, lookup: Callable[[Reference], Value]) -> Value:
             raise BasicError("String too long")
         return Value(Kind.STRING, text)
     if op in _ARITH:
-        return numeric(_ARITH[op](left.number(), right.number()))
+        result = _ARITH[op](left.number(), right.number())
+        if op == "^":
+            return numeric(result)
+        kinds = (left.kind, right.kind)
+        kind = (
+            Kind.DOUBLE
+            if Kind.DOUBLE in kinds
+            else Kind.SINGLE
+            if Kind.SINGLE in kinds or op == "/"
+            else Kind.INTEGER
+        )
+        return arithmetic_result(result, kind)
     x, y = left.integer(), right.integer()
     if op == "\\":
         return numeric(math.trunc(x / y))

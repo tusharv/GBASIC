@@ -7,7 +7,7 @@ from .errors import BasicError
 
 _PATTERN = re.compile(
     r'(?P<SPACE>[ \t]+)|(?P<STRING>"[^"\r\n]*")|'
-    r"(?P<NUMBER>&[Hh][0-9A-Fa-f]+|&[Oo][0-7]+|"
+    r"(?P<NUMBER>&[Hh][0-9A-Fa-f]+|&[Oo]?[0-7]+|"
     r"(?:\d+(?:\.\d*)?|\.\d+)(?:[EeDd][+-]?\d+)?[%!#]?)|"
     r"(?P<NAME>[A-Za-z][A-Za-z0-9.]*[$%!#]?)|"
     r"(?P<OP><=|>=|<>|[+*/\\^=<>(),;:?\-])"

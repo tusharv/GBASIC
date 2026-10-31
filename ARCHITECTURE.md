@@ -5,7 +5,8 @@
 Ghost BASIC is an independent Python 3.12+ implementation of a GW-BASIC-style
 programming environment, ultimately extended with QBasic and modern interfaces.
 The interpreter remains a tested language subset. Version 0.2 adds the ASCII terminal editor. The full project specification
-remains the roadmap, including graphics, audio, a full debugger and offline AI.
+remains the roadmap, including advanced graphics, audio, a full debugger and offline AI.
+A deterministic 16-color graphics subset now supports drawing, PNG export and F9 snapshots.
 
 ## Chosen approach
 
@@ -175,3 +176,11 @@ one undoable TextArea edit, preserving filename and saved_source. Saving/running
 Key checks send a fixed small prompt without editor context. HTTP 401 invalidates the key;
 403 indicates denied access; connectivity/quota/model failures leave validity unverified.
 See docs/CODE_MAGIC.md for credentials, data flow, bounds and live-test limitations.
+
+## Graphics backend
+
+Runtime owns a Graphics framebuffer; BASIC graphics statements call its bounded raster
+methods. The Python API is independently usable. PNG export uses the standard library
+and only writes through an explicit host/CLI request. The editor snapshots a stopped
+runtime into immutable bytes for its read-only F9 viewer. Preview downsampling is separate
+from rasterization, and PRINT continues to use the text output adapter.

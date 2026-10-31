@@ -1,0 +1,93 @@
+[
+  {
+    "id": "print-spacing",
+    "keywords": [
+      "PRINT"
+    ],
+    "manual": "https://gw-basic.netlify.app/files/tuts/gw-man/print",
+    "source": "10 PRINT \" A \"\n20 END\n",
+    "inputs": "",
+    "output": " A \n"
+  },
+  {
+    "id": "for-next",
+    "keywords": [
+      "FOR",
+      "NEXT"
+    ],
+    "manual": "https://gw-basic.netlify.app/files/tuts/gw-man/fornext",
+    "source": "10 FOR I=1 TO 3\n20 PRINT CHR$(64+I);\n30 NEXT I\n40 PRINT\n50 END\n",
+    "inputs": "",
+    "output": "ABC\n"
+  },
+  {
+    "id": "gosub-return",
+    "keywords": [
+      "GOSUB",
+      "RETURN"
+    ],
+    "manual": "https://gw-basic.netlify.app/files/tuts/gw-man/gosub",
+    "source": "10 GOSUB 100\n20 PRINT \"B\"\n30 END\n100 PRINT \"A\";\n110 RETURN\n",
+    "inputs": "",
+    "output": "AB\n"
+  },
+  {
+    "id": "data-restore",
+    "keywords": [
+      "DATA",
+      "READ",
+      "RESTORE"
+    ],
+    "manual": "https://gw-basic.netlify.app/files/tuts/gw-man/restore",
+    "source": "10 DATA \"A\",\"B\"\n20 READ A$,B$\n30 PRINT A$;B$;\n40 RESTORE\n50 READ C$\n60 PRINT C$\n70 END\n",
+    "inputs": "",
+    "output": "ABA\n"
+  },
+  {
+    "id": "string-slicing",
+    "keywords": [
+      "LEFT$",
+      "MID$",
+      "RIGHT$"
+    ],
+    "manual": "https://gw-basic.netlify.app/files/tuts/gw-man/midsf",
+    "source": "10 A$=\"ABCDE\"\n20 PRINT LEFT$(A$,2);MID$(A$,3,1);RIGHT$(A$,2)\n30 END\n",
+    "inputs": "",
+    "output": "ABCDE\n"
+  },
+  {
+    "id": "signed-radix",
+    "keywords": [
+      "PRINT",
+      "DATA",
+      "READ"
+    ],
+    "manual": "https://www.bitsavers.org/pdf/mindset/100213-001_GW-BASIC_Reference_Manual_1984.pdf",
+    "source": "10 DATA &HFFFF,&177777,&H8000\n20 READ A%,B%,C%\n30 PRINT A%;B%;C%\n40 END\n",
+    "inputs": "",
+    "output": "-1 -1 -32768 \n"
+  },
+  {
+    "id": "literal-precision",
+    "keywords": [
+      "CDBL",
+      "IF",
+      "PRINT"
+    ],
+    "manual": "https://gw-basic.netlify.app/files/tuts/gw-man/chapter%206",
+    "source": "10 IF CDBL(2.04)=2.04# THEN PRINT \"SAME\" ELSE PRINT \"ROUNDED\"\n20 END\n",
+    "inputs": "",
+    "output": "ROUNDED\n"
+  },
+  {
+    "id": "expression-precision",
+    "keywords": [
+      "PRINT",
+      "LET"
+    ],
+    "manual": "https://gw-basic.netlify.app/files/tuts/gw-man/chapter%206",
+    "source": "10 A#=(16777216!+1!)-16777216!\n20 B#=(16777216#+1!)-16777216!\n30 PRINT A#;B#\n40 END\n",
+    "inputs": "",
+    "output": " 0  1 \n"
+  }
+]

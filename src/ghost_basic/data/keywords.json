@@ -34,7 +34,8 @@
       "Open lists examples; choose a file, Enter to select, Enter again to open. Unsaved edits show *.",
       "Startup animation lasts 5 seconds; a key/click or --no-splash skips it.",
       "Syntax notation: [...] is optional, {...|...} means choose an alternative, and ... means repeat. Do not type notation brackets/braces unless a code example shows them literally.",
-      "Magic: Send shares the request and optional program/output with Ollama Cloud. Keys are remembered in the OS credential vault; Settings > Save & check verifies access. OLLAMA_API_KEY and OLLAMA_MODEL can configure it. Review Changes before Apply, Ctrl+Z to undo, F5 to test, F2 to save."
+      "Magic: Send shares the request and optional program/output with Ollama Cloud. Keys are remembered in the OS credential vault; Settings > Save & check verifies access. OLLAMA_API_KEY and OLLAMA_MODEL can configure it. Review Changes before Apply, Ctrl+Z to undo, F5 to test, F2 to save.",
+      "F9 opens the finished graphics screen as a scaled snapshot. Escape closes it."
     ],
     "aliases": []
   },
@@ -688,7 +689,8 @@
     ],
     "notes": [
       "ANSI clear sequence is emitted; this is not an emulated BASIC screen buffer.",
-      "The ASCII IDE filters control escapes rather than clearing its interface."
+      "The ASCII IDE filters control escapes rather than clearing its interface.",
+      "In graphics mode, clears pixels to the current background color without emitting a terminal escape sequence."
     ],
     "aliases": []
   },
@@ -3358,26 +3360,28 @@
     "keyword": "SCREEN",
     "slug": "screen",
     "category": "Graphics",
-    "status": "planned",
-    "summary": "Select a legacy video mode; a function form exists in some dialects.",
+    "status": "partial",
+    "summary": "Select text mode 0 or a 16-color graphics screen: 7 (320x200), 9 (640x350), 12 (640x480).",
     "syntax": "SCREEN mode",
     "parameters": [
-      "mode: legacy screen-mode number; supported resolutions/palettes depend on hardware/dialect."
+      "Arguments are numeric expressions. Drawing coordinates are rounded to signed 16-bit integers.",
+      "Choose SCREEN 7, 9 or 12 before graphics operations; SCREEN 0 returns to text."
     ],
     "use_cases": [
-      "Start a legacy graphics program."
+      "Draw diagrams and plots; inspect the finished image with F9."
     ],
     "examples": [
       {
-        "source": "SCREEN 12",
+        "source": "10 SCREEN 7\n20 PSET (10,10),14",
         "inputs": "",
         "output": "",
-        "mode": "reference"
+        "mode": "program"
       }
     ],
     "notes": [
-      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
-      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+      "Supported subset: fixed 16-color palette; no STEP, implicit LINE start, styles, arcs, aspect, pages, or text drawn into the image.",
+      "SCREEN resets pixels and colors; RUN resets to text mode. CLS fills with the background color.",
+      "F9 shows a downsampled snapshot after running. CLI --graphics-output picture.png exports full resolution."
     ],
     "aliases": []
   },
@@ -3385,27 +3389,28 @@
     "keyword": "PSET",
     "slug": "pset",
     "category": "Graphics",
-    "status": "planned",
-    "summary": "Set a pixel to a color in an active graphics mode.",
+    "status": "partial",
+    "summary": "Draw a pixel using an explicit color or the foreground color.",
     "syntax": "PSET (x,y) [, color]",
     "parameters": [
-      "x/y: pixel position.",
-      "color: optional palette index."
+      "Arguments are numeric expressions. Drawing coordinates are rounded to signed 16-bit integers.",
+      "Choose SCREEN 7, 9 or 12 before graphics operations; SCREEN 0 returns to text."
     ],
     "use_cases": [
-      "Plot individual points."
+      "Draw diagrams and plots; inspect the finished image with F9."
     ],
     "examples": [
       {
-        "source": "PSET (20,30), 4",
+        "source": "10 SCREEN 7\n20 PSET (10,10),14",
         "inputs": "",
         "output": "",
-        "mode": "reference"
+        "mode": "program"
       }
     ],
     "notes": [
-      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
-      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+      "Supported subset: fixed 16-color palette; no STEP, implicit LINE start, styles, arcs, aspect, pages, or text drawn into the image.",
+      "SCREEN resets pixels and colors; RUN resets to text mode. CLS fills with the background color.",
+      "F9 shows a downsampled snapshot after running. CLI --graphics-output picture.png exports full resolution."
     ],
     "aliases": []
   },
@@ -3413,27 +3418,28 @@
     "keyword": "PRESET",
     "slug": "preset",
     "category": "Graphics",
-    "status": "planned",
-    "summary": "Reset a pixel, usually to the background color when no color is supplied.",
+    "status": "partial",
+    "summary": "Draw a pixel using an explicit color or the background color.",
     "syntax": "PRESET (x,y) [, color]",
     "parameters": [
-      "x/y: pixel position.",
-      "color: optional palette index."
+      "Arguments are numeric expressions. Drawing coordinates are rounded to signed 16-bit integers.",
+      "Choose SCREEN 7, 9 or 12 before graphics operations; SCREEN 0 returns to text."
     ],
     "use_cases": [
-      "Erase a plotted point."
+      "Draw diagrams and plots; inspect the finished image with F9."
     ],
     "examples": [
       {
-        "source": "PRESET (20,30)",
+        "source": "10 SCREEN 7\n20 PSET (10,10),14\n30 PRESET (10,10)",
         "inputs": "",
         "output": "",
-        "mode": "reference"
+        "mode": "program"
       }
     ],
     "notes": [
-      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
-      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+      "Supported subset: fixed 16-color palette; no STEP, implicit LINE start, styles, arcs, aspect, pages, or text drawn into the image.",
+      "SCREEN resets pixels and colors; RUN resets to text mode. CLS fills with the background color.",
+      "F9 shows a downsampled snapshot after running. CLI --graphics-output picture.png exports full resolution."
     ],
     "aliases": []
   },
@@ -3441,26 +3447,28 @@
     "keyword": "POINT",
     "slug": "point",
     "category": "Graphics",
-    "status": "planned",
-    "summary": "Read a graphics pixel color in its coordinate form.",
+    "status": "partial",
+    "summary": "Return the pixel color, or -1 for an offscreen coordinate.",
     "syntax": "POINT(x,y)",
     "parameters": [
-      "x/y: pixel position; other classic forms are dialect-dependent."
+      "Arguments are numeric expressions. Drawing coordinates are rounded to signed 16-bit integers.",
+      "Choose SCREEN 7, 9 or 12 before graphics operations; SCREEN 0 returns to text."
     ],
     "use_cases": [
-      "Inspect a collision or drawing pixel."
+      "Draw diagrams and plots; inspect the finished image with F9."
     ],
     "examples": [
       {
-        "source": "PRINT POINT(20,30)",
+        "source": "10 SCREEN 7\n20 PSET (10,10),14\n30 PRINT POINT(10,10)",
         "inputs": "",
-        "output": "",
-        "mode": "reference"
+        "output": " 14 \n",
+        "mode": "program"
       }
     ],
     "notes": [
-      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
-      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+      "Supported subset: fixed 16-color palette; no STEP, implicit LINE start, styles, arcs, aspect, pages, or text drawn into the image.",
+      "SCREEN resets pixels and colors; RUN resets to text mode. CLS fills with the background color.",
+      "F9 shows a downsampled snapshot after running. CLI --graphics-output picture.png exports full resolution."
     ],
     "aliases": []
   },
@@ -3468,27 +3476,28 @@
     "keyword": "LINE",
     "slug": "line",
     "category": "Graphics",
-    "status": "planned",
-    "summary": "Draw a line or rectangular box in a graphics mode.",
-    "syntax": "LINE (x1,y1)-(x2,y2) [, color] [, B | BF]",
+    "status": "partial",
+    "summary": "Draw an inclusive line, outlined box (B), or filled box (BF).",
+    "syntax": "LINE (x1,y1)-(x2,y2) [,[color][,B|BF]]",
     "parameters": [
-      "Coordinates: line endpoints or opposite box corners.",
-      "B: outline box; BF: filled box."
+      "Arguments are numeric expressions. Drawing coordinates are rounded to signed 16-bit integers.",
+      "Choose SCREEN 7, 9 or 12 before graphics operations; SCREEN 0 returns to text."
     ],
     "use_cases": [
-      "Draw a border or rectangle."
+      "Draw diagrams and plots; inspect the finished image with F9."
     ],
     "examples": [
       {
-        "source": "LINE (10,10)-(50,40), 4, B",
+        "source": "10 SCREEN 7\n20 LINE (10,10)-(100,60),14,BF",
         "inputs": "",
         "output": "",
-        "mode": "reference"
+        "mode": "program"
       }
     ],
     "notes": [
-      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
-      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+      "Supported subset: fixed 16-color palette; no STEP, implicit LINE start, styles, arcs, aspect, pages, or text drawn into the image.",
+      "SCREEN resets pixels and colors; RUN resets to text mode. CLS fills with the background color.",
+      "F9 shows a downsampled snapshot after running. CLI --graphics-output picture.png exports full resolution."
     ],
     "aliases": []
   },
@@ -3496,28 +3505,28 @@
     "keyword": "CIRCLE",
     "slug": "circle",
     "category": "Graphics",
-    "status": "planned",
-    "summary": "Draw a circle or arc in a graphics mode.",
-    "syntax": "CIRCLE (x,y), radius [, color]",
+    "status": "partial",
+    "summary": "Draw a full circle with equal horizontal and vertical pixel radii.",
+    "syntax": "CIRCLE (x,y),radius [, color]",
     "parameters": [
-      "x/y: center.",
-      "radius: circle size.",
-      "color: optional palette index; additional arc/aspect arguments exist in legacy dialects."
+      "Coordinates are rounded to signed 16-bit integers. Color indices are 0..15.",
+      "Radius is rounded to an integer from 0..32767; drawing is clipped to screen edges."
     ],
     "use_cases": [
-      "Draw a circular object."
+      "Draw diagrams and plots; inspect the finished image with F9."
     ],
     "examples": [
       {
-        "source": "CIRCLE (80,60), 20, 4",
+        "source": "10 SCREEN 7\n20 CIRCLE (160,100),50,14",
         "inputs": "",
         "output": "",
-        "mode": "reference"
+        "mode": "program"
       }
     ],
     "notes": [
-      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
-      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+      "Supported subset: fixed 16-color palette; no STEP, implicit LINE start, styles, arcs, aspect, pages, or text drawn into the image.",
+      "SCREEN resets pixels and colors; RUN resets to text mode. CLS fills with the background color.",
+      "F9 shows a downsampled snapshot after running. CLI --graphics-output picture.png exports full resolution."
     ],
     "aliases": []
   },
@@ -3689,26 +3698,28 @@
     "keyword": "COLOR",
     "slug": "color",
     "category": "Terminal layout",
-    "status": "planned",
-    "summary": "Set legacy text/graphics colors using mode-specific arguments.",
-    "syntax": "COLOR [foreground] [, background]",
+    "status": "partial",
+    "summary": "Set drawing and clear colors from 0 through 15 in graphics mode.",
+    "syntax": "COLOR foreground [, background]",
     "parameters": [
-      "foreground/background: palette indices appropriate for the active mode."
+      "Arguments are numeric expressions. Drawing coordinates are rounded to signed 16-bit integers.",
+      "Choose SCREEN 7, 9 or 12 before graphics operations; SCREEN 0 returns to text."
     ],
     "use_cases": [
-      "Color a title or form."
+      "Draw diagrams and plots; inspect the finished image with F9."
     ],
     "examples": [
       {
-        "source": "COLOR 14, 1",
+        "source": "10 SCREEN 7\n20 COLOR 14,1\n30 CLS\n40 PSET (10,10)",
         "inputs": "",
         "output": "",
-        "mode": "reference"
+        "mode": "program"
       }
     ],
     "notes": [
-      "Not implemented in Ghost BASIC. The example explains legacy syntax and cannot run here.",
-      "This is a reference topic, not a promise of complete GW-BASIC/QBasic compatibility."
+      "Supported subset: fixed 16-color palette; no STEP, implicit LINE start, styles, arcs, aspect, pages, or text drawn into the image.",
+      "SCREEN resets pixels and colors; RUN resets to text mode. CLS fills with the background color.",
+      "F9 shows a downsampled snapshot after running. CLI --graphics-output picture.png exports full resolution."
     ],
     "aliases": []
   },

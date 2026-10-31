@@ -111,3 +111,43 @@ triangle, calculate the sum of each row, or join two right triangles into an hou
 The original hello, fibonacci, subroutines, data, input, while and types samples remain
 available alongside these exercises. The learning gallery now has 42 programs with automated output checks, including the
 [22 input-based calculators](CALCULATORS.md): simple/compound interest and 20 everyday exercises.
+
+## Numeric precision examples
+
+Open these through F3 and run with F5. Each includes a change to try in its REM comments.
+
+| File | What it demonstrates | Expected result |
+| --- | --- | --- |
+| numeric_literals.bas | Signed hex, explicit octal and short octal, then a bit mask | All three literals print -1; the mask prints 255 |
+| numeric_precision.bas | Single rounding between operations, mixing in double precision, and CDBL conversion | Single intermediate is 0; double intermediate is 1; the literal was rounded before CDBL |
+| numeric_integers.bas | Integer calculation overflow promotes to single, slash division, INT versus FIX | 32768; 90000; 2.5; -2; -1 |
+
+For example, `(16777216!+1!)-16777216!` yields 0 because the first addition
+rounds to single precision. Changing the first `!` to `#` makes both operations
+double precision and preserves the extra 1. Assigning the first expression to `A#`
+cannot recover precision already lost during evaluation.
+
+These examples exercise Ghost BASIC's IEEE numeric model. They do not establish
+bit-for-bit equivalence to legacy Microsoft Binary Format. Exponentiation and
+transcendental-function precision are still approximate. Assigning 32768 to an
+integer variable such as `A%` still raises Overflow even though `32767+1` can
+produce a single-precision result.
+
+## Graphics examples
+
+Open with F3, run with F5, then press **F9** to see the finished drawing.
+
+| File | Demonstrates | Try changing |
+| --- | --- | --- |
+| graphics_shapes.bas | Background, filled/outlined boxes, circle, lines and a pixel | Color indices or circle radius |
+| graphics_palette.bas | All 16 colors using loops and filled boxes | Cell spacing and arrangement |
+| graphics_plot.bas | Sine plot, axes, pixel plotting and POINT readback | Amplitude 60 or wavelength divisor 25 |
+| graphics_house.bas | Layered scene, roof scanlines, windows and solid sun | Roof colors or another window |
+| graphics_checkerboard.bas | Nested loops and alternating colors | Tile colors and horizontal margin |
+| graphics_bars.bas | DATA-driven bar chart with axes | Five bar heights from 1 to 150 |
+| graphics_spiral.bas | Connected polar-coordinate samples | Angular increment for more turns |
+| graphics_flower.bas | Circular petal arrangement and solid center | Petal count N |
+| graphics_skyline.bas | DATA-driven buildings with nested window loops | Building heights |
+
+For a full-resolution image run `GBASIC examples/graphics_shapes.bas --graphics-output shapes.png`.
+See [Graphics API](../docs/GRAPHICS.md) for supported syntax, Python usage and limitations.
